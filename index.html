@@ -1258,12 +1258,14 @@ addEventListener('keyup',e=>{
 addEventListener('blur',clearInput);
 document.addEventListener('pointerdown',()=>document.body.classList.remove('nav'),true);
 
+const padUpd=[];
 function bindPad(el,axis){
   const ptrs=new Map(), halves=el.children;
   const side=e=>{ const r=el.getBoundingClientRect(); return axis==='h'?(e.clientX<r.left+r.width/2?-1:1):(e.clientY<r.top+r.height/2?-1:1); };
   const upd=()=>{ let a=0,b=0; for(const v of ptrs.values()){ if(v<0)a=1; else b=1; }
     if(axis==='h'){ tc.l=a; tc.r=b; } else { tc.u=a; tc.d=b; }
     halves[0].classList.toggle('on',!!a); halves[1].classList.toggle('on',!!b); };
+  padUpd.push(()=>upd());
   el.addEventListener('pointerdown',e=>{ e.preventDefault(); AU.init(); try{el.setPointerCapture(e.pointerId);}catch(_){} ptrs.set(e.pointerId,side(e)); upd(); });
   el.addEventListener('pointermove',e=>{ if(ptrs.has(e.pointerId)){ ptrs.set(e.pointerId,side(e)); upd(); } });
   const end=e=>{ ptrs.delete(e.pointerId); upd(); };
@@ -1352,7 +1354,7 @@ const VAULTFROM=i=>({n:`Siegelinschrift ${i+1} von 6`,tag:'Kammer der Ersten'});
 const txQ=[]; let txCur=null, txTimer=0, txI=0;
 function tx(from,text,cb){ txQ.push({from,text,cb}); if(!txCur) txNext(); }
 function txNext(){
-  txCur=txQ.shift(); if(!txCur){ $('#txo').hidden=true; const ov=topOverlay(); if(ov) focusFirst(ov); return; }
+  txCur=txQ.shift(); if(!txCur){ $('#txo').hidden=true; const ov=topOverlay(); if(ov) focusFirst(ov); else padUpd.forEach(f=>f()); return; }
   clearInput(); AU.loop(false,false);
   $('#txo').hidden=false; $('#txSheet').classList.toggle('static',!!txCur.from.st);
   $('#txTag').textContent=txCur.from.tag; $('#txFrom').textContent=txCur.from.n;
@@ -3724,7 +3726,7 @@ function openMenu(sub){
     <button class="btn" data-m="sound">Ton: ${AU.on?'an':'aus'}</button>
     <button class="btn" data-m="touch">Touch-Steuerung: ${document.body.classList.contains('touch')?'an':'aus'}</button>
     <button class="btn" data-m="help">Steuerung & Spielwissen</button>
-    <button class="btn ghost" data-m="new">Neue Expedition</button>`;
+    <button class="btn ghost" data-m="new">Neue Expedition</button>${load('marsbohrer3.lasterr')?`<p class="note" style="font-size:11px;word-break:break-word">Letzter Fehler: ${load('marsbohrer3.lasterr').replace(/</g,'&lt;')}</p>`:''}`;
   $('#menuSheet').innerHTML=h; $('#menu').hidden=false; $('#menuSheet').scrollTop=0; focusFirst($('#menu'));
 }
 function closeMenu(){ $('#menu').hidden=true; paused=false; ui.menuSub=null; }
@@ -3762,12 +3764,21 @@ document.addEventListener('visibilitychange',()=>{ if(document.hidden){ clearInp
 addEventListener('pagehide',()=>{ if(running) saveGame(true); });
 document.addEventListener('freeze',()=>{ if(running) saveGame(true); });
 addEventListener('pageshow',e=>{ if(e.persisted) refreshGfx(); });
-cv.addEventListener('contextlost',e=>e.preventDefault());
+cv.addEventListener('contextlost',e=>{ e.preventDefault(); store('marsbohrer3.lasterr',new Date().toLocaleString('de-CH')+' · Grafikspeicher verloren (contextlost)'); });
 cv.addEventListener('contextrestored',()=>refreshGfx());
 
 /* ================= Schleife ================= */
 let last=performance.now(), acc=0;
+function reportErr(where,e){
+  const msg=`${where}: ${e&&e.message||e} · ${String(e&&e.stack||'').split('\n').slice(1,3).map(l=>l.trim().replace(/^at /,'').replace(/\(.*\/([^/]+:\d+:\d+)\)/,'($1)')).join(' | ')}`;
+  store('marsbohrer3.lasterr',new Date().toLocaleString('de-CH')+' · '+msg);
+  if(!ui.errT||performance.now()-ui.errT>15000){ ui.errT=performance.now(); toast('Fehler abgefangen, das Spiel läuft weiter. Details im Menü.',4000); }
+}
 function frame(t){
+  try{ frameInner(t); }catch(e){ reportErr('frame',e); try{ refreshGfx(); }catch(_){} }
+  requestAnimationFrame(frame);
+}
+function frameInner(t){
   const dt=Math.min(.05,(t-last)/1000); last=t;
   pollPad(dt);
   if(S){
@@ -3779,7 +3790,6 @@ function frame(t){
     render(dt);
     ui.hudT-=dt; if(ui.hudT<=0 && running){ ui.hudT=.08; updateHud(); }
   }
-  requestAnimationFrame(frame);
 }
 
 /* ================= Start ================= */
@@ -3793,7 +3803,7 @@ function boot(data){
   if(data&&data.save){ try{ startGame(deserialize(data.save),false); }catch(e){} }
   requestAnimationFrame(frame);
 }
-window.__mb3={get S(){return S;},get boss(){return boss;},get ui(){return ui;},openKern,startEcho,startRush,startMission,spawnRival,placeStructures,doAction,ruinAt,liq,fluidTick,gainXP,RK,KARENA,serialize,deserialize,systemsTick,isNight,beamTrace,hitSwitch,genKern,startDash,placeTool,missionText,newMarket,renderShop,closeShop,saveGame,loadSlot,exportSave,mergeMeta,teleportTo,startBoss,bossDown,explodeAt,useItem,ARENAS,STATIONS,mobs,projs,fallers,props,clouds,arenaIn,update,runEvent,newState,startGame,openShop,PADS,hurtBoss,unlock,META,setRunning:v=>{running=v;},set paused(v){paused=v;}};
+window.__mb3={get spr(){return sprCache.size;},get S(){return S;},get boss(){return boss;},get ui(){return ui;},openKern,startEcho,startRush,startMission,spawnRival,placeStructures,doAction,ruinAt,liq,fluidTick,gainXP,RK,KARENA,serialize,deserialize,systemsTick,isNight,beamTrace,hitSwitch,genKern,startDash,placeTool,missionText,newMarket,renderShop,closeShop,saveGame,loadSlot,exportSave,mergeMeta,teleportTo,startBoss,bossDown,explodeAt,useItem,ARENAS,STATIONS,mobs,projs,fallers,props,clouds,arenaIn,update,runEvent,newState,startGame,openShop,PADS,hurtBoss,unlock,META,setRunning:v=>{running=v;},set paused(v){paused=v;}};
 window.claude?.hot?.snapshot?.(()=>({save:S&&running?serialize():null}));
 window.claude?.hot?.ready ? window.claude.hot.ready(boot) : boot(window.claude?.hot?.data ?? {});
 })();
