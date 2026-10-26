@@ -3378,7 +3378,7 @@ function renderShop(){
     }
     h+='</div>'+toolRows(mult);
   } else if(kind==='bau'){
-    const bt=[['base','Basis'],['colony','Kolonie'],...(S.ending?[['echo','Echos & Bossrush']]:[])]; if(!bt.some(t=>t[0]===ui.btab)) ui.btab='base';
+    const bt=[['base','Basis'],['colony','Kolonie'],...(S.ending||S.bossDone[3]?[['echo','Echos & Bossrush']]:[])]; if(!bt.some(t=>t[0]===ui.btab)) ui.btab='base';
     h+=`<div class="tabs">${bt.map(([k,n])=>`<button class="tab${ui.btab===k?' on':''}" data-act="btab:${k}">${n}</button>`).join('')}</div>`;
     if(ui.btab==='colony') h+=colonyRows(); else if(ui.btab==='echo') h+=echoRows(); else {
     h+=`<p class="note">Jedes Gebäude bleibt für den Rest der Expedition stehen.</p><div>`;
@@ -3608,7 +3608,7 @@ function startGame(st,intro){
   const hint=$('#hint'); hint.hidden=false; hint.style.opacity=1; setTimeout(()=>hint.style.opacity=0,14000);
   cam.x=S.p.x-viewW/2; cam.y=S.p.y-viewH*.55;
   renderItems(); updateHud();
-  if(S.ending&&!S.flags.kernOpen){ openKern(); tx(T,'Kapsel 13, unsere Seismik meldet einen Riss unter der Arena des Schläfers.\nDarunter liegt eine Zone, die auf keiner Karte steht. Wir nennen sie den Kern. Ein Pfeil zeigt dir den Weg.'); }
+  if((S.ending||S.bossDone[3])&&!S.flags.kernOpen){ openKern(); tx(T,'Kapsel 13, unsere Seismik meldet einen Riss unter der Arena des Schläfers.\nDarunter liegt eine Zone, die auf keiner Karte steht. Wir nennen sie den Kern. Ein Pfeil zeigt dir den Weg.'); }
   if(S.flags.v4new){ delete S.flags.v4new; tx(SYS,`Update installiert. Dein Spielstand wurde übernommen.\nNeu: Pilotenränge (du bist Rang ${RK()}), Bohrsprint, Bauwerkzeuge, Drohne, Schmiede und Lagerhaus an der Oberfläche, Kolonie-Projekte im Baubüro, Ruinen und Sonderhöhlen, fliessende Lava, Wetter, Missionen und eine Rivalin.${S.ending?' Nach deinem Ende warten der Kern und die Echos der Wächter.':''}`); }
   if(intro){ const P=POD_TYPES[S.cfg.pod];
     tx(K,`Willkommen auf dem Mars, Pilot. Deine Kapsel: ${P.n}, ${P.label}.\nDie Tiefe Ader reicht 30'000 Fuss hinab. Bohr nach Erzen, verkauf sie im Erzankauf, rüste in der Werkstatt auf und bau im Baubüro deine Basis aus.\nWertung dieser Expedition: ×${multOf(S.cfg).toFixed(2)}.`); }
