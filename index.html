@@ -2936,8 +2936,17 @@ let mtn=null;
 function mountains(){ const r=mulberry32(99); mtn=[0,1].map(l=>{ const a=[]; for(let i=0;i<=80;i++) a.push(.6+r()*(l?1.6:2.6)+Math.sin(i*.5+l)*.6); return a; }); }
 function rr(x,y,w,h,r){ ctx.beginPath(); ctx.moveTo(x+r,y); ctx.arcTo(x+w,y,x+w,y+h,r); ctx.arcTo(x+w,y+h,x,y+h,r); ctx.arcTo(x,y+h,x,y,r); ctx.arcTo(x,y,x+w,y,r); ctx.closePath(); }
 function inStationRoom(x,y){ for(let i=0;i<3;i++){ const A=ARENAS[i]; if(y>A.sf-5.5&&y<A.sf&&x>MIDX-10.5&&x<MIDX+10.5) return true; } return false; }
+let safeC={t:0,top:0,bot:0};
+function safeArea(h){
+  const now=performance.now(); if(now-safeC.t<400) return safeC; safeC.t=now;
+  const cr=cv.getBoundingClientRect(), k=cr.height?cv.height/cr.height:1, vis=e=>{ if(!e||e.hidden) return false; const r=e.getBoundingClientRect(); if(!r.height||!r.width) return false; for(let q=e;q&&q!==document.body;q=q.parentElement){ const cs=getComputedStyle(q); if(q.hidden||cs.display==='none'||cs.visibility==='hidden'||+cs.opacity===0) return false; } return true; };
+  let top=0, bot=h;
+  for(const id of ['hud','bossbar','mis']){ const e=document.getElementById(id); if(vis(e)){ const r=e.getBoundingClientRect(); if(r.top<cr.top+cr.height*.5) top=Math.max(top,(r.bottom-cr.top)*k); } }
+  for(const id of ['padLR','padUD','act']){ const e=document.getElementById(id); if(vis(e)){ const r=e.getBoundingClientRect(); if(r.top>cr.top+cr.height*.5) bot=Math.min(bot,(r.top-cr.top)*k); } }
+  safeC.top=top; safeC.bot=bot; return safeC;
+}
 function edgeArrow(bx,by,w,h,col,label){
-  const m=ts*1.2, ax=clamp(bx,m,w-m), ay=clamp(by,m+ts*1.5,h-m), a=Math.atan2(by-ay,bx-ax);
+  const sa=safeArea(h), m=ts*1.2, ax=clamp(bx,m,w-m), ay=clamp(by,Math.max(m+ts*1.5,sa.top+ts*.9),Math.min(h-m,sa.bot-ts*1.4)), a=Math.atan2(by-ay,bx-ax);
   ctx.save(); ctx.translate(ax,ay); ctx.rotate(a); ctx.fillStyle=col;
   ctx.beginPath(); ctx.moveTo(ts*.6,0); ctx.lineTo(-ts*.3,-ts*.4); ctx.lineTo(-ts*.3,ts*.4); ctx.closePath(); ctx.fill(); ctx.restore();
   if(label){ ctx.font=`${Math.max(10,Math.round(ts*.28))}px Silkscreen, monospace`; ctx.textAlign='center'; ctx.textBaseline='middle'; ctx.fillStyle='#0d0807'; ctx.fillText(label,ax+1,ay+ts*.75+1); ctx.fillStyle=col; ctx.fillText(label,ax,ay+ts*.75); }
