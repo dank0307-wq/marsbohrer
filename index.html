@@ -52,6 +52,13 @@ button{font-family:inherit;color:inherit}
 .stat b{font:600 13px/1 var(--font-ui);font-variant-numeric:tabular-nums;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 #pauseBtn{order:2;flex:none;width:44px;border-radius:6px;background:var(--panel);border:1px solid var(--line);cursor:pointer;display:grid;place-items:center;padding:0}
 #pauseBtn span{display:flex;gap:4px}#pauseBtn span i{width:4px;height:14px;background:var(--ink);border-radius:1px}
+#mapBtn{order:2;flex:none;width:44px;border-radius:6px;background:var(--panel);border:1px solid var(--line);cursor:pointer;display:grid;place-items:center;padding:0;color:var(--ink)}
+#mapBtn svg{width:20px;height:20px}
+.mapwrap{position:relative;border:1px solid var(--line);border-radius:8px;overflow:hidden;background:#060404}
+#mapCv{display:block;width:100%;height:min(60vh,560px);touch-action:none;cursor:grab}
+.maprow{display:grid;grid-template-columns:1fr 52px 52px;gap:8px}
+.maplegend{display:flex;flex-wrap:wrap;gap:4px 12px;font:500 11px/1.3 var(--font-ui);color:var(--dim)}
+.maplegend i{display:inline-block;width:9px;height:9px;border-radius:2px;margin-right:4px;vertical-align:-1px}
 #items{order:4;display:flex;flex-wrap:wrap;gap:5px;flex-basis:100%}
 .item{position:relative;width:44px;height:44px;border-radius:8px;background:var(--panel);border:1px solid var(--line);display:grid;place-items:center;padding:0;cursor:pointer}
 .item svg{width:22px;height:22px}
@@ -262,6 +269,7 @@ body.touch #act:not([hidden]){display:flex}
     <div class="meter" id="mHull"><span class="lbl">Rumpf</span><span class="num" id="hullTxt">10/10</span><div class="bar"><i id="hullBar"></i></div></div>
     <div class="meter" id="mFuel"><span class="lbl">Treibstoff</span><span class="num" id="fuelTxt">10.0 L</span><div class="bar"><i id="fuelBar"></i></div></div>
   </div>
+  <button id="mapBtn" aria-label="Karte öffnen" title="Karte (J)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M3 6l6-2 6 2 6-2v14l-6 2-6-2-6 2z"/><path d="M9 4v14M15 6v14"/></svg></button>
   <button id="pauseBtn" aria-label="Menü öffnen"><span><i></i><i></i></span></button>
   <div class="stats">
     <div class="stat"><span class="lbl">Geld</span><b id="money">$20</b></div>
@@ -871,7 +879,32 @@ function extendState(st){
   for(const k in def) if(st[k]==null) st[k]=JSON.parse(JSON.stringify(def[k]));
   for(const k of ['misDone','rival','sprintKills','droneOres','storeSales','ruins']) if(st.st[k]==null) st.st[k]=0;
   if(!st.ruins) placeStructures(st);
+  initSeen(st);
   return st;
+}
+/* ================= Karte: erkundete Felder ================= */
+function encSeen(a){ const out=[]; let v=0, n=0; for(let i=0;i<a.length;i++){ if(a[i]===v) n++; else { out.push(n.toString(36)); v=a[i]; n=1; } } out.push(n.toString(36)); return out.join('.'); }
+function decSeen(str){ const a=new Uint8Array(W*H); let i=0, v=0; for(const t of str.split('.')){ const n=parseInt(t,36)||0; if(v) a.fill(1,i,Math.min(a.length,i+n)); i+=n; v^=1; if(i>=a.length) break; } return a; }
+function initSeen(st){
+  if(st.seen instanceof Uint8Array&&st.seen.length===W*H) return;
+  if(typeof st.seen==='string'){ try{ st.seen=decSeen(st.seen); return; }catch(_){} }
+  const a=new Uint8Array(W*H), w=st.world;
+  for(let y=0;y<=SKY+1&&y<H;y++) a.fill(1,y*W,(y+1)*W);
+  /* Ältere Spielstände: alles Freigebohrte bis zur tiefsten Stelle gilt als erkundet, samt Wänden */
+  const yMax=Math.min(H-1,SKY+Math.ceil((st.maxFt||0)/FT)+2);
+  for(let y=SKY+1;y<=yMax;y++) for(let x=0;x<W;x++){ const c=w[y*W+x]; if(c===AIR||c===LADDER||c===MYBEACON||c===PILLAR){
+    for(let yy=y-1;yy<=y+1;yy++) for(let xx=x-1;xx<=x+1;xx++) if(xx>=0&&xx<W&&yy>=0&&yy<H) a[yy*W+xx]=1; } }
+  st.seen=a;
+}
+function markSeen(cx,cy,r){
+  const a=S.seen; if(!a) return; const x0=Math.max(0,Math.floor(cx-r)), x1=Math.min(W-1,Math.floor(cx+r)), y0=Math.max(0,Math.floor(cy-r)), y1=Math.min(H-1,Math.floor(cy+r)), r2=r*r;
+  for(let y=y0;y<=y1;y++){ const dy=y+.5-cy; for(let x=x0;x<=x1;x++){ const dx=x+.5-cx; if(dx*dx+dy*dy<=r2) a[y*W+x]=1; } }
+}
+function seenTick(dt){
+  ui.seenT=(ui.seenT||0)-dt; if(ui.seenT>0) return; ui.seenT=.12;
+  const p=S.p, ft=curFt(); let r=2.2+[0,1,1.6,2,2.4][S.up.light||0]; if(inDark(p.y)) r*=.55; if(ft<100) r=Math.max(r,7);
+  markSeen(p.x,p.y,Math.max(2.4,r));
+  if(ui.dr) markSeen(ui.dr.x,ui.dr.y,2.2);
 }
 const POD=()=>POD_TYPES[S.cfg.pod].m;
 const hasMod=id=>S.cfg.mods.includes(id);
@@ -1234,6 +1267,7 @@ addEventListener('keydown',e=>{
   if(ov){
     if(NAVKEY[k]||NAVKEY[e.key]){ e.preventDefault(); navFocus(NAVKEY[k]||NAVKEY[e.key]); return; }
     if(ov.id==='shop'&&(k==='Escape'||k==='KeyE')){ e.preventDefault(); closeShop(); return; }
+    if(ov.id==='menu'&&ui.menuSub==='map'&&k==='KeyJ'){ e.preventDefault(); closeMenu(); return; }
     if((ov.id==='menu'||ov.id==='setup')&&(k==='Escape'||k==='KeyP'||dg==='0')){ e.preventDefault(); backAction(); return; }
     if(e.key==='Enter'){ const a=document.activeElement; if(!(a&&ov.contains(a)&&a.tagName==='BUTTON')){ e.preventDefault(); focusFirst(ov); } }
     return;
@@ -1250,6 +1284,7 @@ addEventListener('keydown',e=>{
   if(k==='KeyL'){ doAction('lad'); return; }
   if(k==='KeyK'){ doAction('bak'); return; }
   if(k==='KeyN'){ doAction('drone'); return; }
+  if(k==='KeyJ'){ e.preventDefault(); openMenu('map'); return; }
 });
 addEventListener('keyup',e=>{
   const k=keyId(e);
@@ -1842,7 +1877,7 @@ function newMarket(first){
   S.market={mul:cur.mul,hot:cur.hot,slump:cur.slump,day,t:300,fc:nx.mul,fcHot:nx.hot,fcSlump:nx.slump,fcN:MIN.map(()=>+((Math.random()-.5)*.24).toFixed(2))};
   newTraders(day);
   if(!first){
-    let msg=`Markttag ${day}: ${MIN[hot].n} ×${mul[hot].toFixed(1)}`;
+    let msg=`Markttag ${day}: ${MIN[cur.hot].n} ×${cur.mul[cur.hot].toFixed(1)}`;
     if(S.base.bank){ const z=Math.min(100000,Math.round(S.money*.02)); if(z>0){ S.money+=z; msg+=` · Zinsen +${fmt(z)}`; } }
     toast(msg,3000);
   }
@@ -1962,6 +1997,7 @@ function update(dt){
   p.invT=Math.max(0,p.invT-dt); S.shieldT=Math.max(0,S.shieldT-dt);
   if(p.mode==='drill') drillStep(dt); else if(p.mode==='dash') dashStep(dt); else physics(dt,I);
   if(!running) return;
+  seenTick(dt);
   let rate=.055; const lr=I.l||I.r;
   if(p.mode==='drill') rate+=(p.dr&&p.dr.dir==='up'?.44:.28)*(modOn('turbo')?1.25:1); else { if(p.thr) rate+=.16; if(lr) rate+=.08; }
   S.fuel-=rate*fuelMul()*coldMul()*dt;
@@ -3264,10 +3300,92 @@ function drawColony(cx,groundY){
 }
 
 
+/* ================= Karte ================= */
+const MAPV={zoom:1,x:0,y:0};
+let ZROW=null;
+function zoneRow(y){ if(!ZROW){ ZROW=new Uint8Array(H); for(let r=0;r<H;r++){ const ft=(r-SKY)*FT; let z=0; for(let i=0;i<ZONES.length;i++) if(ft>=ZONES[i].a) z=i; ZROW[r]=z; } } return ZROW[y]; }
+const hexRGB=h=>{ h=h.replace('#',''); if(h.length===3) h=h.split('').map(c=>c+c).join(''); const n=parseInt(h,16); return [n>>16&255,n>>8&255,n&255]; };
+let MAPCOL=null;
+function mapColors(){
+  if(MAPCOL) return MAPCOL;
+  const z=ZONES.map(q=>hexRGB(q.c[0])), mi=MIN.map(m=>hexRGB(m.c));
+  MAPCOL={zone:z,ore:mi,air:[48,32,26],sky:[92,52,38],unk:[6,4,4],lava:[255,90,26],water:[61,120,168],acid:[120,200,70],gas:[150,150,60],rock:[96,90,86],hard:[48,42,42],gold:[255,226,122],rune:[115,224,255],wreck:[196,160,255],ice:[170,210,230],pulse:[255,110,60],build:[150,120,100]};
+  return MAPCOL;
+}
+function mapCell(c,y){
+  const M=mapColors();
+  if(y<SKY) return M.sky;
+  if(c===AIR||c===MYBEACON) return M.air;
+  if(c===LADDER||c===PILLAR) return M.build;
+  if(isMin(c)) return M.ore[c-10];
+  if(isTre(c)||c===CHEST||c===RUINCHEST) return M.gold;
+  if(c===LAVA) return M.lava; if(c===WATER) return M.water; if(c===ACID) return M.acid; if(c===GAS) return M.gas;
+  if(c===ICE) return M.ice; if(c===PULSE) return M.pulse; if(c===METEOR) return [255,138,58];
+  if(c===WRECK) return M.wreck; if(c===RUNE||isLog(c)) return M.rune;
+  if(c===ROCK||c===BOULDER) return M.rock;
+  if(c===CONC||c===BED||c===ARMOR||c===VAULT||c===RUINWALL||c===RUINDOOR) return M.hard;
+  const zc=M.zone[zoneRow(y)]; return [zc[0]*.8|0,zc[1]*.8|0,zc[2]*.8|0];
+}
+function mapGeom(){
+  const cv=$('#mapCv'); if(!cv) return null;
+  const r=cv.getBoundingClientRect(), dpr=Math.min(2,window.devicePixelRatio||1);
+  const pw=Math.max(1,Math.round(r.width*dpr)), ph=Math.max(1,Math.round(r.height*dpr));
+  if(cv.width!==pw||cv.height!==ph){ cv.width=pw; cv.height=ph; }
+  const cs=pw/W*MAPV.zoom; return {cv,pw,ph,cs,dpr,cols:pw/cs,rows:ph/cs};
+}
+function mapClamp(){ const g=mapGeom(); if(!g) return; MAPV.x=clamp(MAPV.x,0,Math.max(0,W-g.cols)); MAPV.y=clamp(MAPV.y,0,Math.max(0,H-g.rows)); }
+function mapCenter(){ const g=mapGeom(); if(!g) return; MAPV.x=S.p.x-g.cols/2; MAPV.y=S.p.y-g.rows/2; mapClamp(); }
+function mapZoom(d){ const g=mapGeom(); if(!g) return; const cx=MAPV.x+g.cols/2, cy=MAPV.y+g.rows/2; MAPV.zoom=clamp(MAPV.zoom+d,1,4); const g2=mapGeom(); MAPV.x=cx-g2.cols/2; MAPV.y=cy-g2.rows/2; mapClamp(); drawMap(); }
+let mapOff=null;
+function drawMap(){
+  const g=mapGeom(); if(!g||!S) return; const {cv,pw,ph,cs}=g, c=cv.getContext('2d');
+  const x0=Math.floor(MAPV.x), y0=Math.floor(MAPV.y), nc=Math.min(W-x0,Math.ceil(g.cols)+1), nr=Math.min(H-y0,Math.ceil(g.rows)+1);
+  if(!mapOff) mapOff=document.createElement('canvas'); if(mapOff.width!==nc||mapOff.height!==nr){ mapOff.width=nc; mapOff.height=nr; }
+  const oc=mapOff.getContext('2d'), img=oc.createImageData(nc,nr), d=img.data, M=mapColors(), w=S.world, sn=S.seen;
+  for(let j=0;j<nr;j++){ const y=y0+j; for(let i=0;i<nc;i++){ const x=x0+i, k=y*W+x, o=(j*nc+i)*4; const col=sn[k]?mapCell(w[k],y):M.unk; d[o]=col[0]; d[o+1]=col[1]; d[o+2]=col[2]; d[o+3]=255; } }
+  oc.putImageData(img,0,0);
+  c.imageSmoothingEnabled=false; c.fillStyle='#060404'; c.fillRect(0,0,pw,ph);
+  const ox=(x0-MAPV.x)*cs, oy=(y0-MAPV.y)*cs; c.drawImage(mapOff,0,0,nc,nr,ox,oy,nc*cs,nr*cs);
+  const sx=x=>(x-MAPV.x)*cs, sy=y=>(y-MAPV.y)*cs, fs=Math.round(10*g.dpr);
+  c.font=`${fs}px Silkscreen, monospace`; c.textBaseline='middle';
+  /* Tiefenskala */
+  const step=MAPV.zoom>=3?500:1000;
+  for(let ft=0;ft<=(DEPTH)*FT;ft+=step){ const y=sy(SKY+ft/FT); if(y<-fs||y>ph+fs) continue; c.fillStyle='rgba(244,236,224,.18)'; c.fillRect(0,y,pw,Math.max(1,g.dpr)); c.fillStyle='rgba(244,236,224,.75)'; c.fillText(`${fmtN(ft)} ft`,4*g.dpr,y+fs*.7); }
+  /* Zonen */
+  c.textAlign='right';
+  for(const z of ZONES){ if(S.maxFt<z.a&&z.a>0) continue; const y=sy(SKY+z.a/FT); if(y<-fs||y>ph+fs) continue; c.fillStyle='rgba(232,160,72,.9)'; c.fillText(z.n.toUpperCase(),pw-4*g.dpr,y+fs*.7); }
+  c.textAlign='left';
+  /* Stationen und Basis */
+  const mark=(x,y,col,label,sq)=>{ const X=sx(x), Y=sy(y); if(Y<-20||Y>ph+20) return; const r=Math.max(3*g.dpr,cs*.7); c.fillStyle=col; c.strokeStyle='#060404'; c.lineWidth=g.dpr;
+    c.beginPath(); if(sq) c.rect(X-r,Y-r,r*2,r*2); else { c.moveTo(X,Y-r*1.2); c.lineTo(X+r,Y); c.lineTo(X,Y+r*1.2); c.lineTo(X-r,Y); c.closePath(); } c.fill(); c.stroke();
+    if(label){ c.fillStyle='#f4ece0'; const tw=c.measureText(label).width; const lx=X+r+4*g.dpr+tw>pw?X-r-4*g.dpr-tw:X+r+4*g.dpr; c.fillText(label,lx,Y); } };
+  mark(MIDX,SKY-1,'#f4ece0','Basis',true);
+  STATIONS.forEach((st,i)=>{ if(S.bossDone[i]) mark((st.x0+st.x1)/2+.5,st.row-1,'#f4ece0',st.n.replace('Station ',''),true); });
+  (S.myBeacons||[]).forEach(b=>mark(b.x+.5,b.y+.5,'#ffe27a','Bake',false));
+  /* Spieler */
+  const PX=sx(S.p.x), PY=sy(S.p.y), pr=Math.max(4*g.dpr,cs*.42);
+  c.strokeStyle='rgba(115,207,192,.5)'; c.lineWidth=2*g.dpr; c.beginPath(); c.arc(PX,PY,pr*2.2,0,7); c.stroke();
+  c.fillStyle='#73cfc0'; c.strokeStyle='#060404'; c.beginPath(); c.arc(PX,PY,pr,0,7); c.fill(); c.stroke();
+  /* Pfeil, wenn ausserhalb */
+  if(PY<0||PY>ph){ const up=PY<0, ay=up?10*g.dpr:ph-10*g.dpr, ax=clamp(PX,12*g.dpr,pw-12*g.dpr); c.fillStyle='#73cfc0'; c.beginPath(); const a=8*g.dpr; if(up){ c.moveTo(ax,ay-a); c.lineTo(ax+a,ay+a*.4); c.lineTo(ax-a,ay+a*.4); } else { c.moveTo(ax,ay+a); c.lineTo(ax+a,ay-a*.4); c.lineTo(ax-a,ay-a*.4); } c.fill(); }
+}
+function setupMap(){
+  const cv=$('#mapCv'); if(!cv) return;
+  requestAnimationFrame(()=>{ mapCenter(); drawMap(); });
+  const ptr=new Map(); let last=null;
+  cv.addEventListener('pointerdown',e=>{ e.preventDefault(); try{cv.setPointerCapture(e.pointerId);}catch(_){} ptr.set(e.pointerId,{x:e.clientX,y:e.clientY}); last={x:e.clientX,y:e.clientY}; cv.style.cursor='grabbing'; });
+  cv.addEventListener('pointermove',e=>{ if(!ptr.has(e.pointerId)||!last) return; const g=mapGeom(); if(!g) return; const k=g.dpr/g.cs;
+    MAPV.x-=(e.clientX-last.x)*k; MAPV.y-=(e.clientY-last.y)*k; last={x:e.clientX,y:e.clientY}; mapClamp(); drawMap(); });
+  const end=e=>{ ptr.delete(e.pointerId); if(!ptr.size){ last=null; cv.style.cursor='grab'; } };
+  cv.addEventListener('pointerup',end); cv.addEventListener('pointercancel',end);
+  cv.addEventListener('wheel',e=>{ e.preventDefault(); const g=mapGeom(); if(!g) return; if(e.ctrlKey){ mapZoom(e.deltaY<0?1:-1); return; } MAPV.y+=e.deltaY*g.dpr/g.cs; MAPV.x+=e.deltaX*g.dpr/g.cs; mapClamp(); drawMap(); },{passive:false});
+}
+addEventListener('resize',()=>{ if(ui.menuSub==='map'&&!$('#menu').hidden){ mapClamp(); drawMap(); } });
+
 /* ================= Sammelbuch ================= */
 const BOOK=[
-  ...MIN.map((m,i)=>({key:'ore:'+i,cat:'Erze',n:m.n,d:`${m.d} Grundpreis ${fmt(m.v)}.`,sw:m.c})),
-  ...TRE.map((t,i)=>({key:'tre:'+i,cat:'Funde',n:t.n,d:`${t.d} Wert ${fmt(t.v)}.`,sw:'#ffe27a'})),
+  ...MIN.map((m,i)=>({key:'ore:'+i,cat:'Erze',n:m.n,d:`${m.d} Vorkommen ab ${fmtN(m.min)} ft. Grundpreis ${fmt(m.v)}.`,hint:`Vorkommen ab ${fmtN(m.min)} ft`,sw:m.c})),
+  ...TRE.map((t,i)=>({key:'tre:'+i,cat:'Funde',n:t.n,d:`${t.d} Vorkommen ab ${fmtN(t.min)} ft. Wert ${fmt(t.v)}.`,hint:`Vorkommen ab ${fmtN(t.min)} ft`,sw:'#ffe27a'})),
   {key:'tre:m',cat:'Funde',n:'Meteorit',d:`Ein Brocken aus dem All, noch warm. Wert ${fmt(METEOR_V)}.`,sw:'#ff8a3a'},
   ...Object.entries(MOBS).map(([k,m])=>({key:'mob:'+k,cat:'Gegner',n:m.n,d:m.d,sw:'#9a52dc'})),
   ...MINIS.map((m,i)=>({key:'mini:'+i,cat:'Mini-Bosse',n:m.n,d:m.d,sw:'#d65f2e'})),
@@ -3537,7 +3655,7 @@ function serialize(){
   for(let i=0;i<S.world.length;i+=4096){ let s=''; const end=Math.min(S.world.length,i+4096); for(let j=i;j<end;j++) s+=String.fromCharCode(48+S.world[j]); chunks.push(s); }
   const pos=p.mode==='drill'&&p.dr?{x:p.dr.x0,y:p.dr.y0}:{x:p.x,y:p.y};
   const o={}; for(const k of ['v','run','seed','cfg','vaults','minis','money','score','up','items','cargo','hull','fuel','flags','maxFt','time','bossDone','minisDone','logs','contract','base','modOwn','modEq','siegel','market','evT','beacons','quakeT','notUsed','ending','st','xp','tools','myBeacons','forge','colony','echoDone','urkeim','mission','misT','rivalT','look','dayT','traders','wx','store','ruins','dark','droneOff']) o[k]=S[k];
-  o.world=chunks.join(''); o.p={x:pos.x,y:pos.y,face:p.face};
+  o.world=chunks.join(''); o.p={x:pos.x,y:pos.y,face:p.face}; if(S.seen) o.seen=encSeen(S.seen);
   return JSON.stringify(o);
 }
 function deserialize(str){
@@ -3671,8 +3789,8 @@ $('#setupSheet').addEventListener('click',e=>{
 
 /* ================= Menüs ================= */
 const HELP=`<div class="help">
-  <h3>Am Computer</h3><ul><li><kbd>Shift</kbd> Bohrsprint · <kbd>V</kbd> Pfeiler · <kbd>L</kbd> Leiter · <kbd>K</kbd> Funkbake · <kbd>N</kbd> Drohne an/aus</li><li><kbd>←</kbd> <kbd>→</kbd> oder <kbd>A</kbd> <kbd>D</kbd> fahren, gegen eine Wand fahren bohrt seitlich</li><li><kbd>↑</kbd> <kbd>W</kbd> oder Leertaste: Schub. Mit Kopfbohrer bohrst du damit auch nach oben.</li><li><kbd>↓</kbd> <kbd>S</kbd>: nach unten bohren</li><li><kbd>1</kbd>–<kbd>9</kbd> Ausrüstung, oder <kbd>F</kbd> Tank · <kbd>R</kbd> Nanobots · <kbd>X</kbd> Dynamit · <kbd>C</kbd> Plastik · <kbd>G</kbd> Rakete · <kbd>B</kbd> Schild · <kbd>Q</kbd> Teleporter · <kbd>M</kbd> Transmitter · <kbd>T</kbd> Tiefentransmitter</li><li><kbd>E</kbd> Gebäude betreten · <kbd>Esc</kbd> Menü</li></ul>
-  <h3>Am Smartphone</h3><ul><li>Linkes Pad: fahren und seitlich bohren</li><li>Rechtes Pad: oben Schub, unten bohren. Finger dürfen gleiten.</li><li>Ausrüstung: Symbole unter der Anzeige antippen</li><li>Aktionsknopf über dem rechten Pad: Bohrsprint, Pfeiler, Leiter, Bake oder Drohne. ⇄ wechselt die Aktion.</li></ul>
+  <h3>Am Computer</h3><ul><li><kbd>Shift</kbd> Bohrsprint · <kbd>V</kbd> Pfeiler · <kbd>L</kbd> Leiter · <kbd>K</kbd> Funkbake · <kbd>N</kbd> Drohne an/aus</li><li><kbd>←</kbd> <kbd>→</kbd> oder <kbd>A</kbd> <kbd>D</kbd> fahren, gegen eine Wand fahren bohrt seitlich</li><li><kbd>↑</kbd> <kbd>W</kbd> oder Leertaste: Schub. Mit Kopfbohrer bohrst du damit auch nach oben.</li><li><kbd>↓</kbd> <kbd>S</kbd>: nach unten bohren</li><li><kbd>1</kbd>–<kbd>9</kbd> Ausrüstung, oder <kbd>F</kbd> Tank · <kbd>R</kbd> Nanobots · <kbd>X</kbd> Dynamit · <kbd>C</kbd> Plastik · <kbd>G</kbd> Rakete · <kbd>B</kbd> Schild · <kbd>Q</kbd> Teleporter · <kbd>M</kbd> Transmitter · <kbd>T</kbd> Tiefentransmitter · <kbd>J</kbd> Karte</li><li><kbd>E</kbd> Gebäude betreten · <kbd>Esc</kbd> Menü</li></ul>
+  <h3>Am Smartphone</h3><ul><li>Linkes Pad: fahren und seitlich bohren</li><li>Rechtes Pad: oben Schub, unten bohren. Finger dürfen gleiten.</li><li>Ausrüstung: Symbole unter der Anzeige antippen</li><li>Karte: Kartenknopf oben neben dem Menü</li><li>Aktionsknopf über dem rechten Pad: Bohrsprint, Pfeiler, Leiter, Bake oder Drohne. ⇄ wechselt die Aktion.</li></ul>
   <h3>Mit Controller</h3><ul><li>Stick: fahren und bohren · untere Taste oder R2: Schub · L/R: Ausrüstung wählen · linke Taste: benutzen · obere Taste: Rakete · rechte Taste: Gebäude · Start: Menü · rechter Stick drücken: Aktion · linker Stick drücken: Aktion wechseln</li></ul>
   <h3>Neu in Teil III</h3><ul><li><b>Baubüro</b> links an der Oberfläche: Raffinerie, Depot, Labor, Funkturm, Aufzug, Bank.</li><li><b>Module</b> in der Werkstatt: Steckplätze begrenzt, Einzelstücke erbeutest du von Mini-Bossen.</li><li><b>Marktkurse</b> wechseln alle 5 Minuten. Achte auf die Nachfrage-Spitze.</li><li><b>Kammern der Ersten</b>: Drei Runensteine bohren oder sprengen, dann öffnet sich die Kammer. Sie enthält ein Siegelfragment.</li><li><b>Ereignisse</b>: Meteoriten, Wassereinbruch, Gaslecks, Notsignale und reiche Adern. Wasser verwandelt Lava in Fels.</li><li><b>Wächter</b> haben Schwachstellen. Lies die Funksprüche und nutze die Arena: Stalaktiten, Ventile, Lavaschlote.</li></ul>
   <h3>Neu im grossen Update</h3><ul><li><b>Pilotenränge</b>: Bohren, Kämpfe, Funde und Missionen bringen Erfahrung. Jeder Rang schaltet einen kleinen Vorteil frei.</li><li><b>Bohrsprint</b> (Shift, Aktionsknopf am Handy): Mit dem Rammsporn aus der Werkstatt rammst du dich durch zwei bis vier Felder und stösst Gegner weg. Halte ▼ oder ▲ für senkrecht.</li><li><b>Bauwerkzeuge</b> aus dem Service oder der Schmiede: Stützpfeiler (V) halten Geröll auf, Leitern (L) sparen Treibstoff, Funkbaken (K) sind eigene Sprungziele.</li><li><b>Drohne</b> (Werkstatt, N parkt sie): leuchtet, sammelt Erz und schiesst auf Gegner.</li><li><b>Schmiede</b> rechts und <b>Lagerhaus</b> links an der Oberfläche: Erz zu Bauteilen und Modulen, Erz einlagern, Prognosen und Händler.</li><li><b>Kolonie-Projekte</b> im Baubüro verändern die Oberfläche und geben dauerhafte Boni.</li><li><b>Ruinen der Ersten</b> mit Rätseln und <b>Sonderhöhlen</b>: Pilzhöhle, Riesengeode, unterirdischer See.</li><li><b>Fliessende Lava und Säure</b>: Bohrst du einen See seitlich an, läuft er aus.</li><li><b>Wetter</b>: Nacht (Kälte kostet Treibstoff), Sandsturm, Staubteufel, Magnetsturm, Dunkelzonen, Einsturzdecken, Gas-Kettenreaktionen.</li><li><b>Nebenmissionen</b> über Funk und die <b>Rivalin</b> Krähe: Rennen und Plünderungen. Raketen und Sprints vertreiben sie.</li><li><b>Nach dem Ende</b>: der Kern als siebte Zone, ein geheimer Wächter, Wächter-Echos und der Bossrush im Baubüro.</li><li><b>Werkstatt</b>: Kapsel umbauen und Lackierungen. Die Sicherungsdatei enthält jetzt auch Erfolge und Sammelbuch.</li></ul>
@@ -3694,7 +3812,13 @@ function openMenu(sub){
   else if(sub==='logs') h=`<p class="eyebrow">Logbuch-Archiv · ${S.logs.reduce((a,b)=>a+b,0)} von ${LOGS.length}</p><div class="loglist">${LOGS.map((l,i)=>S.logs[i]?`<button class="btn" data-m="log:${i}">#${String(i+1).padStart(2,'0')} · ${l.t}</button>`:`<div class="missing">#${String(i+1).padStart(2,'0')} · noch nicht gefunden · um ${fmtN(Math.round(l.ft/100)*100)} ft</div>`).join('')}
       ${S.vaults.map(v=>v.looted?`<button class="btn" data-m="vault:${v.z}">Siegelinschrift ${v.z+1} · ${ZONES[v.z].n}</button>`:'').join('')}</div>${back}`;
   else if(sub==='book'){ const cats=[...new Set(BOOK.map(e=>e.cat))]; const n=BOOK.filter(e=>META.book[e.key]).length;
-    h=`<p class="eyebrow">Sammelbuch · ${n} von ${BOOK.length}</p>${cats.map(c=>`<p class="sec">${c}</p><div class="book">${BOOK.filter(e=>e.cat===c).map(e=>META.book[e.key]?`<div><b><span class="sw" style="background:${e.sw}"></span>${e.n}</b><span>${e.d}</span></div>`:`<div class="unk"><b>???</b><span>Noch nicht entdeckt</span></div>`).join('')}</div>`).join('')}${back}`; }
+    h=`<p class="eyebrow">Sammelbuch · ${n} von ${BOOK.length}</p>${cats.map(c=>`<p class="sec">${c}</p><div class="book">${BOOK.filter(e=>e.cat===c).map(e=>META.book[e.key]?`<div><b><span class="sw" style="background:${e.sw}"></span>${e.n}</b><span>${e.d}</span></div>`:`<div class="unk"><b>???</b><span>Noch nicht entdeckt${e.hint?' · '+e.hint:''}</span></div>`).join('')}</div>`).join('')}${back}`; }
+  else if(sub==='map') h=`<p class="eyebrow">Karte · erkundet bis ${fmtN(S.maxFt)} ft</p>
+    <div class="mapwrap"><canvas id="mapCv" aria-label="Karte der erkundeten Gebiete"></canvas></div>
+    <div class="maprow"><button class="btn" data-m="mapme">Zu mir</button><button class="btn" data-m="mapout" aria-label="Verkleinern">−</button><button class="btn" data-m="mapin" aria-label="Vergrössern">+</button></div>
+    <div class="maplegend"><span><i style="background:#73cfc0"></i>Du</span><span><i style="background:#f4ece0"></i>Station</span><span><i style="background:#ffe27a"></i>Funkbake / Fund</span><span><i style="background:#ff5a1a"></i>Lava</span><span><i style="background:#3d78a8"></i>Wasser</span></div>
+    <p class="note">Ziehen zum Verschieben. Die Karte zeichnet alles auf, was dein Licht erfasst hat.</p>
+    <button class="btn primary" data-m="resume">Weiterspielen</button><button class="btn" data-m="back">Menü</button>`;
   else if(sub==='ach') h=`<p class="eyebrow">Erfolge · ${Object.keys(META.ach).length} von ${ACH.length}</p>${achList()}${back}`;
   else if(sub==='rank'){ const r=RK(), nx=RANKS[r], cur=RANKS[r-1], f=nx?clamp(((S.xp||0)-cur.xp)/(nx.xp-cur.xp),0,1):1;
     h=`<p class="eyebrow">Pilotenrang</p><h2 style="font:700 22px/1.2 var(--font-ui)">Rang ${r} · ${cur.n}</h2><div class="xpbar"><i style="width:${f*100}%"></i></div><p class="note">${fmtN(S.xp||0)} Erfahrung${nx?` · nächster Rang bei ${fmtN(nx.xp)}`:' · höchster Rang erreicht'}</p><div class="rank">${RANKS.map((q,i)=>`<div class="${i<r?'got':''}"><span>${i+1} · ${q.n}</span><span>${q.perk}</span></div>`).join('')}</div>${back}`; }
@@ -3719,6 +3843,7 @@ function openMenu(sub){
     ${hasMod('hard')?'':`<button class="btn" data-m="loadsub">Spielstand laden</button>`}
     ${S.mission?`<button class="btn" data-m="misabort">Mission abbrechen · ${MIS_NAME[S.mission.k]}</button>`:''}
     <button class="btn" data-m="rank">Pilotenrang</button>
+    <button class="btn" data-m="map">Karte</button>
     <button class="btn" data-m="prof">Tiefenprofil</button>
     <button class="btn" data-m="logs">Logbuch & Inschriften</button>
     <button class="btn" data-m="book">Sammelbuch</button>
@@ -3728,6 +3853,7 @@ function openMenu(sub){
     <button class="btn" data-m="help">Steuerung & Spielwissen</button>
     <button class="btn ghost" data-m="new">Neue Expedition</button>${load('marsbohrer3.lasterr')?`<p class="note" style="font-size:11px;word-break:break-word">Letzter Fehler: ${load('marsbohrer3.lasterr').replace(/</g,'&lt;')}</p>`:''}`;
   $('#menuSheet').innerHTML=h; $('#menu').hidden=false; $('#menuSheet').scrollTop=0; focusFirst($('#menu'));
+  if(sub==='map') setupMap();
 }
 function closeMenu(){ $('#menu').hidden=true; paused=false; ui.menuSub=null; }
 $('#menuSheet').addEventListener('click',e=>{
@@ -3740,7 +3866,9 @@ $('#menuSheet').addEventListener('click',e=>{
   else if(m==='import') importSave();
   else if(m==='sound'){ AU.on=!AU.on; prefs.sound=AU.on; savePrefs(); AU.init(); openMenu(); }
   else if(m==='touch'){ setTouch(!document.body.classList.contains('touch')); openMenu(); }
-  else if(['help','new','logs','prof','book','ach','rank'].includes(m)) openMenu(m);
+  else if(['help','new','logs','prof','book','ach','rank','map'].includes(m)) openMenu(m);
+  else if(m==='mapme'){ mapCenter(); drawMap(); }
+  else if(m==='mapin'||m==='mapout'){ mapZoom(m==='mapin'?1:-1); }
   else if(m==='misabort'){ endMission(false,'abgebrochen'); openMenu(); }
   else if(m.startsWith('log:')){ const i=+m.slice(4); tx(LOGFROM(i),LOGS[i].x); }
   else if(m.startsWith('vault:')){ const i=+m.slice(6); tx(VAULTFROM(i),VAULT_TEXT[i]); }
@@ -3749,6 +3877,8 @@ $('#menuSheet').addEventListener('click',e=>{
 });
 $('#menu').addEventListener('click',e=>{ if(e.target.id==='menu') closeMenu(); });
 $('#pauseBtn').addEventListener('click',()=>openMenu());
+$('#mapBtn').addEventListener('click',()=>openMenu('map'));
+$('#mapBtn').addEventListener('pointerdown',e=>e.stopPropagation());
 $('#actBtn').addEventListener('pointerdown',e=>{ e.preventDefault(); e.stopPropagation(); AU.init(); doAction(); });
 $('#actMode').addEventListener('pointerdown',e=>{ e.preventDefault(); e.stopPropagation(); cycleActMode(); });
 $('#pauseBtn').addEventListener('pointerdown',e=>e.stopPropagation());
