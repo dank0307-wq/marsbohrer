@@ -248,6 +248,14 @@ body.touch #act:not([hidden]){display:flex}
 #actLbl{font:400 8px/1 var(--font-px);letter-spacing:.08em;text-transform:uppercase;color:rgba(244,232,218,.75)}
 #actCnt{position:absolute;right:6px;top:5px;font:600 11px/1 var(--font-ui);color:var(--ochre)}
 #actMode{width:44px;height:44px;border-radius:12px;background:rgba(20,12,11,.55);border:1px solid rgba(244,232,218,.25);color:var(--ink);font:700 16px/1 var(--font-ui);padding:0;touch-action:none}
+#quick{position:fixed;z-index:6;display:none;left:max(12px,env(safe-area-inset-left,0px));bottom:calc(env(safe-area-inset-bottom,0px) + 26px + 88px);gap:8px;align-items:flex-end}
+body.touch #quick:not([hidden]){display:flex}
+#qBtn{width:64px;height:64px;border-radius:16px;background:rgba(20,12,11,.55);border:1px solid rgba(115,207,192,.55);color:var(--ink);display:grid;place-items:center;padding:0;touch-action:none;position:relative}
+#qBtn:active{background:rgba(115,207,192,.35)}#qBtn.empty{opacity:.45}
+#qBtn svg{width:30px;height:30px}
+#qCnt{position:absolute;right:5px;top:4px;font:600 11px/1 var(--font-ui);color:var(--ochre)}
+#qLbl{position:absolute;left:0;right:0;bottom:3px;text-align:center;font:400 7px/1 var(--font-px);letter-spacing:.06em;text-transform:uppercase;color:rgba(244,232,218,.7)}
+#qMode{width:44px;height:44px;border-radius:12px;background:rgba(20,12,11,.55);border:1px solid rgba(244,232,218,.25);color:var(--ink);font:700 16px/1 var(--font-ui);padding:0;touch-action:none}
 #hud.glitch{animation:glitch .25s steps(2) infinite}
 @keyframes glitch{50%{transform:translateX(2px);opacity:.75}}
 .paint{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:6px}
@@ -300,6 +308,7 @@ body.touch #act:not([hidden]){display:flex}
 <div id="touch">
   <div class="pad" id="padLR"><div class="half">◀</div><div class="half">▶</div></div>
   <div class="pad" id="padUD"><div class="half">▲<small>SCHUB</small></div><div class="half">▼<small>BOHREN</small></div></div>
+  <div id="quick" hidden><button id="qBtn" aria-label="Schnellzugriff benutzen"><span id="qIco"></span><span id="qCnt"></span><span id="qLbl"></span></button><button id="qMode" aria-label="Schnellzugriff wechseln">⇄</button></div>
   <div id="act" hidden><button id="actMode" aria-label="Aktion wechseln">⇄</button><button id="actBtn" aria-label="Aktion ausführen"><span id="actIco">⇶</span><small id="actLbl">Sprint</small><span id="actCnt"></span></button></div>
 </div>
 
@@ -3662,7 +3671,7 @@ function safeArea(h){
   const cr=cv.getBoundingClientRect(), k=cr.height?cv.height/cr.height:1, vis=e=>{ if(!e||e.hidden) return false; const r=e.getBoundingClientRect(); if(!r.height||!r.width) return false; for(let q=e;q&&q!==document.body;q=q.parentElement){ const cs=getComputedStyle(q); if(q.hidden||cs.display==='none'||cs.visibility==='hidden'||+cs.opacity===0) return false; } return true; };
   let top=0, bot=h;
   for(const id of ['hud','bossbar','mis']){ const e=document.getElementById(id); if(vis(e)){ const r=e.getBoundingClientRect(); if(r.top<cr.top+cr.height*.5) top=Math.max(top,(r.bottom-cr.top)*k); } }
-  for(const id of ['padLR','padUD','act']){ const e=document.getElementById(id); if(vis(e)){ const r=e.getBoundingClientRect(); if(r.top>cr.top+cr.height*.5) bot=Math.min(bot,(r.top-cr.top)*k); } }
+  for(const id of ['padLR','padUD','act','quick']){ const e=document.getElementById(id); if(vis(e)){ const r=e.getBoundingClientRect(); if(r.top>cr.top+cr.height*.5) bot=Math.min(bot,(r.top-cr.top)*k); } }
   safeC.top=top; safeC.bot=bot; return safeC;
 }
 function edgeArrow(bx,by,w,h,col,label){
@@ -4167,9 +4176,30 @@ function checkBook(){ if(BOOK.every(e=>META.book[e.key])) unlock('book'); }
 
 /* ================= HUD ================= */
 function renderItems(){
-  $('#items').innerHTML=ITEMS.map((i,n)=>({i,n})).filter(o=>S.items[o.i.id]>0||(gpSeen&&o.n===ui.sel)).map(({i,n})=>`<button tabindex="-1" class="item${S.items[i.id]?'':' empty'}${n===ui.sel?' sel':''}" data-item="${i.id}" title="${i.n} (${n+1} oder ${i.key})" aria-label="${i.n}, ${S.items[i.id]} an Bord">${ICON[i.id]}<span class="key">${n+1}</span><span class="cnt">${S.items[i.id]}</span></button>`).join('');
+  renderQuick(); $('#items').innerHTML=ITEMS.map((i,n)=>({i,n})).filter(o=>S.items[o.i.id]>0||(gpSeen&&o.n===ui.sel)).map(({i,n})=>`<button tabindex="-1" class="item${S.items[i.id]?'':' empty'}${n===ui.sel?' sel':''}" data-item="${i.id}" title="${i.n} (${n+1} oder ${i.key})" aria-label="${i.n}, ${S.items[i.id]} an Bord">${ICON[i.id]}<span class="key">${n+1}</span><span class="cnt">${S.items[i.id]}</span></button>`).join('');
 }
-$('#items').addEventListener('click',e=>{ const b=e.target.closest('[data-item]'); if(b) useItem(b.dataset.item); });
+$('#items').addEventListener('click',e=>{ const b=e.target.closest('[data-item]'); if(!b) return; if(ui.qLong){ ui.qLong=false; return; } useItem(b.dataset.item); });
+/* Schnellzugriff: ⇄ wechselt durch die Ausrüstung an Bord, langes Drücken auf ein Symbol oben legt es direkt dorthin */
+const quickShort=n=>({fuel:'Tank',nano:'Nano',dyn:'Dynamit',c4:'Plastik',rkt:'Rakete',shd:'Schild',qtp:'Telep.',mtx:'Transm.',dtx:'Tiefe'}[n]||n);
+function setQuick(id,say){ if(!S) return; S.quick=id; renderQuick(); if(say){ AU.blip(700,.08,'triangle',.1); toast(`Schnellzugriff: ${ITEMS.find(i=>i.id===id).n}`,1200); } }
+function renderQuick(){
+  const el=$('#quick'); if(!el||!S) return;
+  const have=ITEMS.filter(i=>S.items[i.id]>0);
+  if(!S.quick||!ITEMS.some(i=>i.id===S.quick)){ if(!have.length){ el.hidden=true; return; } S.quick=have[0].id; }
+  const id=S.quick, n=S.items[id]||0, key=id+'|'+n+'|'+have.length;
+  if(!have.length&&!n){ el.hidden=true; ui.qKey=''; return; }
+  el.hidden=false; if(ui.qKey===key) return; ui.qKey=key;
+  $('#qIco').innerHTML=ICON[id]; $('#qCnt').textContent=n; $('#qLbl').textContent=quickShort(id);
+  $('#qBtn').classList.toggle('empty',!n); $('#qMode').hidden=have.length<2&&(n>0);
+}
+function cycleQuick(){
+  if(!S) return; const have=ITEMS.filter(i=>S.items[i.id]>0); if(!have.length) return;
+  const i=have.findIndex(q=>q.id===S.quick); setQuick(have[(i+1)%have.length].id,true);
+}
+$('#items').addEventListener('pointerdown',e=>{ const b=e.target.closest('[data-item]'); if(!b) return; clearTimeout(ui.qTimer); ui.qLong=false;
+  ui.qTimer=setTimeout(()=>{ ui.qLong=true; setQuick(b.dataset.item,true); },500); });
+for(const ev of ['pointerup','pointercancel','pointerleave']) $('#items').addEventListener(ev,()=>clearTimeout(ui.qTimer));
+$('#items').addEventListener('contextmenu',e=>e.preventDefault());
 $('#items').addEventListener('pointerdown',e=>e.stopPropagation());
 function updateHud(){
   const hm=ST('hull'), fm=ST('fuel');
@@ -4427,7 +4457,7 @@ function shopExtra(a,x,y,st,mult){
 function serialize(){
   const p=S.p;
   const pos=p.mode==='drill'&&p.dr?{x:p.dr.x0,y:p.dr.y0}:{x:p.x,y:p.y};
-  const o={}; for(const k of ['v','run','seed','cfg','vaults','minis','money','score','up','items','cargo','hull','fuel','flags','maxFt','time','bossDone','minisDone','logs','contract','base','modOwn','modEq','siegel','market','evT','beacons','quakeT','notUsed','ending','st','xp','tools','myBeacons','forge','colony','echoDone','urkeim','mission','misT','rivalT','look','dayT','traders','wx','store','ruins','dark','droneOff','loc','euMax','abOff','abSt','veh','vehOwn','outposts','crew','marks','rocket','krake','duel','crewLog']) o[k]=S[k];
+  const o={}; for(const k of ['v','run','seed','cfg','vaults','minis','money','score','up','items','cargo','hull','fuel','flags','maxFt','time','bossDone','minisDone','logs','contract','base','modOwn','modEq','siegel','market','evT','beacons','quakeT','notUsed','ending','st','xp','tools','myBeacons','forge','colony','echoDone','urkeim','mission','misT','rivalT','look','dayT','traders','wx','store','ruins','dark','droneOff','loc','euMax','abOff','abSt','veh','vehOwn','outposts','crew','marks','rocket','krake','duel','crewLog','quick']) o[k]=S[k];
   o.away={}; for(const k in (S.away||{})){ const a=S.away[k]; o.away[k]={...a,world:encWorld(a.world),seen:a.seen?encSeen(a.seen):null}; }
   o.world=encWorld(S.world); o.p={x:pos.x,y:pos.y,face:p.face}; if(S.seen) o.seen=encSeen(S.seen);
   return JSON.stringify(o);
@@ -4589,7 +4619,7 @@ $('#setupSheet').addEventListener('click',e=>{
 /* ================= Menüs ================= */
 const HELP=`<div class="help">
   <h3>Am Computer</h3><ul><li><kbd>Shift</kbd> Bohrsprint · <kbd>V</kbd> Pfeiler · <kbd>L</kbd> Leiter · <kbd>K</kbd> Funkbake · <kbd>N</kbd> Drohne an/aus · <kbd>O</kbd> Aussenposten</li><li><kbd>←</kbd> <kbd>→</kbd> oder <kbd>A</kbd> <kbd>D</kbd> fahren, gegen eine Wand fahren bohrt seitlich</li><li><kbd>↑</kbd> <kbd>W</kbd> oder Leertaste: Schub. Mit Kopfbohrer bohrst du damit auch nach oben.</li><li><kbd>↓</kbd> <kbd>S</kbd>: nach unten bohren</li><li><kbd>1</kbd>–<kbd>9</kbd> Ausrüstung, oder <kbd>F</kbd> Tank · <kbd>R</kbd> Nanobots · <kbd>X</kbd> Dynamit · <kbd>C</kbd> Plastik · <kbd>G</kbd> Rakete · <kbd>B</kbd> Schild · <kbd>Q</kbd> Teleporter · <kbd>M</kbd> Transmitter · <kbd>T</kbd> Tiefentransmitter · <kbd>J</kbd> Karte</li><li><kbd>E</kbd> Gebäude betreten · <kbd>Esc</kbd> Menü</li></ul>
-  <h3>Am Smartphone</h3><ul><li>Linkes Pad: fahren und seitlich bohren</li><li>Rechtes Pad: oben Schub, unten bohren. Finger dürfen gleiten.</li><li>Ausrüstung: Symbole unter der Anzeige antippen</li><li>Karte: Kartenknopf oben neben dem Menü</li><li>Aktionsknopf über dem rechten Pad: Bohrsprint, Pfeiler, Leiter, Bake oder Drohne. ⇄ wechselt die Aktion.</li></ul>
+  <h3>Am Smartphone</h3><ul><li>Linkes Pad: fahren und seitlich bohren</li><li>Rechtes Pad: oben Schub, unten bohren. Finger dürfen gleiten.</li><li>Ausrüstung: Symbole unter der Anzeige antippen. Der Schnellzugriff über dem linken Pad benutzt ein Teil direkt, ⇄ daneben wechselt es, oder halte ein Symbol oben lange gedrückt.</li><li>Karte: Kartenknopf oben neben dem Menü</li><li>Aktionsknopf über dem rechten Pad: Bohrsprint, Pfeiler, Leiter, Bake oder Drohne. ⇄ wechselt die Aktion.</li></ul>
   <h3>Mit Controller</h3><ul><li>Stick: fahren und bohren · untere Taste oder R2: Schub · L/R: Ausrüstung wählen · linke Taste: benutzen · obere Taste: Rakete · rechte Taste: Gebäude · Start: Menü · rechter Stick drücken: Aktion · linker Stick drücken: Aktion wechseln</li></ul>
   <h3>Neu in Teil III</h3><ul><li><b>Baubüro</b> links an der Oberfläche: Raffinerie, Depot, Labor, Funkturm, Aufzug, Bank.</li><li><b>Module</b> in der Werkstatt: Steckplätze begrenzt, Einzelstücke erbeutest du von Mini-Bossen.</li><li><b>Marktkurse</b> wechseln alle 5 Minuten. Achte auf die Nachfrage-Spitze.</li><li><b>Kammern der Ersten</b>: Drei Runensteine bohren oder sprengen, dann öffnet sich die Kammer. Sie enthält ein Siegelfragment.</li><li><b>Ereignisse</b>: Meteoriten, Wassereinbruch, Gaslecks, Notsignale und reiche Adern. Wasser verwandelt Lava in Fels.</li><li><b>Wächter</b> haben Schwachstellen. Lies die Funksprüche und nutze die Arena: Stalaktiten, Ventile, Lavaschlote.</li></ul>
   <h3>Neu im grossen Update</h3><ul><li><b>Pilotenränge</b>: Bohren, Kämpfe, Funde und Missionen bringen Erfahrung. Jeder Rang schaltet einen kleinen Vorteil frei.</li><li><b>Bohrsprint</b> (Shift, Aktionsknopf am Handy): Mit dem Rammsporn aus der Werkstatt rammst du dich durch zwei bis vier Felder und stösst Gegner weg. Halte ▼ oder ▲ für senkrecht.</li><li><b>Bauwerkzeuge</b> aus dem Service oder der Schmiede: Stützpfeiler (V) halten Geröll auf, Leitern (L) sparen Treibstoff, Funkbaken (K) sind eigene Sprungziele.</li><li><b>Drohne</b> (Werkstatt, N parkt sie): leuchtet, sammelt Erz und schiesst auf Gegner.</li><li><b>Schmiede</b> rechts und <b>Lagerhaus</b> links an der Oberfläche: Erz zu Bauteilen und Modulen, Erz einlagern, Prognosen und Händler.</li><li><b>Kolonie-Projekte</b> im Baubüro verändern die Oberfläche und geben dauerhafte Boni.</li><li><b>Ruinen der Ersten</b> mit Rätseln und <b>Sonderhöhlen</b>: Pilzhöhle, Riesengeode, unterirdischer See.</li><li><b>Fliessende Lava und Säure</b>: Bohrst du einen See seitlich an, läuft er aus.</li><li><b>Wetter</b>: Nacht (Kälte kostet Treibstoff), Sandsturm, Staubteufel, Magnetsturm, Dunkelzonen, Einsturzdecken, Gas-Kettenreaktionen.</li><li><b>Nebenmissionen</b> über Funk und die <b>Rivalin</b> Krähe: Rennen und Plünderungen. Raketen und Sprints vertreiben sie.</li><li><b>Nach dem Ende</b>: der Kern als siebte Zone, ein geheimer Wächter, Wächter-Echos und der Bossrush im Baubüro.</li><li><b>Werkstatt</b>: Kapsel umbauen und Lackierungen. Die Sicherungsdatei enthält jetzt auch Erfolge und Sammelbuch.</li></ul>
@@ -4684,6 +4714,8 @@ $('#pauseBtn').addEventListener('click',()=>openMenu());
 $('#mapBtn').addEventListener('click',()=>openMenu('map'));
 $('#mapBtn').addEventListener('pointerdown',e=>e.stopPropagation());
 $('#actBtn').addEventListener('pointerdown',e=>{ e.preventDefault(); e.stopPropagation(); AU.init(); doAction(); });
+$('#qBtn').addEventListener('pointerdown',e=>{ e.preventDefault(); e.stopPropagation(); AU.init(); if(S&&S.quick) useItem(S.quick); });
+$('#qMode').addEventListener('pointerdown',e=>{ e.preventDefault(); e.stopPropagation(); cycleQuick(); });
 $('#actMode').addEventListener('pointerdown',e=>{ e.preventDefault(); e.stopPropagation(); cycleActMode(); });
 $('#pauseBtn').addEventListener('pointerdown',e=>e.stopPropagation());
 $('#bNew').onclick=()=>{ AU.init(); openSetup(); };
