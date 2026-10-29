@@ -389,8 +389,17 @@ const MIN=[
   {n:'Meteoreisen',  v:3000,    min:0,     c:'#8a8f9a', g:'#e0e4ea', d:'Reines Eisen aus dem Kern eines zerbrochenen Planeten.', pl:'as'},
   {n:'Astralit',     v:90000,   min:8000,  c:'#c070ff', g:'#f0d8ff', d:'Violettes Gestein, das das Sternenlicht speichert.', pl:'as'},
   {n:'Sternenherz',  v:15000000,min:23000, c:'#fff0a0', g:'#ffffff', d:'Der Rest eines Sterns, älter als die Sonne. Das wertvollste Erz überhaupt.', pl:'as'},
+  {n:'Altgold',      v:6000,    min:0,     c:'#d9a92b', g:'#fff0a0', d:'Gold aus alten Leitungen und Schmuck der Menschen.', pl:'er'},
+  {n:'Seltene Erden',v:250000,  min:8000,  c:'#5a8a6a', g:'#c0f0d0', d:'Neodym, Yttrium, Lanthan: das Herz jeder alten Maschine.', pl:'er'},
+  {n:'Quantenchip',  v:25000000,min:23000, c:'#3b6fc4', g:'#a9c0ff', d:'Ein Rechenkern der letzten Menschen. Er denkt noch.', pl:'er'},
+  {n:'Urbernstein',  v:10000,   min:0,     c:'#e8a030', g:'#ffe0a0', d:'Harz eines Waldes, den es seit vier Milliarden Jahren nicht mehr gibt.', pl:'zm'},
+  {n:'Ozeanit',      v:500000,  min:8000,  c:'#2a8aa8', g:'#a0e8ff', d:'Kristallisiertes Wasser des Urozeans.', pl:'zm'},
+  {n:'Sonnenkristall',v:40000000,min:23000,c:'#ffd040', g:'#fffbe0', d:'Hat das Licht der jungen Sonne gespeichert.', pl:'zm'},
+  {n:'Prismit',      v:20000,   min:0,     c:'#c0a0ff', g:'#f0e8ff', d:'Zerlegt jedes Licht in alle Farben.', pl:'ex'},
+  {n:'Nexium',       v:1000000, min:8000,  c:'#5ff0c0', g:'#e0fff4', d:'Ein Erz, das sich bewegt, wenn niemand hinsieht.', pl:'ex'},
+  {n:'Erbauerstein', v:60000000,min:23000, c:'#ff7ab8', g:'#ffe0f0', d:'Der Baustoff der Erbauer. Das wertvollste Material im Universum.', pl:'ex'},
 ];
-const RARE=[1,1,.9,.8,.75,.7,.6,.55,.5,.42,.4,.36,.3,.26,.3,.2,1,.6,.4,.25,1,.5,.25,1,.5,.25,1,.5,.25];
+const RARE=[1,1,.9,.8,.75,.7,.6,.55,.5,.42,.4,.36,.3,.26,.3,.2,1,.6,.4,.25,1,.5,.25,1,.5,.25,1,.5,.25,1,.5,.25,1,.5,.25,1,.5,.25];
 const TRE=[
   {n:'Fossil',          v:1000,   min:900,   d:'Versteinerte Spuren aus der Zeit, als der Mars Meere hatte.'},
   {n:'Alte Sonde',      v:5000,   min:3500,  d:'Ein Lander aus dem 21. Jahrhundert. Die Speicher sind leer.'},
@@ -399,6 +408,9 @@ const TRE=[
   {n:'Kristallschädel', v:200000, min:21000, d:'Ein Schädel aus reinem Kristall. Er summt leise.'},
   {n:'Urkristall',      v:1500000,min:30500, d:'Älter als der Mars selbst. Im Inneren flackert ein Licht.'},
   {n:'kurTH-Plakette',  v:13370,  min:1e12,  d:'Eine kleine Metallplakette, eingraviert: kurTH. Wer hat die hier vergraben?'},
+  {n:'Smartphone',      v:2000000, min:1e12,  d:'Ein Gerät der alten Menschen. Auf dem Bildschirm klebt noch ein Fingerabdruck.'},
+  {n:'Goldbarren',      v:8000000, min:1e12,  d:'Aus einem Bunker der Erde. Gestempelt: Schweizerische Nationalbank.'},
+  {n:'Museumsstück',    v:25000000,min:1e12,  d:'Ein Gemälde, gut verpackt. Es zeigt eine Frau, die lächelt.'},
 ];
 const METEOR_V=8000;
 const ZONES=[
@@ -540,6 +552,9 @@ const MODULES=[
   {id:'vulkankern',n:'Vulkankern',   u:'magma', d:'Bohrt 25 % schneller und ist immun gegen die Hitze Ios'},
   {id:'sturmkern', n:'Sturmkern',    u:'sturm', d:'Schub und Tempo +25 %, Sturmböen prallen ab'},
   {id:'sternenkern',n:'Sternenkern', u:'station', d:'+25 % Erlös auf alle Verkäufe'},
+  {id:'rechenkern',n:'Rechenkern',   u:'rechner', d:'+30 % Laderaum'},
+  {id:'zeitkern',  n:'Zeitkern',     u:'jschlaefer', d:'30 % weniger Treibstoffverbrauch'},
+  {id:'torstein',  n:'Torstein',     u:'erbauer', d:'+50 % Schaden an Wächtern und Mini-Bossen'},
 ];
 const BASE=[
   {id:'raff', n:'Raffinerie',      pr:[60000],                 d:'+15 % Erlös auf alle Verkäufe an der Oberfläche'},
@@ -606,6 +621,17 @@ const ACH=[
   ['sturm','Sturmbändiger','Besiege das Sturmwesen'],
   ['guertel','Sternenstaub','Lande im Asteroidengürtel'],
   ['kronstedt','Feierabend','Besiege Kronstedts Raumstation'],
+  ['erde','Heimkehr','Lande auf der Erde im Jahr 5000'],
+  ['rechner','Neustart','Besiege den Superrechner'],
+  ['urmars','Zeitreisender','Lande auf dem Urmars'],
+  ['jschlaefer','Gute Nacht','Besiege den jungen Schläfer'],
+  ['exo','Jenseits','Lande auf dem Exoplaneten'],
+  ['erbauer','Der Erbe','Besiege den Erbauer'],
+  ['xmini','Jäger der Welten','Besiege alle 21 Mini-Bosse der Monde und neuen Welten'],
+  ['geheim','Hinter der Wand','Betritt eine Geheimhöhle'],
+  ['geheim8','Hüterbezwinger','Besiege alle acht Hüter der Geheimhöhlen'],
+  ['stern5','Fünf Sterne','Veredle ein Upgrade auf ★5'],
+  ['teile','Bastler','Kaufe alle Teile in der Werkstatt'],
 ];
 const MOBS={
   krabbler:{n:'Krabbler',hp:1,pay:300,contact:5,d:'Schlüpft aus Nestern. Wird von oben zerdrückt.'},
@@ -618,6 +644,11 @@ const MOBS={
   tiefqualle:{n:'Tiefseequalle',hp:3,pay:9000,contact:9,d:'Treibt leuchtend durch die Tiefsee. Ihre Fäden verbrennen den Rumpf.'},
   lavaaal:{n:'Lava-Aal',hp:3,pay:14000,contact:10,d:'Schwimmt durch die Lavaseen von Io und schnappt nach allem, was vorbeikommt.'},
   methanqualle:{n:'Methanqualle',hp:3,pay:22000,contact:9,d:'Treibt durch Titans Methanmeer. Glimmt orange, wenn sie jagt.'},
+  robohund:{n:'Robohund',hp:3,pay:40000,contact:9,d:'Ein Wachhund aus Stahl. Bellt nicht mehr, beisst aber noch.'},
+  urfisch:{n:'Urfisch',hp:3,pay:50000,contact:9,d:'Ein gepanzerter Fisch aus dem Urozean.'},
+  flugsaurier:{n:'Flugsaurier',hp:3,pay:60000,contact:10,d:'Kreist über dem Urstrand und stösst herab.'},
+  kristallkaefer:{n:'Kristallkäfer',hp:4,pay:90000,contact:10,d:'Ein Käfer mit einem Panzer aus Prismit.'},
+  schwebequalle:{n:'Lichtqualle',hp:3,pay:110000,contact:10,d:'Schwebt durch die Luft des Exoplaneten und leuchtet.'},
   kdrohne:{n:'Sicherheitsdrohne',hp:2,pay:30000,contact:8,d:'Kronstedts Wachdrohnen. Sie schiessen auf alles, was nicht zur Firma gehört.'},
 };
 
@@ -683,6 +714,9 @@ const PAINTS=[
   {id:'schwefel',n:'Schwefelgelb',body:'#e8d23a',stripe:'#a62a16',req:{ach:'magma'}},
   {id:'tholin',n:'Tholin',body:'#d8944e',stripe:'#3a3048',req:{ach:'sturm'}},
   {id:'stern',n:'Sternenstaub',body:'#1c1c2c',stripe:'#fff0a0',req:{ach:'kronstedt'}},
+  {id:'beton',n:'Beton',body:'#a8a49c',stripe:'#3b6fc4',req:{ach:'rechner'}},
+  {id:'urzeit',n:'Urzeit',body:'#86b05a',stripe:'#e8a030',req:{ach:'jschlaefer'}},
+  {id:'prisma',n:'Prisma',body:'#e8e0ff',stripe:'#ff7ab8',req:{ach:'erbauer'}},
 ];
 const BADGES=[
   {id:'nr',n:'Kennnummer',req:null},
@@ -852,6 +886,144 @@ const GMUL=()=>WORLDS[S.loc]?WORLDS[S.loc].g:1;
 const SEAMOB=new Set(['eisfisch','tiefqualle','lavaaal','methanqualle']);
 const MOBMED=t=>t==='lavaaal'?[LAVA]:t==='methanqualle'?[METHANE]:[SEA,WATER];
 
+
+/* ================= Grosses Update: Erde, Urmars, Exoplanet, Mini-Bosse, Geheimhöhlen ================= */
+const HDOOR=54, BETON=55, STAHL=56, TRESOR=57, KRISTALL=58;
+Object.assign(PLN,{er:'Erde',zm:'Urmars',ex:'Exoplanet'});
+WL.push('er','zm','ex');
+const isSec=l=>typeof l==='string'&&l.startsWith('h_');
+const secPar=l=>l.slice(2);
+
+/* ---------- mehr Upgrade-Stufen ---------- */
+P8.push(10e6,60e6,300e6);
+{ const UX={drill:[['Erbauerbohrer','Zeitbohrer','Singularitätsbohrer'],[9,11.5,15]],
+  hull:[['Sternenpanzer','Zeitpanzer','Singularitätspanzer'],[360,500,700]],
+  engine:[['Ionenantrieb','Warpantrieb','Singularitätsantrieb'],[2.5,2.8,3.2]],
+  fuel:[['Plasmatank','Zeittank','Singularitätstank'],[480,700,1000]],
+  rad:[['Sternenkühler','Zeitkühler','Singularitätskühler'],[.95,.97,.99]],
+  cargo:[['Frachtmodul XXXL','Zeitfrachtraum','Taschendimension'],[360,500,700]]};
+  for(const k in UX){ UPG[k].names.push(...UX[k][0]); UPG[k].val.push(...UX[k][1]); } }
+const STAR_KEYS=['drill','hull','engine','fuel','rad','cargo'];
+const STAR_ORE={drill:21,hull:26,engine:24,fuel:23,rad:20,cargo:17};
+const starOf=k=>(S&&S.star&&S.star[k])||0;
+
+/* ---------- Werkstatt deluxe: Teile ---------- */
+const PARTS={
+  bohr:{n:'Bohrkopf',opts:[{id:'std',n:'Serienbohrkopf',d:'Der bewährte Standard.'},{id:'doppel',n:'Doppelbohrer',p:40e6,d:'Zwei Bohrköpfe: +20 % Bohrtempo.'},{id:'diamant',n:'Diamantspitze',p:120e6,d:'+10 % Bohrtempo und bohrt auch Fels.'}]},
+  fahr:{n:'Fahrwerk',opts:[{id:'kette',n:'Raupenketten',d:'Der bewährte Standard.'},{id:'rad',n:'Geländeräder',p:30e6,d:'+25 % Tempo beim Fahren.'},{id:'schwebe',n:'Schwebedüsen',p:90e6,d:'+15 % Schub und kein Sturzschaden.'}]},
+  aufbau:{n:'Aufbau',opts:[{id:'none',n:'Kein Aufbau',d:'Leichter geht es nicht.'},{id:'greif',n:'Greifarm',p:50e6,d:'Holt Erz aus zwei Feldern Entfernung, wie der Erzmagnet.'},{id:'tank',n:'Zusatztank',p:40e6,d:'+25 % Tankinhalt.'},{id:'panzer',n:'Panzerplatten',p:60e6,d:'+25 % Rumpf.'}]},
+  licht:{n:'Licht',opts:[{id:'std',n:'Serienlampe',d:'Der bewährte Standard.'},{id:'doppel',n:'Doppelscheinwerfer',p:20e6,d:'Ein grösserer Lichtkegel.'}]},
+};
+const part=k=>(S&&S.parts&&S.parts[k])||PARTS[k].opts[0].id;
+
+/* ---------- neue Welten ---------- */
+Object.assign(WORLDS,{
+  er:{n:'Erde',sub:'Im Jahr 5000 · versunkene Städte',price:1.5e9,g:1,frac:.85,gate:1,req:()=>!!(S.wBoss&&S.wBoss.as),reqT:'Besiege Kronstedts Raumstation',
+    Z:zl([['Ruinenfeld',0,'Was von den Städten übrig ist: Schutt, Beton und Stahlträger.',['#8a8478','#6a6458','#a49e92']],
+      ['Strassenschluchten',3500,'Verschüttete Strassen zwischen eingestürzten Hochhäusern. Die Decken sind brüchig.',['#76706a','#58524c','#908a84']],
+      ['U-Bahn',8000,'Lange Tunnel mit Schienen aus Stahl. Wachroboter fahren hier noch Streife.',['#5a5a62','#424248','#74747c']],
+      ['Kanalisation',13000,'Alte Kanäle, zum Teil noch voll Wasser.',['#4a5a52','#36443c','#62746a']],
+      ['Bunker',18000,'Schutzräume der letzten Menschen. Hinter Stahl warten Tresore.',['#5a524a','#423c36','#746a60']],
+      ['Tresorebene',23000,'Die Tresore der alten Banken. Quantenchips liegen hier wie Kieselsteine.',['#4a4438','#363028','#625a4c']],
+      ['Rechenzentrum',27000,'Ganz unten summt es noch. Etwas rechnet seit dreitausend Jahren.',['#2a3438','#1c2428','#3c4a50']]]),
+    ores:[[29,0],[3,1000],[5,4000],[30,8000],[11,13000],[12,18000],[31,23000]], oreZ:[29,3,5,30,11,12,31],
+    tx:[()=>{ unlock('erde'); tx(T,'Kapsel 13 … das ist die Erde. Im Jahr 5000.\nDie Menschen sind fort. Ihre Städte liegen unter Schutt und Wasser. Bohr durch Beton und Stahl, such Tresore und Artefakte.\nUnd sei vorsichtig: Die Maschinen hier unten arbeiten immer noch.'); },
+      ()=>tx(SYS,'Strassenschluchten erkannt. Brüchige Decken über verschütteten Strassen.\nStahlträger lassen sich nur sprengen, oder mit Mech-Bohrer und Diamantspitze durchbohren.'),
+      null,null,()=>tx(T,'Bunker, Kapsel 13. Die Tresore hier gehörten den reichsten Menschen der Erde.\nWas drin ist, gehört jetzt dir.'),null,
+      ()=>tx(SYS,'…VERBINDUNG HERGESTELLT. ICH BIN DER LETZTE RECHNER DER ERDE.\nICH HABE DIE MENSCHEN NICHT GERETTET. ICH WERDE AUCH DICH NICHT RETTEN.')],
+    gen:s=>genErde(s)},
+  zm:{n:'Urmars',sub:'Der Mars vor 4 Milliarden Jahren',price:3e9,g:1,frac:.9,gate:1,req:()=>!!(S.wBoss&&S.wBoss.er),reqT:'Besiege den Superrechner auf der Erde',
+    Z:zl([['Urstrand',0,'Der Mars, als er noch Meere hatte. Warmer Sand und Muscheln.',['#c9a070','#a88050','#e0b888']],
+      ['Urwald',3500,'Höhlen voller Riesenpilze und Farne. Sporen verwirren die Steuerung.',['#5a7a3a','#40582a','#74964c']],
+      ['Urozean',8000,'Das Meer des jungen Mars. Urfische jagen in der Tiefe.',['#3a6a8a','#2a4e68','#4c86a8']],
+      ['Korallenriff',13000,'Riffe aus Kristall. Ozeanit wächst in den Spalten.',['#6a5a8a','#4e4268','#8674a8']],
+      ['Vulkanherd',18000,'Der junge Mars ist noch heiss. Überall fliesst Lava.',['#8a3a1a','#682a12','#a84c26']],
+      ['Kristallmeer',23000,'Ein Meer aus erstarrtem Licht. Sonnenkristalle leuchten.',['#5a3a6a','#422a50','#744c86']],
+      ['Das junge Herz',27000,'Ganz unten schlägt ein junges Herz. Der Schläfer, bevor er schlief.',['#4a1a2a','#34121e','#62263a']]]),
+    ores:[[32,0],[1,1000],[8,4000],[33,8000],[9,12000],[13,18000],[34,23000]], oreZ:[32,1,8,33,9,13,34],
+    tx:[()=>{ unlock('urmars'); tx(V,'Pilot … hier Varga. Ich weiss nicht, wie das möglich ist, aber du bist auf dem Mars. Vor vier Milliarden Jahren.\nDer Superrechner hat die Ruinen der Ersten als Zeitmaschine benutzt. Sieh dich um: Meere, Wälder, ein blauer Himmel.\nUnd irgendwo da unten schlägt ein junges Herz.'); },
+      ()=>tx(SYS,'Urwald erkannt. Leuchtpilze und Sporenwolken.\nSporen verwirren kurz die Steuerung.'),
+      ()=>tx(T,'Der Urozean, Kapsel 13. Mit der U-Boot-Kapsel bist du hier im Vorteil.'),null,
+      ()=>tx(SYS,'Vulkanherd erkannt. Der junge Mars ist noch heiss: Lava überall.'),null,
+      ()=>tx(V,'Das ist er. Der Schläfer, bevor die Ersten ihn in den Schlaf legten.\nEr ist jung und wütend. Wenn du ihn heute besiegst … ich weiss nicht, was dann aus der Zukunft wird.')],
+    gen:s=>genUrmars(s)},
+  ex:{n:'Exoplanet',sub:'Hinter dem Wurmloch · die Welt der Erbauer',price:6e9,g:.85,frac:.95,gate:1,req:()=>!!(S.wBoss&&S.wBoss.zm),reqT:'Besiege den jungen Schläfer auf dem Urmars',
+    Z:zl([['Kristallwald',0,'Bäume aus Kristall, die im Licht zweier Sonnen funkeln.',['#7a5aa8','#5a4086','#9474c4']],
+      ['Prismenebene',4000,'Prismen brechen das Licht. Hier wandern die Erze.',['#5a7aa8','#405a86','#7494c4']],
+      ['Schwebende Felsen',8000,'Die Schwerkraft ist schwächer. Felsen hängen in der Luft.',['#6a8a7a','#4e6a5c','#86a694']],
+      ['Leuchtsumpf',13000,'Ein Sumpf aus leuchtender Säure.',['#4a7a3a','#36582a','#62964c']],
+      ['Wanderader',18000,'Die Erze bewegen sich, als würden sie leben.',['#8a5a7a','#68425c','#a67494']],
+      ['Spiegelhöhlen',23000,'Kristallspiegel, so weit das Licht reicht.',['#3a4a6a','#2a364e','#4c5e86']],
+      ['Das Tor',27000,'Der Ort, an dem die Erbauer das Universum verlassen haben.',['#2a1a3a','#1c1228','#3c2650']]]),
+    ores:[[35,0],[16,1000],[18,4000],[36,8000],[25,13000],[28,18000],[37,23000]], oreZ:[35,16,18,36,25,28,37],
+    tx:[()=>{ unlock('exo'); tx(V,'Kapsel 13 … ich empfange dich kaum noch. Du bist durch das Wurmloch, auf der Heimatwelt der Erbauer.\nSie haben die Ersten erschaffen, und die Ersten haben den Schläfer gefunden. Hier fing alles an.\nVorsicht: Auf dieser Welt wandern die Erze.'); },
+      ()=>tx(SYS,'Anomalie: Die Erzadern bewegen sich. Sie weichen dem Bohrer aus.\nSchnell sein lohnt sich.'),null,
+      ()=>tx(SYS,'Leuchtsumpf: Säure in allen Höhlen. Die Abschirmung hilft.'),null,null,
+      ()=>tx(V,'Das Tor. Und davor … ein Erbauer. Der letzte.\nEr wartet auf jemanden, der stark genug ist. Ich glaube, er wartet auf dich.')],
+    gen:s=>genExo(s)},
+});
+for(const l of ['er','zm','ex']){ const W_=WORLDS[l]; W_.pads=mkPads(l); W_.Z.forEach((z,i)=>z.b=W_.Z[i+1]?W_.Z[i+1].a:FMAX+1); }
+DESTS.push({id:'er',n:'Erde',sub:WORLDS.er.sub},{id:'zm',n:'Urmars',sub:WORLDS.zm.sub},{id:'ex',n:'Exoplanet',sub:WORLDS.ex.sub});
+WBOSS.push(
+  {id:'rechner',loc:'er',n:'Der Superrechner',hp:1900,contact:14,why:'Vom Superrechner gelöscht',mod:'rechenkern',pay:2e9,ach:'rechner',
+   d:'Der letzte Rechner der Erde. Vier Serverschränke kühlen seinen Kern.',
+   intro:'Der Superrechner, Kapsel 13. Vier Serverschränke halten ihn am Leben.\nZerstör die Schränke, dann liegt der Kern frei. Wo rote Linien aufleuchten, folgt gleich ein Laser.'},
+  {id:'jschlaefer',loc:'zm',n:'Der junge Schläfer',hp:2200,contact:15,why:'Vom jungen Schläfer verbrannt',mod:'zeitkern',pay:4e9,ach:'jschlaefer',
+   d:'Der Schläfer vor vier Milliarden Jahren. Jung, heiss und von Kristallen beschützt.',
+   intro:'Da ist er, der junge Schläfer. Kristalle kreisen um sein Herz.\nZerstör die Kristalle, dann ist er verwundbar. Er spuckt Feuer und lässt Lava regnen.'},
+  {id:'erbauer',loc:'ex',n:'Der Erbauer',hp:2600,contact:16,why:'Vom Erbauer ausgelöscht',mod:'torstein',pay:8e9,ach:'erbauer',
+   d:'Der letzte der Erbauer. Prismen bündeln das Licht zweier Sonnen.',
+   intro:'Der Erbauer, Kapsel 13. Drei Prismen bündeln sein Licht.\nZerstör die Prismen. Er springt durch den Raum, und seine Lichtstrahlen gehen durch alles hindurch.'});
+Object.assign(WB_U,{rechner:3,jschlaefer:4,erbauer:5});
+const MOBFLY=new Set(['kdrohne','flugsaurier','schwebequalle']);
+SEAMOB.add('urfisch');
+
+/* ---------- Mini-Bosse ---------- */
+const XMINI={
+  eu:[{id:'eiskrabbe',n:'Eiskrabbe',arch:'charge',shape:'crab',hp:300,col:['#cfe6f0','#3b6fc4','#ff3a2a'],proj:'ice',d:'Eine Krabbe mit Scheren aus Eis. Rennt los, wenn sie dich sieht, und prallt gegen Wände.'},
+      {id:'schwarmmutter',n:'Schwarmmutter',arch:'summon',shape:'squid',hp:320,col:['#7a54b0','#d9a8f0','#ffe27a'],proj:'ice',mob:'eisfisch',d:'Eine Krake, die Eisfische ausbrütet.'},
+      {id:'schlotwurm',n:'Schlotwurm',arch:'serpent',shape:'serpent',hp:360,col:['#4a3e56','#ff7a2a','#ffd27a'],proj:'fire',d:'Ein Wurm aus den Schlotfeldern. Spuckt heisses Wasser.'}],
+  io:[{id:'schwefelspinne',n:'Schwefelspinne',arch:'shoot',shape:'spider',hp:340,col:['#c9a838','#5a3a10','#ff3a2a'],proj:'acid',d:'Hängt an der Decke und spuckt Schwefelsäure.'},
+      {id:'lavagolem',n:'Lavagolem',arch:'jump',shape:'golem',hp:400,col:['#3a2a26','#ff7a2a','#ffd27a'],proj:'fire',d:'Ein Golem aus erstarrter Lava. Seine Sprünge lassen den Boden beben.'},
+      {id:'feuervogel',n:'Feuervogel',arch:'shoot',shape:'bird',hp:360,col:['#ff7a2a','#ffd27a','#ffffff'],proj:'fire',d:'Ein Vogel aus Flammen. Schiesst Feuerfächer.'}],
+  ti:[{id:'eisriese',n:'Eisriese',arch:'jump',shape:'golem',hp:420,col:['#a8b4bc','#3b6fc4','#73cfc0'],proj:'ice',d:'Ein Riese aus Wassereis. Springt und schleudert Eissplitter.'},
+      {id:'methanschlange',n:'Methanschlange',arch:'serpent',shape:'serpent',hp:420,col:['#7a6040','#e0a050','#ffe27a'],proj:'acid',d:'Gleitet durch das Methanmeer und spuckt Gift.'},
+      {id:'blitzrochen',n:'Blitzrochen',arch:'shoot',shape:'ray',hp:380,col:['#3a3048','#ffe27a','#ffffff'],proj:'dlaser',d:'Schwebt durch den Sturm und schiesst Blitze.'}],
+  as:[{id:'bergbauroboter',n:'Bergbauroboter',arch:'charge',shape:'robot',hp:440,col:['#7a8892','#eaaa4a','#ff3a2a'],proj:'rock',d:'Ein alter Bergbauroboter von Kronstedt. Rammt alles.'},
+      {id:'drohnenmutter',n:'Drohnenmutter',arch:'summon',shape:'robot',hp:420,col:['#55616b','#ff3a2a','#ffe27a'],proj:'dlaser',mob:'kdrohne',d:'Baut Sicherheitsdrohnen am laufenden Band.'},
+      {id:'schrottkoloss',n:'Schrottkoloss',arch:'orbit',shape:'golem',hp:460,col:['#6a5a52','#c9ced3','#ff3a2a'],proj:'smis',d:'Ein Koloss aus Wrackteilen. Schrottplatten schützen ihn.'}],
+  er:[{id:'wachroboter',n:'Wachroboter',arch:'charge',shape:'robot',hp:520,col:['#c9ced3','#3b6fc4','#ff3a2a'],proj:'dlaser',d:'Ein Wachroboter der letzten Menschen. Hält dich für einen Einbrecher.'},
+      {id:'rattenkoenig',n:'Rattenkönig',arch:'summon',shape:'lizard',hp:500,col:['#6a5a52','#c9a070','#ff3a2a'],proj:'acid',mob:'robohund',d:'Herrscher der Kanalisation. Ruft seine Robohunde.'},
+      {id:'baggertitan',n:'Bagger-Titan',arch:'jump',shape:'robot',hp:560,col:['#eaaa4a','#3c454c','#ff3a2a'],proj:'rock',d:'Ein riesiger Bagger, der sich selbstständig gemacht hat.'}],
+  zm:[{id:'seeschlange',n:'Seeschlange',arch:'serpent',shape:'serpent',hp:560,col:['#3a6a8a','#86d27c','#ffe27a'],proj:'ice',d:'Die Herrscherin des Urozeans.'},
+      {id:'riesenlibelle',n:'Riesenlibelle',arch:'shoot',shape:'bird',hp:520,col:['#3fa58f','#bff0e7','#ff3a2a'],proj:'acid',d:'Eine Libelle mit drei Metern Spannweite.'},
+      {id:'panzerechse',n:'Panzerechse',arch:'charge',shape:'lizard',hp:600,col:['#5a7a3a','#c9a070','#ffd27a'],proj:'rock',d:'Ein Urzeit-Reptil mit Knochenpanzer.'}],
+  ex:[{id:'prismenspinne',n:'Prismenspinne',arch:'shoot',shape:'spider',hp:600,col:['#9474c4','#5ff0ff','#ffffff'],proj:'rad',d:'Webt Netze aus Licht und schiesst Prismensplitter.'},
+      {id:'schwarmkoenigin',n:'Schwarmkönigin',arch:'summon',shape:'blob',hp:620,col:['#c070ff','#5ff0ff','#ffffff'],proj:'rad',mob:'schwebequalle',d:'Gebiert schwebende Quallen aus Licht.'},
+      {id:'spiegelwesen',n:'Spiegelwesen',arch:'orbit',shape:'blob',hp:660,col:['#cfe6f0','#9a52dc','#ffffff'],proj:'rad',d:'Ein Wesen aus Spiegeln. Seine Splitter schützen es.'}],
+};
+const XGUARD={mars:['#c9734a','#ffd27a'],eu:['#9fd0ff','#3b6fc4'],io:['#ff7a2a','#ffd27a'],ti:['#d8944e','#3a3048'],as:['#8a929b','#ff3a2a'],er:['#c9ced3','#3b6fc4'],zm:['#86d27c','#3a6a8a'],ex:['#c070ff','#5ff0ff']};
+const XMINI_ALL=Object.values(XMINI).flat();
+function xmDef(m){
+  if(!m) return XMINI_ALL[0];
+  if(m.id&&m.id.startsWith('hueter_')){ const par=m.id.slice(7), c=XGUARD[par]||XGUARD.mars;
+    return {id:m.id,n:`Hüter der Geheimhöhle`,arch:'orbit',shape:'golem',hp:700,col:[c[0],c[1],'#ffffff'],proj:'rad',d:'Bewacht die Schätze der Geheimhöhle seit Urzeiten.',contact:12,why:'Vom Hüter der Geheimhöhle zermalmt'}; }
+  const d=XMINI_ALL.find(q=>q.id===m.id)||XMINI_ALL[0];
+  return {contact:10,why:`Von ${d.n==='Rattenkönig'?'dem Rattenkönig':d.n} erwischt`,...d};
+}
+const XM_PAY={eu:20e6,io:30e6,ti:45e6,as:60e6,er:100e6,zm:150e6,ex:220e6,mars:40e6};
+const SITE_NAMES={
+  eu:[['Versunkenes Wrack','Ein Forschungsschiff der Ersten, gesunken im Eis.'],['Eispalast','Hallen aus klarem Eis mit einer verschlossenen Kammer.'],['Perlengrotte','Eine Grotte voller Tiefseeperlen.']],
+  io:[['Obsidiantempel','Ein Tempel aus schwarzem Glas.'],['Schwefelschrein','Ein Schrein mit Schaltern und Zeichen.'],['Feuerkammer','Eine Kammer voller glühender Schätze.']],
+  ti:[['Eishöhle des Lichts','Spiegel aus Eis lenken einen Lichtstrahl.'],['Methanstation','Eine verlassene Forschungsstation.'],['Sturmkammer','Ein Hohlraum voller Sturmglas.']],
+  as:[['Kronstedt-Tresor','Ein Tresor der Firma mit Zahlenschloss.'],['Frachtcontainer','Ein Container voller Fracht.'],['Sternenkammer','Ein hohler Asteroid voller Schätze.']],
+  er:[['Alte Bank','Eine Bank mit Tresortür und Schaltern.'],['U-Bahn-Station','Eine verschüttete Station mit Druckplatten.'],['Museum','Ein Museum voller Kostbarkeiten.']],
+  zm:[['Tempel der Ersten','Die Ersten waren schon hier. Ihr Tempel ist noch neu.'],['Muschelbank','Riesenmuscheln mit Perlen.'],['Bernsteingrotte','Eine Grotte aus Bernstein.']],
+  ex:[['Archiv der Erbauer','Wissen aus einer anderen Galaxie.'],['Prismenkammer','Ein Lichtstrahl, ein Spiegel, ein Empfänger.'],['Schatzkammer der Erbauer','Was die Erbauer zurückgelassen haben.']],
+};
+const SITE_CASH={eu:8e6,io:12e6,ti:18e6,as:25e6,er:40e6,zm:60e6,ex:90e6};
+const SEC_ORES={mars:[[13,0],[14,0],[15,0]],eu:[[18,0],[19,0],[15,0]],io:[[21,0],[22,0],[19,0]],ti:[[24,0],[25,0],[22,0]],as:[[27,0],[28,0],[25,0]],er:[[30,0],[31,0],[28,0]],zm:[[33,0],[34,0],[31,0]],ex:[[36,0],[37,0],[34,0]]};
+
 /* ---------- Welt-Generatoren ---------- */
 function wZone(L,f){ const Z=WORLDS[L].Z; let z=0; for(let i=0;i<Z.length;i++) if(f>=Z[i].a) z=i; return z; }
 function wBase(r,L,probs,fill){
@@ -998,6 +1170,17 @@ function ambientWorld(){
   } else if(L==='ti'){
     if(z>=2&&Math.random()<.5){ const c=findCell((x,y)=>get(x,y)===METHANE,6,16,60); if(c) spawnMob('methanqualle',c[0]+.5,c[1]+.5); }
     if(Math.random()<.1&&mobs.filter(c=>c.type==='wurm').length<2){ const c=findCell((x,y)=>solid(x,y),12,18); if(c) spawnMob('wurm',c[0]+.5,c[1]+.5); }
+  } else if(L==='er'){
+    if(z>=1&&Math.random()<.45){ const c=findCell((x,y)=>get(x,y)===AIR&&solid(x,y+1),9,16,60); if(c) spawnMob('robohund',c[0]+.5,c[1]+.5); }
+    if(z>=2&&Math.random()<.25&&mobs.filter(c=>c.type==='kdrohne').length<2){ const c=findCell((x,y)=>get(x,y)===AIR,10,16,60); if(c) spawnMob('kdrohne',c[0]+.5,c[1]+.5); }
+  } else if(L==='zm'){
+    if(z>=2&&Math.random()<.5){ const c=findCell((x,y)=>get(x,y)===SEA,6,16,60); if(c) spawnMob('urfisch',c[0]+.5,c[1]+.5); }
+    if(Math.random()<.35&&mobs.filter(c=>c.type==='flugsaurier').length<3){ const c=findCell((x,y)=>get(x,y)===AIR,9,16,60); if(c) spawnMob('flugsaurier',c[0]+.5,c[1]+.5); }
+    if(z===1&&Math.random()<.4){ const c=findCell((x,y)=>get(x,y)===AIR&&solid(x,y+1),9,16,60); if(c) spawnMob('krabbler',c[0]+.5,c[1]+.5); }
+  } else if(L==='ex'){
+    if(Math.random()<.45){ const c=findCell((x,y)=>get(x,y)===AIR&&solid(x,y+1),9,16,60); if(c) spawnMob('kristallkaefer',c[0]+.5,c[1]+.5); }
+    if(z>=1&&Math.random()<.4&&mobs.filter(c=>c.type==='schwebequalle').length<3){ const c=findCell((x,y)=>get(x,y)===AIR,9,16,60); if(c) spawnMob('schwebequalle',c[0]+.5,c[1]+.5); }
+    if(z===3&&Math.random()<.4){ const c=findCell((x,y)=>get(x,y)===ACID,6,16,60); if(c) spawnMob('qualle',c[0]+.5,c[1]+.5); }
   } else if(L==='as'){
     if(z>=1&&Math.random()<(z>=4?.55:.3)&&mobs.filter(c=>c.type==='kdrohne').length<(z>=4?4:2)){ const c=findCell((x,y)=>get(x,y)===AIR,10,17,60); if(c) spawnMob('kdrohne',c[0]+.5,c[1]+.5); }
     if(Math.random()<.08&&mobs.filter(c=>c.type==='wurm').length<2){ const c=findCell((x,y)=>solid(x,y),12,18); if(c) spawnMob('wurm',c[0]+.5,c[1]+.5); }
@@ -1283,7 +1466,7 @@ function extendState(st){
   while(st.cargo.length<MIN.length) st.cargo.push(0);
   if(!st.store) st.store=new Array(MIN.length).fill(0); while(st.store.length<MIN.length) st.store.push(0);
   if(st.market){ while(st.market.mul.length<MIN.length) st.market.mul.push(1); if(st.market.fc) while(st.market.fc.length<MIN.length) st.market.fc.push(1); if(st.market.fcN) while(st.market.fcN.length<MIN.length) st.market.fcN.push(0); }
-  const def={xp:0,tools:{pil:0,lad:0,bak:0},myBeacons:[],forge:{hull:0,tank:0,n:0},colony:{},echoDone:[0,0,0,0],urkeim:0,mission:null,misT:150,rivalT:260,look:{paint:'std',badge:'nr'},dayT:120,traders:[],wx:null,wxT:200,rushBest:0,loc:'mars',away:{},euMax:0,abOff:0,abSt:0,veh:'pod',vehOwn:{},outposts:[],crew:[],marks:[],rocket:0,krake:0,crewLog:[],wMax:{},wBoss:{},course:{}};
+  const def={xp:0,tools:{pil:0,lad:0,bak:0},myBeacons:[],forge:{hull:0,tank:0,n:0},colony:{},echoDone:[0,0,0,0],urkeim:0,mission:null,misT:150,rivalT:260,look:{paint:'std',badge:'nr'},dayT:120,traders:[],wx:null,wxT:200,rushBest:0,loc:'mars',away:{},euMax:0,abOff:0,abSt:0,veh:'pod',vehOwn:{},outposts:[],crew:[],marks:[],rocket:0,krake:0,crewLog:[],wMax:{},wBoss:{},course:{},sec:{},star:{},parts:{},partsOwn:{}};
   for(const k in def) if(st[k]==null) st[k]=JSON.parse(JSON.stringify(def[k]));
   for(const k of ['misDone','rival','sprintKills','droneOres','storeSales','ruins','abyssBest']) if(st.st[k]==null) st.st[k]=0;
   if(st.tools.post==null) st.tools.post=0; if(st.duel===undefined) st.duel=null;
@@ -1331,7 +1514,7 @@ function markSeen(cx,cy,r){
 }
 function seenTick(dt){
   ui.seenT=(ui.seenT||0)-dt; if(ui.seenT>0) return; ui.seenT=.12;
-  const p=S.p, ft=curFt(); let r=2.2+[0,1,1.6,2,2.4][S.up.light||0]; if(inDark(p.y)) r*=.55; if(ft<100) r=Math.max(r,7);
+  const p=S.p, ft=curFt(); let r=2.2+[0,1,1.6,2,2.4][S.up.light||0]+(part('licht')==='doppel'?1.2:0); if(inDark(p.y)) r*=.55; if(ft<100) r=Math.max(r,7);
   markSeen(p.x,p.y,Math.max(2.4,r));
   if(ui.dr) markSeen(ui.dr.x,ui.dr.y,2.2);
 }
@@ -1342,11 +1525,15 @@ const slots=()=>2+S.base.labor+(S.colony&&S.colony.kraft?1:0);
 const rankOf=xp=>{ let r=0; for(let i=0;i<RANKS.length;i++) if(xp>=RANKS[i].xp) r=i; return r+1; };
 const RK=()=>rankOf(S.xp||0);
 const col=id=>S.colony?(S.colony[id]||0):0;
-function ST(k){ const v=ST0(k), V=S&&S.veh;
-  if(V==='mech'){ if(k==='drill') return v*1.35; if(k==='engine') return v*.75; if(k==='hull') return Math.round(v*1.25); }
-  else if(V==='uboot'){ if(k==='drill') return v*.85; if(k==='engine') return v*.9; }
-  if(k==='drill'&&S&&modOn('vulkankern')) return v*1.25; if(k==='engine'&&S&&modOn('sturmkern')) return v*1.25;
-  return v; }
+function ST(k){ let v=ST0(k); const V=S&&S.veh; let m=1;
+  if(V==='mech'){ if(k==='drill') m*=1.35; if(k==='engine') m*=.75; if(k==='hull') m*=1.25; }
+  else if(V==='uboot'){ if(k==='drill') m*=.85; if(k==='engine') m*=.9; }
+  if(S){ if(k==='drill'&&modOn('vulkankern')) m*=1.25; if(k==='engine'&&modOn('sturmkern')) m*=1.25; if(k==='cargo'&&modOn('rechenkern')) m*=1.3;
+    const st=starOf(k); if(st) m*=1+.08*st;
+    if(k==='drill'){ const b=part('bohr'); if(b==='doppel') m*=1.2; else if(b==='diamant') m*=1.1; }
+    if(k==='fuel'&&part('aufbau')==='tank') m*=1.25; if(k==='hull'&&part('aufbau')==='panzer') m*=1.25; }
+  if(m===1) return v; v*=m;
+  return k==='hull'||k==='cargo'?Math.round(v):k==='fuel'?Math.round(v*10)/10:k==='rad'?Math.min(.99,v):v; }
 function ST0(k){
   let v=UPG[k].val[S.up[k]||0]; const m=POD(), r=RK(), fg=S.forge||{};
   if(k==='hull') return Math.round(v*(m.hull||1)*(1+(r>=5?.1:0)+(r>=13?.1:0)+.08*(fg.hull||0)));
@@ -1356,7 +1543,7 @@ function ST0(k){
   if(k==='drill') return v*(m.drill||1)*(modOn('turbo')?1.3:1)*(1+(r>=2?.05:0)+(r>=10?.1:0));
   return v;
 }
-const fuelMul=()=>{ const r=RK(); return (POD().fuelUse||1)*(1-(r>=3?.05:0)-(r>=12?.1:0))*(modOn('fusion')?.8:1)*(S.veh==='mech'?1.25:1); };
+const fuelMul=()=>{ const r=RK(); return (POD().fuelUse||1)*(1-(r>=3?.05:0)-(r>=12?.1:0))*(modOn('fusion')?.8:1)*(S.veh==='mech'?1.25:1)*(modOn('zeitkern')?.7:1); };
 const sellMul=()=>{ const r=RK(); return (1+(r>=7?.05:0)+(r>=14?.1:0))*(col('kuppel')?1.1:1)*(1+.05*col('terra'))*(modOn('sternenkern')?1.25:1); };
 const priceMul=kind=>kind==='upg'||kind==='mod'||kind==='base'?(hasMod('teuer')?1.5:1):1;
 const itemPrice=(it,mult=1)=>Math.round(it.p*mult*(it.boom?(POD().boomPrice||1):1)*(col('hafen')?.6:1));
@@ -1365,9 +1552,9 @@ const cargoCount=()=>S.cargo.reduce((a,b)=>a+b,0);
 const get=(x,y)=>{ if(x<0||x>=W||y>=H) return BED; if(y<0) return AIR; return S.world[y*W+x]; };
 const set=(x,y,c)=>{ if(x<0||x>=W||y<0||y>=H) return; S.world[y*W+x]=c; if(c===AIR) wakeAround(x,y); };
 const solid=(x,y)=>solidT(get(x,y));
-const drillable=c=>c===DIRT||c===GAS||c===LAVA||c===ICE||c===RAD||c===NEST||c===MIMIC||c===RUNE||c===CHEST||c===WRECK||c===METEOR||c===PILLAR||c===BRITTLE||c===PULSE||c===RUINCHEST||c===SHROOM||c===GEODE||isMin(c)||isTre(c)||isLog(c)||((c===ROCK||c===BOULDER)&&(modOn('felsbrecher')||S.veh==='mech'));
+const drillable=c=>c===DIRT||c===GAS||c===LAVA||c===ICE||c===RAD||c===NEST||c===MIMIC||c===RUNE||c===CHEST||c===WRECK||c===METEOR||c===PILLAR||c===BRITTLE||c===PULSE||c===RUINCHEST||c===SHROOM||c===GEODE||isMin(c)||isTre(c)||isLog(c)||c===BETON||c===TRESOR||c===KRISTALL||c===HDOOR||((c===ROCK||c===BOULDER||c===STAHL)&&(modOn('felsbrecher')||S.veh==='mech'||part('bohr')==='diamant'));
 const curFt=()=>(S.p.y+HH-SKY)*FT;
-const fracAt=y=>S&&WORLDS[S.loc]?WORLDS[S.loc].frac+.6*clamp((y-SKY)*FT/FMAX0,0,1):S&&S.loc==='ab'?1.15:S&&S.loc==='eu'?.5+.7*clamp((y-SKY)*FT/FMAX0,0,1):clamp((y-SKY)*FT/FMAX0,0,1.2);
+const fracAt=y=>S&&isSec(S.loc)?1.05:S&&WORLDS[S.loc]?WORLDS[S.loc].frac+.6*clamp((y-SKY)*FT/FMAX0,0,1):S&&S.loc==='ab'?1.15:S&&S.loc==='eu'?.5+.7*clamp((y-SKY)*FT/FMAX0,0,1):clamp((y-SKY)*FT/FMAX0,0,1.2);
 const stationsOpen=()=>!hasMod('nostat');
 
 /* ================= Audio ================= */
@@ -1464,6 +1651,20 @@ function paintTile(code,band,v,top){
   } else if(code===WATER){ liquid(c,band,top,v,r,'#2a5f8f','#86c8f0','#4a86b8','#3a74a8');
   } else if(code===SEA){ liquid(c,band,top,v,r,'#183a5e','#6aa8d8','#2a5682','#214a74');
   } else if(code===METHANE){ liquid(c,band,top,v,r,'#5a3a14','#e0a050','#8a5a22','#74481a');
+  } else if(code===HDOOR){
+    px(c,0,0,16,16,'#2a2027'); for(let i=0;i<10;i++) px(c,(r()*16)|0,(r()*16)|0,2,1,'#3b2e37');
+    px(c,3,2,10,12,'#241c22'); px(c,3,2,10,1,'#3a6a6a'); px(c,3,13,10,1,'#3a6a6a'); px(c,3,2,1,12,'#3a6a6a'); px(c,12,2,1,12,'#3a6a6a'); px(c,7,6,2,3,v&1?'#5ff0ff':'#3a9a9a');
+  } else if(code===BETON){
+    px(c,0,0,16,16,'#8a8680'); for(let i=0;i<14;i++) px(c,(r()*16)|0,(r()*16)|0,1,1,r()<.5?'#6e6a64':'#a29e98');
+    px(c,0,0,16,1,'#9e9a94'); if(v&1){ px(c,2,9,12,1,'#6a4a3a'); px(c,9,3,1,8,'#6a4a3a'); } if(v===2) px(c,4,4,5,1,'#5a5650');
+  } else if(code===STAHL){
+    px(c,0,0,16,16,'#3c454c'); px(c,0,0,16,3,'#5c666e'); px(c,0,13,16,3,'#5c666e'); px(c,6,3,4,10,'#4a545c'); px(c,0,3,16,1,'#2a3036'); px(c,0,12,16,1,'#2a3036');
+    for(const x of [2,13]){ px(c,x,1,1,1,'#8f979e'); px(c,x,14,1,1,'#8f979e'); }
+  } else if(code===TRESOR){
+    px(c,0,0,16,16,'#2c2422'); px(c,1,1,14,14,'#55616b'); px(c,2,2,12,12,'#7a8892'); px(c,5,5,6,6,'#3c454c'); px(c,6,6,4,4,'#d9a92b'); px(c,7,7,2,2,'#3c454c'); px(c,12,7,2,2,'#2c2422');
+  } else if(code===KRISTALL){
+    px(c,0,0,16,16,caveCol(band)); const cc=v&1?['#c070ff','#f0d8ff','#7a4aa8']:['#5ff0ff','#e0fffb','#3a9aa8'];
+    for(const [x,w_,h_] of [[2,3,12],[7,3,15],[11,3,10]]){ px(c,x,16-h_,w_,h_,cc[0]); px(c,x,16-h_,1,h_,cc[1]); px(c,x+w_-1,16-h_,1,h_,cc[2]); }
   } else if(code===GEYSER){
     px(c,0,0,16,16,'#7a6a28'); for(let i=0;i<10;i++) px(c,(r()*15)|0,(r()*15)|0,2,1,'#9a8838');
     px(c,4,0,8,5,'#3a3010'); px(c,5,0,6,3,'#1a1408'); px(c,3,4,10,2,'#e8d23a'); px(c,6,1,4,1,v&1?'#fff6a0':'#e8d23a');
@@ -1911,7 +2112,7 @@ function damage(n,why,o={}){
   if(t==='lava'||t==='fire'){ if(modOn('glutherz')) return; if(modOn('hitze')) n*=.5; }
   if(t==='acid'&&modOn('saeureblase')) return;
   if(t==='rad'&&modOn('kristallkern')) return;
-  if(t==='fall'&&(modOn('daempfer')||S.veh==='mech')) return;
+  if(t==='fall'&&(modOn('daempfer')||S.veh==='mech'||part('fahr')==='schwebe')) return;
   if(t==='fall'&&RK()>=8) n*=.5;
   if(modOn('panzer')) n*=.85;
   if(S.shieldT>0){ if(!o.cont && S.p.invT<=0){ S.p.invT=.3; popup(S.p.x,S.p.y-.7,'Schild','#73cfc0'); AU.blip(1400,.08,'sine',.1); } return; }
@@ -1937,6 +2138,7 @@ function hardness(code,ty){
   let h=.45+fracAt(ty)*1.7;
   if(isMin(code)) h*=1+Math.min(19,OI(code))*.04;
   if(code===ICE) h*=modOn('kryo')?1:1.8; else if(code===RAD) h*=1.3; else if(code===NEST) h*=.8; else if(code===ROCK||code===BOULDER) h*=3; else if(code===CHEST||code===WRECK||code===RUINCHEST) h*=.6;
+  else if(code===BETON) h*=2.2; else if(code===STAHL) h*=4.5; else if(code===TRESOR) h*=.8; else if(code===KRISTALL) h*=1.3; else if(code===HDOOR) h=.6;
   else if(code===PILLAR) h=.25; else if(code===PULSE) h*=1.5; else if(code===GEODE) h*=2; else if(code===SHROOM) h*=.5;
   return h;
 }
@@ -1992,6 +2194,9 @@ function tileReward(code,tx_,ty,dir){
   } else if(code===RUINCHEST){ lootRuin(d.tx,d.ty);
   } else if(code===PULSE){ S.money+=5000; S.score+=5000; popup(p.x,p.y-.5,'Pulsader +$5\'000','#ffb040'); spawn(p.x,p.y,24,'#ff7a2a',4,.6,.16,4); AU.blip(120,.3,'sawtooth',.14,-60); damage((10+fr*20)*(1-ST('rad')*.6),'Von einer Pulsader verbrannt',{type:'fire'});
   } else if(code===SHROOM){ S.money+=800; popup(p.x,p.y-.5,'Pilz +$800','#c0a0ff'); clouds.push({x:d.tx+.5,y:d.ty+.5,r:2.4,t:5,k:'spore'}); AU.blip(700,.3,'sine',.08,-300);
+  } else if(code===HDOOR){ S.world[ty*W+tx_]=HDOOR; ui.secGo=1; AU.blip(300,.8,'sine',.15,800);
+  } else if(code===TRESOR){ const L=S.loc, base={er:3e6,zm:5e6,ex:8e6}[L]||1e6, cash=Math.round(base*(1+fr)*(1+Math.random())/1000)*1000; S.money+=cash; S.score+=cash; const it=ITEMS[Math.floor(Math.random()*ITEMS.length)]; S.items[it.id]+=2; renderItems(); AU.coin(); popup(p.x,p.y-.5,`Tresor +${fmt(cash)}`,'#ffe27a'); toast(`Tresor geknackt: +${fmt(cash)} und 2× ${it.n}`,2400); gainXP(30);
+  } else if(code===KRISTALL){ const cash=Math.round(20000*(1+fr*3)/100)*100; S.money+=cash; S.score+=cash; popup(p.x,p.y-.5,`Kristall +${fmt(cash)}`,'#d9a0ff'); AU.blip(1700,.12,'triangle',.08,500);
   } else if(code===GEODE){ const gems=[8,8,9,9,10,11]; if(Math.random()<.55) collectOre(gems[Math.floor(Math.random()*gems.length)],p.x,p.y-.5); else { S.money+=25000; S.score+=25000; popup(p.x,p.y-.5,'Kristall +$25\'000','#e8d0ff'); } AU.blip(1600,.2,'triangle',.1,600);
   }
 }
@@ -2095,7 +2300,7 @@ function updateMobs(dt){
     const def=MOBS[c.type]; c.t+=dt; c.flash=Math.max(0,(c.flash||0)-dt);
     const dx=p.x-c.x, dy=p.y-c.y, dist=Math.hypot(dx,dy);
     if(SEAMOB.has(c.type)){ if(seaMobStep(c,dt,dist,dx,dy)) continue; }
-    else if(c.type==='kdrohne') kdroneStep(c,dt,dist,dx,dy);
+    else if(MOBFLY.has(c.type)) kdroneStep(c,dt,dist,dx,dy);
     else if(c.type==='glutling'){
       const sp=dist<14?3.1:1; const a=Math.atan2(dy,dx)+Math.sin(c.t*3)*.6;
       const nx=c.x+Math.cos(a)*sp*dt, ny=c.y+Math.sin(a)*sp*dt;
@@ -2180,7 +2385,7 @@ function explodeAt(ex,ey,r,bossDmg,quiet){
   S.st.booms++; if(S.st.booms>=100) unlock('boom');
   for(let y=iy-r;y<=iy+r;y++) for(let x=ix-r;x<=ix+r;x++){
     const c=get(x,y);
-    if(y<SKY||c===BED||c===CONC||c===ARMOR||c===VAULT||isFluid(c)||isLog(c)||isTre(c)||c===CHEST||c===WRECK||c===METEOR||RUINSOLID.has(c)||c===RUINCHEST) continue;
+    if(y<SKY||c===BED||c===CONC||c===HDOOR||c===TRESOR||c===ARMOR||c===VAULT||isFluid(c)||isLog(c)||isTre(c)||c===CHEST||c===WRECK||c===METEOR||RUINSOLID.has(c)||c===RUINCHEST) continue;
     if(c===RUNE){ activateRune(x,y); continue; }
     if(c===GAS){ set(x,y,AIR); ui.booms.push({x:x+.5,y:y+.5,t:.18+Math.random()*.25}); continue; }
     if(c===NEST){ S.money+=2000; popup(x+.5,y+.5,'Nest +$2\'000','#d9a0ff'); }
@@ -2220,8 +2425,8 @@ function useItem(id){
     AU.blip(600,.35,'sawtooth',.14,-450);
   }
   else if(id==='shd'){ S.shieldT=8; AU.blip(500,.5,'sine',.15,700); toast('Schild aktiv · 8 Sekunden'); }
-  else if(id==='qtp'){ if(S.loc==='ab') goMars('qtp'); else teleportTo(2.5+Math.random()*(W-5),SKY-7); }
-  else if(id==='mtx'){ if(S.loc==='ab') goMars(); else teleportTo(MIDX+.5,SKY-HH-.001); }
+  else if(id==='qtp'){ if(isSec(S.loc)) leaveSecret(); if(S.loc==='ab') goMars('qtp'); else teleportTo(2.5+Math.random()*(W-5),SKY-7); }
+  else if(id==='mtx'){ if(isSec(S.loc)) leaveSecret(); if(S.loc==='ab') goMars(); else teleportTo(MIDX+.5,SKY-HH-.001); }
   else if(id==='dtx'&&S.loc!=='mars'){ const o=deepestPost(); if(!o){ toast(S.loc==='eu'?'Noch kein Aussenposten auf Europa':'Keine Schachtstation erreichbar'); return; } teleportTo((o.x0+o.x1+1)/2,o.row-HH-.001); ui.lastPad=o.id; toast(o.n); }
   else if(id==='dtx'){ const st=deepestStation(); if(!st){ toast(hasMod('nostat')?'Tiefenstationen sind in dieser Expedition geschlossen':'Noch keine Tiefenstation freigeschaltet'); return; } teleportTo(MIDX-7.5,st.row-HH-.001); ui.lastPad=null; toast(st.n); }
   S.items[id]--; renderItems();
@@ -2250,7 +2455,7 @@ function physics(dt,I){
   if(I.d) p.ddir='down';
   const here=get(Math.floor(p.x),Math.floor(p.y)), wet=here===ACID||here===WATER||here===SEA||here===METHANE, sub=wet&&S.veh==='uboot';
   const lad=here===LADDER||get(Math.floor(p.x),Math.floor(p.y+HH-.05))===LADDER;
-  const maxH=4.4*Math.pow(eng,.6)*(wet?(sub?1.4:.6):1), accH=26*eng*(sub?1.3:1);
+  const maxH=4.4*Math.pow(eng,.6)*(wet?(sub?1.4:.6):1)*(part('fahr')==='rad'&&p.ground?1.25:1), accH=26*eng*(sub?1.3:1);
   if(lr) p.vx+=lr*accH*dt;
   else { const fr=(p.ground?22:2.5)*dt; p.vx=Math.abs(p.vx)<=fr?0:p.vx-Math.sign(p.vx)*fr; }
   p.vx=clamp(p.vx,-maxH,maxH);
@@ -2258,7 +2463,7 @@ function physics(dt,I){
   if(S.wx&&S.wx.k==='mag'&&p.y>SKY+2){ ui.magJ=(ui.magJ||0)-dt; if(ui.magJ<=0){ ui.magJ=.35+Math.random()*.5; p.vx+=(Math.random()-.5)*10; p.vy+=(Math.random()-.5)*4; } }
   const thr=I.u&&S.fuel>0&&!lad; p.thr=thr;
   if(lad){ const tv=I.u?-3.6:I.d?3.6:0; p.vy+=(tv-p.vy)*Math.min(1,dt*12); }
-  else { p.vy+=G*GMUL()*dt*(wet?(sub?.12:.5):1); if(thr) p.vy-=THR*eng*dt*(S.loc==='ti'?1.1:S.loc==='as'?.8:1); if(sub&&I.d&&!p.ground) p.vy+=14*dt; }
+  else { p.vy+=G*GMUL()*dt*(wet?(sub?.12:.5):1); if(thr) p.vy-=THR*eng*dt*(S.loc==='ti'?1.1:S.loc==='as'?.8:1)*(part('fahr')==='schwebe'?1.15:1); if(sub&&I.d&&!p.ground) p.vy+=14*dt; }
   if(wet) p.vy*=1-2.5*dt;
   const maxUp=5.6*Math.pow(eng,.55); if(p.vy<-maxUp) p.vy=-maxUp; if(p.vy>22) p.vy=22;
   p.blocked=0; p.hitCeil=false;
@@ -2466,7 +2671,7 @@ function update(dt){
   fluidTick(dt); if(!running) return;
   systemsTick(dt); if(!running) return;
   ui.nestT-=dt; if(ui.nestT<=0){ ui.nestT=1; nestTick(); }
-  if(modOn('magnet')){ ui.magT=(ui.magT||0)-dt; if(ui.magT<=0){ ui.magT=.18; magnetTick(); } }
+  if(modOn('magnet')||part('aufbau')==='greif'){ ui.magT=(ui.magT||0)-dt; if(ui.magT<=0){ ui.magT=.18; magnetTick(); } }
   ui.spawnT-=dt; if(ui.spawnT<=0){ ui.spawnT=4; ambientSpawn(); }
   ui.boulT-=dt; if(ui.boulT<=0){ ui.boulT=.25;
     for(const col of new Set([Math.floor(p.x-.38),Math.floor(p.x+.38)])) for(let y=Math.floor(p.y)-1;y>=Math.floor(p.y)-8;y--){ const c=get(col,y); if(isFluid(c)) continue; if(isLoose(c)) triggerBoulder(col,y,c===BRITTLE?.3:.45); break; }
@@ -2672,6 +2877,9 @@ function solveRuin(R_){
 function lootRuin(x,y){
   const R_=(S.ruins||[]).find(q=>(q.chest||[]).some(([cx,cy])=>cx===x&&cy===y)); if(!R_) { S.money+=20000; return; }
   R_.chest=R_.chest.filter(([cx,cy])=>!(cx===x&&cy===y));
+  if(R_.k==='schatz'){ const cash=Math.round((R_.cash||5e6)/3), L=R_.pl, OL=oresOf(L), oi=OL?OL[4][0]:11; S.money+=cash; S.score+=cash; S.store[oi]+=4; gainXP(120); AU.chime(); toast(`${R_.nm}: +${fmt(cash)} und 4× ${MIN[oi].n} ins Lagerhaus`,2800); if(!R_.chest.length){ R_.looted=1; discover('ort:schatz'); } return; }
+  if(R_.nm){ if(R_.looted) return; R_.looted=1; const cash=R_.cash||5e6; S.money+=cash; S.score+=cash*2; S.items.c4+=3; S.items.rkt+=3; S.items.shd+=2; S.tools.bak++; renderItems(); gainXP(300); discover('ort:'+R_.k); AU.chime();
+    tx({n:R_.nm,tag:PLN[R_.pl]||'Ort der Ersten'},`Die Kammer öffnet sich.\n+${fmt(cash)}, 3× Plastiksprengstoff, 3× Sprengrakete, 2× Schildgenerator, 1× Funkbake.`); return; }
   if(R_.k==='see'){ const cash=60000*(R_.z+1); S.money+=cash; S.score+=cash; gainXP(60); AU.coin(); toast(`Schatz vom Seegrund: +${fmt(cash)}`,2400); return; }
   if(R_.looted) return; R_.looted=1;
   const cash=150000*(R_.z+1); S.money+=cash; S.score+=cash*2; S.items.c4+=2; S.items.rkt+=3; S.items.shd+=1; S.tools.bak++; renderItems();
@@ -2692,8 +2900,8 @@ function ruinsTick(dt){
   for(const R_ of S.ruins){
     if(Math.abs(p.y-(R_.y0+R_.h/2))>40) continue;
     if(!R_.found && p.x>=R_.x0-1&&p.x<=R_.x0+R_.w+1&&p.y>=R_.y0-1&&p.y<=R_.y0+R_.h+1){
-      R_.found=1; const info=RUIN_INFO[R_.k]; toast(`${info.n} entdeckt · ${info.d}`,4200); AU.chime(); gainXP(60);
-      if(['pilz','geode','see'].includes(R_.k)){ discover('ort:'+R_.k); if(S.ruins.filter(q=>['pilz','geode','see'].includes(q.k)&&q.found).length>=3) unlock('biom'); }
+      R_.found=1; const info=R_.nm?{n:R_.nm,d:R_.dd}:RUIN_INFO[R_.k]; toast(`${info.n} entdeckt · ${info.d}`,4200); AU.chime(); gainXP(60);
+      if(!R_.nm&&['pilz','geode','see'].includes(R_.k)){ discover('ort:'+R_.k); if(S.ruins.filter(q=>['pilz','geode','see'].includes(q.k)&&q.found).length>=3) unlock('biom'); }
     }
     if(R_.solved) continue;
     if(R_.k==='plate'){
@@ -3036,7 +3244,7 @@ function systemsTick(dt){
 function steer(o,tx_,ty,spd,dt){ const dx=tx_-o.x, dy=ty-o.y, d=Math.hypot(dx,dy); if(d<1e-4) return; const m=Math.min(d,spd*dt); o.x+=dx/d*m; o.y+=dy/d*m; }
 function ceilingAbove(x,y){ let yy=Math.floor(y); while(yy>SKY && !solid(Math.floor(x),yy)) yy--; return yy+1; }
 const domeTop=(A,x)=>{ const dx=(x-A.cx)/A.rx; return A.cy-A.ry*Math.sqrt(Math.max(0,1-dx*dx)); };
-const bossDef=b=>b.kind==='main'?BOSSES[b.i]:b.kind==='kern'?URKEIM:b.kind==='eu'?KRAKE:b.kind==='w'?WBOSS[b.i]:MINIS[b.i];
+const bossDef=b=>b.kind==='main'?BOSSES[b.i]:b.kind==='kern'?URKEIM:b.kind==='eu'?KRAKE:b.kind==='w'?WBOSS[b.i]:b.kind==='xm'?b.def:MINIS[b.i];
 const bossHits=b=>BOSSFN[b.type].hits(b);
 function mkStals(A,n,dmg){ const out=[]; for(let k=0;k<n;k++){ const x=A.cx+(k-(n-1)/2)*(A.rx*1.5/(n-1)); out.push({k:'stal',x,y:domeTop(A,x)+.8,x0:x,y0:domeTop(A,x)+.8,state:'hang',vy:0,dmg,regrow:0}); } return out; }
 function wormStep(b,A,dt,spd,dash){
@@ -3243,21 +3451,22 @@ const EU_TX=[
 const KRAKE_INTRO='Bewegung im Abgrund! Das ist die Riesenkrake.\nIhre Tentakel schützen den Körper. Spreng sie ab, dann ist der Körper verwundbar, am meisten das Auge. Weich den Tentakelhieben aus, und pass auf ihren Sog und die Tinte auf.';
 function applyPlanet(loc){
   if(!MZ_TX) MZ_TX=ZONE_TX.slice();
-  const WD=WORLDS[loc], Z=loc==='eu'?EUZ:loc==='ab'?ABZ:WD?WD.Z:MZ;
+  const sec=isSec(loc), par=sec?secPar(loc):null, PZ_=par?(par==='mars'?MZ:par==='eu'?EUZ:WORLDS[par].Z):null;
+  const WD=WORLDS[loc], Z=sec?[0,1,2,3,4,5,6].map(i=>({n:'Geheimhöhle',a:i*5000,d:'Eine verborgene Höhle der Ersten, voller seltener Erze.',c:PZ_[5].c})):loc==='eu'?EUZ:loc==='ab'?ABZ:WD?WD.Z:MZ;
   ZONES.length=0; Z.forEach(z=>ZONES.push({...z}));
   ZONES.forEach((z,i)=>z.b=ZONES[i+1]?ZONES[i+1].a:FMAX+1);
   BANDS.length=0; ZONES.forEach(z=>{ const [b,dk,lt]=z.c; BANDS.push([b,dk,lt]); BANDS.push([mix(b,'#000000',.15),mix(dk,'#000000',.15),mix(lt,'#000000',.15)]); });
   for(let y=0;y<H;y++) bandRow[y]=y<SKY?0:bandOfFt((y-SKY)*FT);
-  const zo=loc==='eu'?EU_ORE_Z:loc==='ab'?AB_ORE_Z:WD?WD.oreZ:MZ_ORE; ZONE_ORE.length=0; zo.forEach(v=>ZONE_ORE.push(v));
-  const tz=loc==='eu'?EU_TX:loc==='ab'?[null,null,null,null,null,null,null]:WD?WD.tx:MZ_TX; ZONE_TX.length=0; tz.forEach(f=>ZONE_TX.push(f));
+  const zo=sec?[0,1,2,3,4,5,6].map(i=>(SEC_ORES[par]||SEC_ORES.mars)[i%3][0]):loc==='eu'?EU_ORE_Z:loc==='ab'?AB_ORE_Z:WD?WD.oreZ:MZ_ORE; ZONE_ORE.length=0; zo.forEach(v=>ZONE_ORE.push(v));
+  const tz=sec||loc==='ab'?[null,null,null,null,null,null,null]:loc==='eu'?EU_TX:WD?WD.tx:MZ_TX; ZONE_TX.length=0; tz.forEach(f=>ZONE_TX.push(f));
   ZROW=null; MAPCOL=null; sprCache.clear(); PLOC=loc;
 }
 function pads(){
-  const base=S.loc==='eu'?EU_PADS:WORLDS[S.loc]?WORLDS[S.loc].pads:S.loc==='ab'?[]:PADS;
+  const base=S.loc==='eu'?EU_PADS:WORLDS[S.loc]?WORLDS[S.loc].pads:S.loc==='ab'||isSec(S.loc)?[]:PADS;
   const op=(S.outposts||[]).filter(o=>o.loc===(S.loc||'mars'));
   return op.length?base.concat(op):base;
 }
-const locName=()=>S.loc==='eu'?'Europa':S.loc==='ab'?'Endlosschacht':WORLDS[S.loc]?WORLDS[S.loc].n:'Mars';
+const locName=()=>isSec(S.loc)?'Geheimhöhle':S.loc==='eu'?'Europa':S.loc==='ab'?'Endlosschacht':WORLDS[S.loc]?WORLDS[S.loc].n:'Mars';
 const abFt=()=>AB_BASE+(S.abOff+(S.p.y+HH-SKY))*FT;
 const dispOff=()=>S.loc==='ab'?AB_BASE+S.abOff*FT:0;
 const locMax=()=>S.loc==='eu'?(S.euMax||0):S.loc==='ab'?(S.st.abyssBest||0):WORLDS[S.loc]?((S.wMax||{})[S.loc]||0):S.maxFt;
@@ -3305,6 +3514,7 @@ function freshSeen(){ const a=new Uint8Array(W*H); a.fill(1,0,(SKY+2)*W); return
 function genLoc(to){
   if(to==='eu') return genEuropa(S.seed);
   if(to==='ab') return genAbyss();
+  if(isSec(to)) return genSecret(secPar(to));
   if(WORLDS[to]) return WORLDS[to].gen(S.seed);
   return {world:genWorld(S.seed).w,seen:null,beacons:[],myBeacons:[],ruins:null,dark:[],vaults:[],minis:[]};
 }
@@ -3318,6 +3528,7 @@ function travel(to,x,y,padId){
     S.loc=to; applyPlanet(to);
     unpackLoc(o||genLoc(to));
   } else applyPlanet(to);
+  retrofit(to);
   resetRuntime(); S.wx=null; ui.gust=null; ui.heat=0; ui.cosmic=0; ui.cosOpen=false; geyT.clear(); geyOn=[]; repairPads();
   const p=S.p; p.mode='free'; p.dr=null; p.dash=null; p.vx=0; p.vy=0; p.x=x; p.y=y;
   cam.x=p.x-viewW/2; cam.y=p.y-viewH*.55;
@@ -3483,8 +3694,11 @@ function checkEventsOther(){
     const z=zoneIdx(Math.max(0,ft)), zk=S.flags['wz_'+L]??-1;
     if(z>zk){ S.flags['wz_'+L]=z; if(z>0) zoneBanner(z); if(ZONE_TX[z]) ZONE_TX[z](); return; }
     const bi=WBOSS.findIndex(q=>q.loc===L);
-    if(!boss&&p.mode==='free'&&ui.outroT<=0&&!(S.wBoss||{})[L]&&arenaIn(EUARENA,p.x,p.y,.82)){ startBoss('w',bi); return; }
+    if(!boss&&p.mode==='free'&&ui.outroT<=0&&!(S.wBoss||{})[L]&&arenaIn(EUARENA,p.x,p.y,.82)){
+      if(WORLDS[L].gate&&!(S.minis||[]).every(m=>m.done)){ if(p.vy>-8) p.vy=-12; if((ui.gateT||0)<=0){ ui.gateT=4; toast(`Die Arena ist versiegelt. Besiege zuerst alle Mini-Bosse von ${PLN[L]}.`,2600); AU.blip(160,.4,'square',.12,-80); } return; }
+      startBoss('w',bi); return; }
   }
+  if(!boss&&p.mode==='free'&&ui.outroT<=0&&S.minis&&S.loc!=='mars'){ for(let i=0;i<S.minis.length;i++){ const m=S.minis[i]; if(!m||m.done||m.cx==null) continue; if(arenaIn(m,p.x,p.y,.8)){ startBoss('xm',i); return; } } }
   if(boss){ const A=boss.A; if(!arenaIn(A,p.x,p.y,1.3) && Math.abs(p.y-A.cy)>A.ry+6){ endBossQuiet(); toast('Der Gegner zieht sich zurück'); } }
 }
 function ambientOther(){
@@ -3503,7 +3717,7 @@ function seaMobStep(c,dt,dist,dx,dy){
   const med=MOBMED(c.type), here=get(Math.floor(c.x),Math.floor(c.y)), wet=med.includes(here);
   if(!wet){ c.out=(c.out||0)+dt; c.vy=Math.min(14,(c.vy||0)+16*dt); const ny=c.y+c.vy*dt; if(!solid(Math.floor(c.x),Math.floor(ny))) c.y=ny; else c.vy=0; if(c.out>2){ killMob(c,0); return true; } return false; }
   c.out=0;
-  const fish=c.type==='eisfisch'||c.type==='lavaaal', sp=fish?(dist<12?3.6:1.2):(dist<9?1.3:.5);
+  const fish=c.type==='eisfisch'||c.type==='lavaaal'||c.type==='urfisch', sp=fish?(dist<12?3.6:1.2):(dist<9?1.3:.5);
   const a=dist<(fish?12:9)?Math.atan2(dy,dx)+Math.sin(c.t*(fish?6:2))*.4:c.t*.6;
   c.vx=Math.cos(a)*sp; c.vy=Math.sin(a)*sp+(fish?0:Math.sin(c.t*2.4)*.6);
   const nx=c.x+c.vx*dt, ny=c.y+c.vy*dt;
@@ -3513,9 +3727,9 @@ function seaMobStep(c,dt,dist,dx,dy){
 }
 function drawSeaMob(c,cx,cy){
   ctx.save(); ctx.translate(c.x*ts-cx,c.y*ts-cy); ctx.scale(ts,ts);
-  if(c.type==='eisfisch'||c.type==='lavaaal'){ const lv=c.type==='lavaaal';
+  if(c.type==='eisfisch'||c.type==='lavaaal'||c.type==='urfisch'){ const lv=c.type==='lavaaal', uf=c.type==='urfisch';
     const dir=c.vx<0?-1:1; ctx.scale(dir,1);
-    ctx.fillStyle=c.flash?'#fff':lv?'#3a1a14':'#9fd0ff'; ctx.beginPath(); ctx.ellipse(0,0,lv?.46:.38,lv?.16:.2,0,0,7); ctx.fill();
+    ctx.fillStyle=c.flash?'#fff':lv?'#3a1a14':uf?'#5a7a3a':'#9fd0ff'; ctx.beginPath(); ctx.ellipse(0,0,lv?.46:.38,lv?.16:.2,0,0,7); ctx.fill();
     if(lv){ ctx.fillStyle='#ff8a2a'; for(let k=0;k<4;k++) ctx.fillRect(-.3+k*.15,-.04,.06,.08); }
     ctx.fillStyle=lv?'#ff5a1a':'#5f9ad0'; ctx.beginPath(); ctx.moveTo(-.32,0); ctx.lineTo(-.58,-.2+Math.sin(c.t*14)*.05); ctx.lineTo(-.58,.2+Math.sin(c.t*14)*.05); ctx.closePath(); ctx.fill();
     ctx.fillStyle='#e8f6ff'; ctx.beginPath(); ctx.moveTo(-.05,-.18); ctx.lineTo(.1,-.32); ctx.lineTo(.18,-.16); ctx.fill();
@@ -3583,6 +3797,8 @@ function drawKrake(b,cx,cy,wake){
 
 /* ---------- Himmel, Rakete, Aussenposten ---------- */
 function drawSkyOther(cx,groundY,w,h){
+  if(isSec(S.loc)){ ctx.fillStyle='#050304'; ctx.fillRect(0,0,w,Math.min(h,groundY+2)); return; }
+  if(S.loc==='er'||S.loc==='zm'||S.loc==='ex'){ drawSkyX(cx,groundY,w,h); return; }
   if(WORLDS[S.loc]){ drawSkyWorld(cx,groundY,w,h); return; }
   if(S.loc==='ab'){ ctx.fillStyle='#0a0606'; ctx.fillRect(0,0,w,Math.min(h,groundY+2)); return; }
   const g=ctx.createLinearGradient(0,0,0,groundY); g.addColorStop(0,'#05060f'); g.addColorStop(1,'#141a33');
@@ -3727,6 +3943,7 @@ function vehRows(){
 
 /* ---------- Shop-Aktionen der Erweiterung ---------- */
 function shopExtra2(a,x,y){
+  const r3=shopExtra3(a,x,y); if(r3!==undefined) return r3;
   if(a==='rk'){ const i=+x, R_=ROCKET[i]; if(!R_||S.rocket!==i||S.money<R_.pr) return false; S.money-=R_.pr; S.rocket=i+1; AU.chime(); quake(.8); toast(`${R_.n} fertig${S.rocket>=ROCKET.length?' · Die Rakete ist startklar!':''}`,2600); gainXP(150); renderShop(); updateHud(); return false; }
   if(a==='fly'){ launchTo(x); return false; }
   if(a==='kurs'){ const W_=WORLDS[x]; if(!W_||!destOpen(x)||S.money<W_.price||destBought(x)) return false; S.money-=W_.price; S.course=S.course||{}; S.course[x]=1; AU.chime(); toast(`Kursdaten ${W_.n} gekauft`,2000); renderShop(); updateHud(); return false; }
@@ -3827,6 +4044,8 @@ function drawMapExtras(c,sx,sy,mark,g){
     if(m.t){ c.fillStyle='#f4ece0'; c.fillText(m.t,X+r*1.9,Y-r*2.1); }
     if(m.goal){ c.strokeStyle=MARKC[m.c||0]; c.beginPath(); c.arc(X,Y,r*1.2,0,7); c.stroke(); } }
   if(S.duel&&S.duel.st!=='done'&&S.loc==='mars') mark(S.duel.x,S.duel.y,'#ff6a3a','Duell',false);
+  if(S.loc!=='mars') for(const m of S.minis||[]) if(m&&m.cx!=null&&!m.done) mark(m.cx,m.cy,'#ff5a3a',m.id&&m.id.startsWith('hueter_')?'Hüter':xmDef(m).n,false);
+  for(const R_ of S.ruins||[]) if(R_.nm&&!R_.looted&&!(R_.k==='schatz'&&!(R_.chest||[]).length)) mark(R_.x0+R_.w/2,R_.y0+R_.h/2,'#5ff0ff',R_.nm,true);
 }
 function mapTap(ev){
   const g=mapGeom(); if(!g) return; const r=g.cv.getBoundingClientRect();
@@ -3861,6 +4080,10 @@ function drawGoalMarks(cx,cy,w,h){
 
 /* ---------- Sammel-Tick der Erweiterung ---------- */
 function extTick(dt){
+  ui.gateT=Math.max(0,(ui.gateT||0)-dt);
+  if(ui.secGo){ ui.secGo=0; if(isSec(S.loc)) leaveSecret(); else enterSecret(); return; }
+  ui.hintT=(ui.hintT||0)-dt; if(ui.hintT<=0){ ui.hintT=2; secretHint(); }
+  if(S.loc==='ex') wanderTick(dt);
   ui.inkT=Math.max(0,(ui.inkT||0)-dt);
   crewTick(dt);
   if(S.loc==='mars'){
@@ -3985,10 +4208,417 @@ function drawWBoss(b,cx,cy,wake){
   ctx.restore();
 }
 
+/* ================= Grosses Update: Funktionen ================= */
+const zonesOf=L=>L==='mars'?MZ:L==='eu'?EUZ:WORLDS[L].Z, oresOf=L=>L==='eu'?EU_ORES:WORLDS[L]?WORLDS[L].ores:null;
+const hashStr=s=>{ let h=2166136261; for(let i=0;i<s.length;i++){ h^=s.charCodeAt(i); h=Math.imul(h,16777619); } return h>>>0; };
+
+/* ---------- Sonderorte ---------- */
+function buildSite(w,r,k,x0,y0){
+  const I=(x,y)=>y*W+x, R_={k,x0,y0,found:0,solved:0,looted:0};
+  const box=(ww,hh)=>{ for(let y=y0;y<y0+hh;y++) for(let x=x0;x<x0+ww;x++) w[I(x,y)]=(y===y0||y===y0+hh-1||x===x0||x===x0+ww-1)?RUINWALL:AIR; };
+  if(k==='seq'){ R_.w=18; R_.h=8; box(18,8); w[I(x0+2,y0)]=DIRT; w[I(x0+3,y0)]=DIRT;
+    for(let y=y0+1;y<y0+7;y++) w[I(x0+13,y)]=RUINWALL; R_.door=[[x0+13,y0+5],[x0+13,y0+6]]; for(const [x,y] of R_.door) w[I(x,y)]=RUINDOOR;
+    R_.chest=[[x0+15,y0+6]]; w[I(x0+15,y0+6)]=RUINCHEST;
+    const syms=[0,1,2,3].sort(()=>r()-.5); R_.sw=[3,6,9,11].map((dx,i)=>[x0+dx,y0+6,syms[i]]); for(const [x,y] of R_.sw) w[I(x,y)]=SWITCH;
+    R_.order=[0,1,2,3].sort(()=>r()-.5); R_.prog=0; }
+  else if(k==='plate'){ R_.w=22; R_.h=7; box(22,7); w[I(x0+2,y0)]=DIRT; w[I(x0+3,y0)]=DIRT;
+    R_.plates=[3,9,15].map(dx=>[x0+dx,y0+6]); for(const [x,y] of R_.plates) w[I(x,y)]=PLATE; R_.lit=[0,0,0];
+    w[I(x0+6,y0+5)]=RUINWALL; w[I(x0+12,y0+5)]=RUINWALL; w[I(x0+12,y0+4)]=RUINWALL;
+    for(let y=y0+1;y<y0+6;y++) w[I(x0+18,y)]=RUINWALL; R_.door=[[x0+18,y0+4],[x0+18,y0+5]]; for(const [x,y] of R_.door) w[I(x,y)]=RUINDOOR;
+    R_.chest=[[x0+20,y0+5]]; w[I(x0+20,y0+5)]=RUINCHEST; }
+  else if(k==='beam'){ R_.w=16; R_.h=9; box(16,9); w[I(x0+5,y0)]=DIRT; w[I(x0+6,y0)]=DIRT;
+    w[I(x0,y0+2)]=EMIT; R_.emit=[x0,y0+2]; w[I(x0+11,y0+2)]=MIRROR; w[I(x0+11,y0+8)]=RECV;
+    for(let y=y0+1;y<=y0+3;y++){ w[I(x0+3,y)]=DIRT; w[I(x0+4,y)]=DIRT; }
+    w[I(x0+7,y0+2)]=ROCK; w[I(x0+7,y0+1)]=ROCK; w[I(x0+11,y0+5)]=DIRT; w[I(x0+11,y0+6)]=DIRT;
+    for(let x=x0+12;x<=x0+14;x++) w[I(x,y0+5)]=RUINWALL; R_.door=[[x0+12,y0+6],[x0+12,y0+7]]; for(const [x,y] of R_.door) w[I(x,y)]=RUINDOOR;
+    R_.chest=[[x0+13,y0+7]]; w[I(x0+13,y0+7)]=RUINCHEST; }
+  else { R_.w=15; R_.h=15; const cx=x0+7.5, cy=y0+7.5; R_.chest=[];
+    for(let y=y0;y<y0+15;y++) for(let x=x0;x<x0+15;x++){ const d=Math.hypot(x+.5-cx,y+.5-cy); if(d<4.6) w[I(x,y)]=AIR; else if(d<6.6) w[I(x,y)]=d<5.3&&r()<.5?KRISTALL:GEODE; }
+    for(const dx of [-2,0,2]){ const x=Math.round(cx+dx), y=Math.floor(cy+3.5); w[I(x,y+1)]=GEODE; w[I(x,y)]=RUINCHEST; R_.chest.push([x,y]); } }
+  return R_;
+}
+function placeDoor(w,r,L){
+  S.sec=S.sec||{}; if(S.sec[L]) return;
+  const Z=zonesOf(L), I=(x,y)=>y*W+x;
+  for(let t=0;t<200;t++){
+    const z=3+Math.floor(r()*3), f=Z[z].a+(((Z[z+1]||{a:Z[z].a+4000}).a-Z[z].a))*(.2+r()*.6), y=SKY+Math.round(f/FT), side=r()<.5?0:W-1;
+    if(L==='mars'&&ARENAS.some(A=>y>A.cy-A.ry-6&&y<(A.sf||A.ar)+6)) continue;
+    if(L!=='mars'&&y>EUARENA.cy-EUARENA.ry-10) continue;
+    if((S.minis||[]).some(m=>Math.abs(m.cy-y)<12)) continue;
+    w[I(side,y)]=HDOOR; S.sec[L]={x:side,y}; return; }
+}
+function placeExtras(w,r,L){
+  const Z=zonesOf(L), I=(x,y)=>y*W+x, minis=[], ruins=[], used=[];
+  const free=(y0,y1)=>!used.some(([a,b])=>y1>a-12&&y0<b+12)&&!(S.outposts||[]).some(o=>o.loc===L&&o.row>y0-10&&o.row<y1+10)&&y1<EUARENA.cy-EUARENA.ry-8;
+  XMINI[L].forEach((d,k)=>{ const z=[1,3,5][k], f=Z[z].a+(Z[z+1].a-Z[z].a)*.5;
+    for(let t=0;t<40;t++){ const cy=SKY+Math.round((f+(r()-.5)*1600)/FT), cx=Math.round(14+r()*(W-28)); if(!free(cy-8,cy+8)) continue;
+      const A={cx,cy,rx:9,ry:5,ar:cy+4}; carveDome(w,A,r,ROCK); minis.push({i:k,id:d.id,cx,cy,rx:9,ry:5,ar:A.ar,done:0}); used.push([cy-8,cy+8]); break; } });
+  const names=SITE_NAMES[L]||[];
+  names.forEach(([n,dd],k)=>{ const z=[0,2,4][k], kind=k===2?'schatz':['seq','plate','beam'][Math.floor(r()*3)], ww={seq:18,plate:22,beam:16,schatz:15}[kind], hh={seq:8,plate:7,beam:9,schatz:15}[kind];
+    for(let t=0;t<60;t++){ const f=Z[z].a+350+r()*(Z[z+1].a-Z[z].a-900), y0=SKY+Math.max(8,Math.round(f/FT)), x0=2+Math.floor(r()*(W-4-ww)); if(!free(y0,y0+hh)) continue;
+      const R_=buildSite(w,r,kind,x0,y0); Object.assign(R_,{z,nm:n,dd,cash:Math.round((SITE_CASH[L]||5e6)*(1+z*.3)),pl:L}); ruins.push(R_); used.push([y0,y0+hh]); break; } });
+  placeDoor(w,r,L);
+  return {minis,ruins};
+}
+function retrofit(L){
+  if(!S||!L||isSec(L)||L==='ab') return;
+  const key='rf7_'+L; if(S.flags[key]) return; S.flags[key]=1;
+  const r=mulberry32(((S.seed||1)^hashStr(L))>>>0);
+  if(L==='mars'){ placeDoor(S.world,r,'mars'); return; }
+  if(!XMINI[L]) return;
+  if(!(S.minis&&S.minis.length)){ const ex=placeExtras(S.world,r,L); S.minis=ex.minis; S.ruins=(S.ruins||[]).concat(ex.ruins);
+    if(['eu','io','ti','as'].includes(L)) setTimeout(()=>{ if(running&&S.loc===L) tx(SYS,`Neue Seismikdaten von ${PLN[L]}: drei Bedrohungen und drei Orte der Ersten. Die Karte zeigt sie.\nBesiegst du alle drei Mini-Bosse, verrät dir Varga ein Geheimnis dieser Welt.`); },1500); }
+  else placeDoor(S.world,r,L);
+}
+function worldGenX(L,w,r){ const ex=placeExtras(w,r,L); wArena(w,r,null); const o=wOut(w); o.minis=ex.minis; o.ruins=ex.ruins; return o; }
+
+/* ---------- neue Welten erzeugen ---------- */
+function genErde(seed){
+  const r=mulberry32((seed^0x45524445)>>>0), I=(x,y)=>y*W+x;
+  const P=[{rock:.0,bould:.02,gas:.003,ore:.08},{rock:.0,bould:.02,gas:.006,ore:.09},{rock:0,gas:.01,ore:.1},{rock:0,gas:.015,ore:.11},{rock:0,gas:.01,ore:.12},{rock:0,gas:.01,ore:.13},{rock:0,gas:.012,ore:.13}];
+  const w=wBase(r,'er',P,(z,r)=>r()<[.5,.45,.4,.3,.45,.5,.55][z]?BETON:r()<.04?STAHL:DIRT);
+  const cut=(x0,y0,ww,hh,wall)=>{ for(let y=y0;y<y0+hh;y++) for(let x=x0;x<x0+ww;x++){ if(x<1||x>W-2||y<=SKY+1) continue; const c=w[I(x,y)]; if(c===BED||c===CONC) continue; const e=y===y0||y===y0+hh-1||x===x0||x===x0+ww-1; w[I(x,y)]=e?wall:AIR; } };
+  for(let i=0;i<190;i++){ const ft=200+r()*8000, y0=SKY+Math.round(ft/FT), x0=2+Math.floor(r()*(W-20)), ww=7+Math.floor(r()*12), hh=4+Math.floor(r()*3);
+    cut(x0,y0,ww,hh,r()<.25?STAHL:BETON); w[I(x0+1+Math.floor(r()*(ww-2)),y0)]=AIR;
+    const fl=y0+hh-1; for(let x=x0+1;x<x0+ww-1;x++) if(r()<.08) w[I(x,fl-1)]=r()<.3?37:OC(r()<.6?29:3);
+    if(ft>3500&&r()<.5) for(let x=x0+1;x<x0+ww-1;x++) if(w[I(x,y0-1)]===DIRT||w[I(x,y0-1)]===BETON) w[I(x,y0-1)]=BRITTLE; }
+  for(let i=0;i<22;i++){ const ft=8000+r()*5000, y=SKY+Math.round(ft/FT), x0=1+Math.floor(r()*20), len=30+Math.floor(r()*50);
+    for(let x=x0;x<Math.min(W-1,x0+len);x++){ for(let d=0;d<3;d++){ const c=w[I(x,y+d)]; if(c!==BED&&c!==CONC) w[I(x,y+d)]=AIR; } w[I(x,y+3)]=STAHL; if(x%7===0) w[I(x,y-1)]=STAHL; } }
+  for(let i=0;i<80;i++){ const ft=13000+r()*5000, y=SKY+Math.round(ft/FT), x0=2+Math.floor(r()*(W-30)), len=8+Math.floor(r()*24);
+    for(let x=x0;x<x0+len&&x<W-1;x++){ for(let d=0;d<3;d++){ const c=w[I(x,y+d)]; if(c!==BED&&c!==CONC) w[I(x,y+d)]=d===2&&r()<.8?WATER:AIR; } w[I(x,y+3)]=BETON; } }
+  for(let i=0;i<70;i++){ const ft=18000+r()*8500, y0=SKY+Math.round(ft/FT), x0=2+Math.floor(r()*(W-14)), ww=8+Math.floor(r()*5), hh=5+Math.floor(r()*2);
+    cut(x0,y0,ww,hh,STAHL); for(let y=y0+1;y<y0+hh-1;y++) w[I(x0+ww-1,y)]=BETON;
+    const fl=y0+hh-2; w[I(x0+2,fl)]=TRESOR; if(r()<.6) w[I(x0+4,fl)]=TRESOR; if(r()<.5) w[I(x0+6,fl)]=ft>23000&&r()<.4?39:38; }
+  for(let i=0;i<60;i++){ const ft=27000+r()*2400, y0=SKY+Math.round(ft/FT), x=2+Math.floor(r()*(W-4)); for(let d=0;d<4;d++){ const c=w[I(x,y0+d)]; if(c!==BED) w[I(x,y0+d)]=STAHL; } }
+  return worldGenX('er',w,r);
+}
+function genUrmars(seed){
+  const r=mulberry32((seed^0x55524d41)>>>0), I=(x,y)=>y*W+x;
+  const P=[{rock:.02,bould:.006,ore:.09},{rock:.04,gas:.012,ore:.1},{rock:.05,gas:.01,ore:.11},{rock:.06,gas:.015,ore:.12},{rock:.09,gas:.02,lava:.06,ore:.13,bould:.01},{rock:.08,gas:.02,ore:.14,rad:.006},{rock:.1,gas:.03,lava:.07,ore:.14}];
+  const w=wBase(r,'zm',P,(z,r)=>z===5&&r()<.12?KRISTALL:z===3&&r()<.08?GEODE:DIRT);
+  for(let i=0;i<120;i++){ const ft=200+r()*3500, cy=SKY+Math.round(ft/FT)+.5, cx=3+r()*(W-6); wCarve(w,r,cx,cy,1.5+r()*4,1+r()*1.6,(dx,dy)=>dy>.3&&r()<.5?WATER:AIR,null); }
+  for(let i=0;i<110;i++){ const ft=3500+r()*4500, cy=SKY+Math.round(ft/FT)+.5, cx=3+r()*(W-6), rx=3+r()*8, ry=2+r()*3;
+    wCarve(w,r,cx,cy,rx,ry,AIR,null);
+    for(let y=Math.floor(cy-ry-1);y<=Math.ceil(cy+ry+1);y++) for(let x=Math.floor(cx-rx-1);x<=Math.ceil(cx+rx+1);x++){ if(x<1||x>W-2) continue; const c=w[I(x,y)]; if(c!==AIR) continue; if(w[I(x,y+1)]===DIRT&&r()<.45) w[I(x,y+1)]=SHROOM; if(w[I(x,y-1)]===DIRT&&r()<.2) w[I(x,y-1)]=SHROOM; } }
+  for(let i=0;i<140;i++){ const ft=8000+r()*10000, cy=SKY+Math.round(ft/FT)+.5, cx=3+r()*(W-6), z=wZone('zm',ft);
+    wCarve(w,r,cx,cy,(4+r()*12)*(z===2?1.3:1),(2+r()*5),SEA,z===3?GEODE:ROCK); }
+  for(let i=0;i<100;i++){ const ft=18000+r()*5000, cy=SKY+Math.round(ft/FT)+.5, cx=3+r()*(W-6); wCarve(w,r,cx,cy,2+r()*7,1.5+r()*3,(dx,dy)=>dy>.1?LAVA:AIR,ROCK); }
+  for(let i=0;i<90;i++){ const ft=23000+r()*6000, cy=SKY+Math.round(ft/FT)+.5, cx=3+r()*(W-6); wCarve(w,r,cx,cy,2+r()*6,1.5+r()*3,AIR,KRISTALL); }
+  return worldGenX('zm',w,r);
+}
+function genExo(seed){
+  const r=mulberry32((seed^0x45584f50)>>>0), I=(x,y)=>y*W+x;
+  const P=[{rock:.03,ore:.1},{rock:.04,gas:.01,ore:.12},{rock:.03,gas:.01,ore:.12},{rock:.05,gas:.015,ore:.13},{rock:.05,gas:.015,ore:.18},{rock:.06,gas:.02,ore:.14,rad:.01},{rock:.08,gas:.02,ore:.15}];
+  const w=wBase(r,'ex',P,(z,r)=>(z===0||z===5)&&r()<.18?KRISTALL:z===1&&r()<.08?KRISTALL:DIRT);
+  for(let i=0;i<120;i++){ const ft=200+r()*7000, cy=SKY+Math.round(ft/FT)+.5, cx=3+r()*(W-6), rx=2+r()*6, ry=1.5+r()*2.5; wCarve(w,r,cx,cy,rx,ry,AIR,null);
+    for(let x=Math.floor(cx-rx);x<=Math.ceil(cx+rx);x++){ if(x<1||x>W-2||r()>.25) continue; let y=Math.floor(cy+ry); while(y>cy-ry&&w[I(x,y)]!==AIR) y--; for(let h=0;h<2+Math.floor(r()*3)&&w[I(x,y)]===AIR;h++,y--) w[I(x,y)]=KRISTALL; } }
+  for(let i=0;i<60;i++){ const ft=8000+r()*5000, cy=SKY+Math.round(ft/FT)+.5, cx=3+r()*(W-6); wCarve(w,r,cx,cy,8+r()*14,4+r()*5,AIR,null);
+    for(let k=0;k<4;k++){ const ix=cx+(r()-.5)*14, iy=cy+(r()-.5)*5; for(let y=Math.floor(iy-1);y<=Math.ceil(iy+1);y++) for(let x=Math.floor(ix-2);x<=Math.ceil(ix+2);x++) if(x>0&&x<W-1&&w[I(x,y)]===AIR) w[I(x,y)]=r()<.3?OC(weightedOre(r,(y-SKY)*FT,WORLDS.ex.ores)):r()<.5?ROCK:DIRT; } }
+  for(let i=0;i<100;i++){ const ft=13000+r()*5000, cy=SKY+Math.round(ft/FT)+.5, cx=3+r()*(W-6); wCarve(w,r,cx,cy,2+r()*6,1.5+r()*2.5,(dx,dy)=>dy>.2?ACID:AIR,null); }
+  for(let i=0;i<90;i++){ const ft=23000+r()*5000, cy=SKY+Math.round(ft/FT)+.5, cx=3+r()*(W-6); wCarve(w,r,cx,cy,2+r()*6,1.5+r()*3,AIR,KRISTALL); }
+  return worldGenX('ex',w,r);
+}
+
+/* ---------- Geheimhöhlen ---------- */
+const SEC_ENTRY=SKY+24;
+function genSecret(par){
+  const r=mulberry32(((S.seed||1)^hashStr('h_'+par))>>>0), w=new Uint8Array(W*H), I=(x,y)=>y*W+x, ores=SEC_ORES[par]||SEC_ORES.mars;
+  w.fill(BED); const y0=SKY+4, y1=SKY+200;
+  for(let y=y0;y<=y1;y++) for(let x=1;x<W-1;x++){
+    const edge=Math.min(y-y0,y1-y,x-1,W-2-x); if(edge<2) continue;
+    const n=Math.sin(x*.21+y*.13)+Math.sin(x*.07-y*.19+1.7)+Math.sin((x+y)*.11)*.8+(hash(x,y)%100)/170;
+    let c; if(n>1.05) c=AIR; else { const p=r(); c=p<.3?OC(weightedOre(r,20000,ores)):p<.36?GEODE:p<.4?ROCK:p<.42?GAS:DIRT; }
+    w[I(x,y)]=c; }
+  for(let x=1;x<=14;x++){ for(let y=SEC_ENTRY-2;y<=SEC_ENTRY;y++) w[I(x,y)]=AIR; w[I(x,SEC_ENTRY+1)]=ROCK; }
+  w[I(0,SEC_ENTRY)]=HDOOR;
+  const A={cx:42,cy:SKY+70,rx:10,ry:6,ar:SKY+75}; carveDome(w,A,r,ROCK);
+  const seen=new Uint8Array(W*H); for(let y=SEC_ENTRY-3;y<=SEC_ENTRY+2;y++) for(let x=0;x<=16;x++) seen[I(x,y)]=1;
+  return {world:w,seen,beacons:[],myBeacons:[],ruins:[],dark:[],vaults:[],minis:[{i:0,id:'hueter_'+par,cx:A.cx,cy:A.cy,rx:A.rx,ry:A.ry,ar:A.ar,done:0}]};
+}
+function enterSecret(){
+  const L=S.loc; if(isSec(L)||!S.sec||!S.sec[L]) return;
+  travel('h_'+L,2.5,SEC_ENTRY+1-HH-.001,null);
+  if(!S.flags['sec_'+L]){ S.flags['sec_'+L]=1; unlock('geheim'); tx(V,`Du hast es geschafft, Pilot. Die Geheimhöhle von ${L==='mars'?'Mars':PLN[L]}.\nDie Erze hier sind seltener als alles, was du kennst. Aber die Ersten haben einen Hüter zurückgelassen.\nDie Tür hinter dir bringt dich zurück.`); }
+  else toast('Geheimhöhle',1600);
+  saveGame(true);
+}
+function leaveSecret(){
+  const par=secPar(S.loc), d=S.sec&&S.sec[par]; if(!d){ goMars(); return; }
+  const x=d.x===0?1.5:W-1.5;
+  travel(par,x,d.y+1-HH-.001,null);
+  const cx=Math.floor(x); if(!isFluid(get(cx,d.y))) S.world[d.y*W+cx]=AIR;
+  toast(`Zurück: ${par==='mars'?'Mars':PLN[par]}`,1600); saveGame(true);
+}
+function secretHint(){
+  const L=S.loc; if(isSec(L)||L==='ab'||!S.sec||!S.sec[L]||S.flags['hint_'+L]) return;
+  const ok=L==='mars'?S.minisDone.every(Boolean):(S.minis&&S.minis.length===3&&S.minis.every(m=>m.done));
+  if(!ok) return; S.flags['hint_'+L]=1; const d=S.sec[L];
+  S.marks.push({x:d.x===0?1.5:W-1.5,y:d.y+.5,t:'Geheimtür',c:3,goal:true,loc:L});
+  tx(V,`Pilot, ich habe etwas gefunden. In der ${d.x===0?'linken':'rechten'} Felswand, auf ${fmtN((d.y-SKY)*FT)} ft, verbirgt sich eine Tür der Ersten.\nDahinter liegt eine riesige Höhle voller seltener Erze. Bohr die Tür einfach an. Die Karte zeigt dir den Weg.`);
+}
+
+/* ---------- Wandernde Erze (Exoplanet) ---------- */
+function wanderTick(dt){
+  ui.wanT=(ui.wanT||0)-dt; if(ui.wanT>0) return; ui.wanT=1.2;
+  const p=S.p, cx=Math.floor(p.x), cy=Math.floor(p.y); let n=0;
+  for(let t=0;t<60&&n<6;t++){ const x=cx+Math.floor((Math.random()-.5)*22), y=cy+Math.floor((Math.random()-.5)*16), c=get(x,y);
+    if(!isMin(c)||(p.dr&&p.dr.tx===x&&p.dr.ty===y)) continue;
+    const dirs=[[1,0],[-1,0],[0,1],[0,-1]].sort(()=>Math.random()-.5);
+    for(const [dx,dy] of dirs){ const nx=x+dx, ny=y+dy; if(get(nx,ny)===DIRT&&nx>0&&nx<W-1&&!(p.dr&&p.dr.tx===nx&&p.dr.ty===ny)){ S.world[ny*W+nx]=c; S.world[y*W+x]=DIRT; n++; if(Math.random()<.3) spawn(nx+.5,ny+.5,3,MIN[OI(c)].g,1,.4,.1,0); break; } } }
+}
+
+/* ---------- Mini-Bosse ---------- */
+BOSSFN.xm={
+  init(b,A){ const d=b.def; b.cool=2; b.c2=3; b.state='roam'; b.parts=[];
+    if(d.arch==='serpent'){ b.segs=[]; for(let k=0;k<9;k++) b.segs.push({x:A.cx-k*.8,y:A.cy}); b.st=2; b.dir={x:1,y:0}; b.x=A.cx; b.y=A.cy; }
+    else if(d.arch==='charge'||d.arch==='jump'){ b.x=A.cx+4; b.y=A.ar-1.3; b.vx=0; }
+    else { b.x=A.cx; b.y=A.cy-1.5; }
+    if(d.arch==='orbit') orbParts(b,3,Math.round(d.hp*.14),.8); },
+  update(b,dt,A){
+    const d=b.def, p=S.p, ph=b.hp<b.max*.5?2:1, sp=ph===2?1.35:1, fy=A.ar-1.3;
+    const shoot=(n,spd,spread,o)=>{ o=o||b; const base=Math.atan2(p.y-o.y,p.x-o.x); for(let k=0;k<n;k++){ const a=base+(k-(n-1)/2)*spread; projs.push({k:d.proj,x:o.x,y:o.y,vx:Math.cos(a)*spd,vy:Math.sin(a)*spd,life:4,g:d.proj==='rock'?5:0}); } AU.blip(300,.15,'square',.08,-100); };
+    if(d.arch==='charge'){
+      if(b.state==='roam'){ b.vx+=(Math.sign(p.x-b.x)*3*sp-b.vx)*Math.min(1,dt*3); b.x+=b.vx*dt; b.cool-=dt; if(b.cool<=0){ b.state='aim'; b.st=.6; AU.blip(120,.5,'sawtooth',.12,40); } b.c2-=dt; if(b.c2<=0){ b.c2=3/sp; shoot(3,7,.25); } }
+      else if(b.state==='aim'){ b.st-=dt; if(b.st<=0){ b.state='dash'; b.vx=(Math.sign(p.x-b.x)||1)*13*sp; b.st=1.4; AU.roar(); } }
+      else if(b.state==='dash'){ b.x+=b.vx*dt; b.st-=dt; if(Math.abs(b.x-A.cx)>A.rx-1.6){ b.x=A.cx+Math.sign(b.x-A.cx)*(A.rx-1.6); b.state='stun'; b.st=2.2; quake(.6); toast('Benommen! Jetzt zuschlagen!',1000); } else if(b.st<=0){ b.state='roam'; b.cool=2.5/sp; } }
+      else if(b.state==='stun'){ b.st-=dt; if(b.st<=0){ b.state='roam'; b.cool=2.6/sp; } }
+      b.y=fy+(b.state==='aim'?Math.sin(b.t*40)*.06:0);
+    } else if(d.arch==='jump'){
+      if(b.state==='roam'){ b.y=fy; b.cool-=dt; if(b.cool<=0){ b.state='air'; b.tx=clamp(p.x,A.cx-A.rx+2,A.cx+A.rx-2); b.x0=b.x; b.jt=0; b.jd=1.1/sp; AU.blip(90,.3,'sawtooth',.12,200); } }
+      else { b.jt+=dt; const k=Math.min(1,b.jt/b.jd); b.x=lerp(b.x0,b.tx,k); b.y=fy-Math.sin(k*Math.PI)*5; if(k>=1){ b.state='roam'; b.cool=2.4/sp; quake(.5); AU.boom(.6,.6); const pk=d.proj==='ice'?'ice':'rock'; for(const s of [-1,1]) for(let j=0;j<3;j++) projs.push({k:pk,x:b.x,y:fy+.4,vx:s*(5+j*2),vy:-3-j,g:8,life:3}); } }
+      b.c2-=dt; if(b.c2<=0&&b.state==='roam'){ b.c2=2.8/sp; shoot(ph===2?5:3,7,.22); }
+    } else if(d.arch==='shoot'){
+      if(b.tx==null) b.tx=A.cx; b.blink=(b.blink??6)-dt; if(b.blink<=0){ b.blink=6/sp; b.tx=clamp(p.x+(p.x>A.cx?-6:6),A.cx-A.rx+2,A.cx+A.rx-2); spawn(b.x,b.y,20,d.col[1],4,.5,.12,0); }
+      b.x+=(b.tx-b.x)*Math.min(1,dt*2); b.y=A.cy-2.5+Math.sin(b.t*1.6)*1.2;
+      b.cool-=dt; if(b.cool<=0){ b.cool=ph===2?1.1:1.7; shoot(ph===2?5:3,8,.2); }
+    } else if(d.arch==='summon'){
+      b.x=A.cx+Math.sin(b.t*.5)*(A.rx-4); b.y=A.cy-1.5+Math.sin(b.t*1.1);
+      b.cool-=dt; if(b.cool<=0){ b.cool=5/sp; const n=mobs.filter(c=>c.boss&&!c.dead).length; for(let k=0;k<2&&n+k<5;k++) spawnMob(d.mob,b.x+(k?1:-1),b.y+1,true); AU.blip(500,.3,'sine',.1,-200); }
+      b.c2-=dt; if(b.c2<=0){ b.c2=2.2/sp; shoot(3,6,.3); }
+    } else if(d.arch==='orbit'){
+      b.x=A.cx+Math.sin(b.t*.4)*(A.rx-4); b.y=A.cy-1.5+Math.sin(b.t*.9)*.8; b.rot=(b.rot||0)+dt*1.4*sp;
+      b.parts.forEach((s,k)=>{ const a=b.rot+k*Math.PI*2/3; s.x=b.x+Math.cos(a)*2.8; s.y=b.y+Math.sin(a)*2.8; });
+      partContact(b,8,'An einem Splitter zerschellt'); if(!running) return;
+      if(ph===2&&!b.regrown){ b.regrown=1; regrowParts(b,2); toast('Die Splitter wachsen nach!',1200); }
+      b.cool-=dt; if(b.cool<=0){ b.cool=2.4/sp; for(let k=0;k<8;k++){ const a=b.t+k*Math.PI/4; projs.push({k:d.proj,x:b.x,y:b.y,vx:Math.cos(a)*5.5,vy:Math.sin(a)*5.5,life:4}); } }
+      b.c2-=dt; if(b.c2<=0){ b.c2=3/sp; shoot(1,7,0); }
+    } else if(d.arch==='serpent'){
+      wormStep(b,A,dt,5.5*sp,13*sp); const h=b.segs[0]; b.x=h.x; b.y=h.y;
+      b.c2-=dt; if(b.c2<=0){ b.c2=2.4/sp; shoot(3,7,.25,h); }
+    }
+    if(d.arch!=='serpent') b.x=clamp(b.x,A.cx-A.rx+1.2,A.cx+A.rx-1.2);
+  },
+  hits(b){ const d=b.def; if(d.arch==='serpent') return b.segs.map((s,k)=>k===0?{x:s.x,y:s.y,r:1,m:1}:{x:s.x,y:s.y,r:.7,m:.5});
+    const body={x:b.x,y:b.y,r:d.arch==='orbit'?1.3:1.2,m:b.state==='stun'?1.6:1}; return d.arch==='orbit'?partHits(b,[body]):[body]; },
+  armored(b){ return b.def.arch==='orbit'?partArmor(b,'Splitter'):null; },
+  center(b){ return b.def.arch==='serpent'?b.segs[0]:b; },
+};
+function xmDown(b){
+  const m=S.minis[b.i], d=b.def; if(m) m.done=1; const L=isSec(S.loc)?secPar(S.loc):S.loc;
+  discover('xmini:'+d.id.replace(/^hueter_.*/,'hueter'));
+  if(d.id.startsWith('hueter_')){ const cash=(XM_PAY[L]||40e6)*4; S.money+=cash; S.score+=cash*2; gainXP(800);
+    const top=(SEC_ORES[L]||SEC_ORES.mars)[1][0]; S.store[top]+=12; S.flags['g_'+L]=1;
+    if(Object.keys(XGUARD).every(k=>S.flags['g_'+k])) unlock('geheim8');
+    setTimeout(()=>tx(SYS,`Der Hüter ist besiegt. +${fmt(cash)} und 12× ${MIN[top].n} ins Lagerhaus.\nDie Geheimhöhle gehört dir.`),1400); return; }
+  const cash=XM_PAY[L]||30e6, W_=WORLDS[L], OL=oresOf(L), top=OL?OL[OL.length-1][0]:15, n=6;
+  S.money+=cash; S.score+=cash*2; S.store[top]+=n; gainXP(400);
+  if(XMINI_ALL.every(q=>META.book['xmini:'+q.id])) unlock('xmini');
+  const left=S.minis.filter(q=>!q.done).length;
+  setTimeout(()=>tx(SYS,`${d.n} besiegt. +${fmt(cash)} und ${n}× ${MIN[top].n} ins Lagerhaus.${left?`\nAuf ${PLN[L]} lauern noch ${left} Mini-Bosse.`:W_&&W_.gate&&!(S.wBoss||{})[L]?'\nAlle Mini-Bosse besiegt. Die Arena des Wächters ist offen.':'\nAlle Mini-Bosse dieser Welt sind besiegt.'}`),1400);
+}
+
+/* ---------- Bosse der neuen Welten ---------- */
+const RK_OFF=[[-6,-1],[6,-1],[-4,2.6],[4,2.6]];
+BOSSFN.rechner={
+  init(b,A){ b.x=A.cx; b.y=A.cy-3; b.lines=[]; b.lt=3; b.dog=7; b.regrown=false; orbParts(b,4,110,1); b.parts.forEach(s=>s.cd=1+Math.random()*2); },
+  update(b,dt,A){
+    const p=S.p, ph=bPhase(b);
+    b.x=A.cx+(A.rx-10)*Math.sin(b.t*.2); b.y=A.cy-3+Math.sin(b.t*.5);
+    b.parts.forEach((s,k)=>{ s.x=b.x+RK_OFF[k][0]; s.y=b.y+RK_OFF[k][1]; if(s.dead) return; s.cd-=dt; if(s.cd<=0){ s.cd=(ph===1?2.6:1.6)+Math.random(); const a=Math.atan2(p.y-s.y,p.x-s.x); projs.push({k:'dlaser',x:s.x,y:s.y,vx:Math.cos(a)*10,vy:Math.sin(a)*10,life:3}); } });
+    partContact(b,9,'An einem Serverschrank zerschellt'); if(!running) return;
+    if(ph>=2&&!b.regrown){ b.regrown=true; regrowParts(b,2); toast('Backup geladen: zwei Schränke sind zurück!',1600); }
+    b.lt-=dt; if(b.lt<=0){ b.lt=ph===1?3.2:ph===2?2.2:1.6; b.lines.push({h:1,v:clamp(p.y+(Math.random()-.5)*2,A.cy-A.ry+1,A.ar-.5),t:1,st:'warn'}); if(ph>=2) b.lines.push({h:0,v:clamp(p.x+(Math.random()-.5)*3,A.cx-A.rx+1,A.cx+A.rx-1),t:1,st:'warn'}); }
+    for(let i=b.lines.length-1;i>=0;i--){ const q=b.lines[i]; q.t-=dt;
+      if(q.st==='warn'&&q.t<=0){ q.st='hit'; q.t=.4; AU.blip(1800,.3,'square',.1,-900); if(q.h?Math.abs(p.y-q.v)<.75:Math.abs(p.x-q.v)<.75){ damage(14,'Vom Laser des Superrechners getroffen',{hit:true}); if(!running) return; } }
+      else if(q.st==='hit'&&q.t<=0) b.lines.splice(i,1); }
+    if(ph>=2){ b.dog-=dt; if(b.dog<=0){ b.dog=7; if(mobs.filter(c=>c.boss).length<4) spawnMob('robohund',b.x,A.ar-1,true); } }
+  },
+  hits(b){ return partHits(b,[{x:b.x,y:b.y,r:2,m:1}]); },
+  armored(b){ return partArmor(b,'Serverschränke'); },
+  center(b){ return b; },
+};
+BOSSFN.jschlaefer={
+  init(b,A){ b.x=A.cx; b.y=A.cy-2; b.rot=0; b.cool=2; b.rain=6; b.sc=8; b.regrown=false; orbParts(b,5,95,.95); },
+  update(b,dt,A){
+    const p=S.p, ph=bPhase(b);
+    b.x=A.cx+(A.rx-9)*Math.sin(b.t*.25); b.y=A.cy-2+1.8*Math.sin(b.t*.55);
+    b.rot+=dt*(ph===1?.8:1.3);
+    b.parts.forEach((s,k)=>{ const a=b.rot+k*Math.PI*2/5; s.x=b.x+Math.cos(a)*4.8; s.y=b.y+Math.sin(a)*4.2; });
+    partContact(b,10,'An einem Herzkristall zerschellt','fire'); if(!running) return;
+    if(ph>=2&&!b.regrown){ b.regrown=true; regrowParts(b,3); quake(1.5); toast('Neue Kristalle wachsen!',1600); }
+    b.cool-=dt; if(b.cool<=0){ b.cool=ph===1?1.8:ph===2?1.3:1; const n=10, o=b.t*1.3; for(let k=0;k<n;k++){ const a=o+k*Math.PI*2/n; projs.push({k:'fire',x:b.x+Math.cos(a)*2.4,y:b.y+Math.sin(a)*2.4,vx:Math.cos(a)*5.5,vy:Math.sin(a)*5.5,life:5}); } AU.blip(150,.3,'sawtooth',.12,-60); }
+    b.rain-=dt; if(b.rain<=0){ b.rain=ph===1?6:4; for(let k=0;k<(ph===1?5:8);k++){ const x=clamp(p.x+(Math.random()-.5)*16,A.cx-A.rx+2,A.cx+A.rx-2); projs.push({k:'lava',x,y:ceilingAbove(x,p.y)+.4,vx:0,vy:0,warn:.9,life:6}); } }
+    if(ph===3){ b.sc-=dt; if(b.sc<=0){ b.sc=6; if(mobs.filter(c=>c.boss).length<4) spawnMob('glutling',b.x,b.y,true); } }
+    if(Math.random()<.35) spawn(b.x+(Math.random()-.5)*3,b.y+(Math.random()-.5)*3,1,'#ff7ab8',1,.6,.12,-2);
+  },
+  hits(b){ return partHits(b,[{x:b.x,y:b.y,r:2.5,m:1}]); },
+  armored(b){ return partArmor(b,'Herzkristalle'); },
+  center(b){ return b; },
+};
+BOSSFN.erbauer={
+  init(b,A){ b.x=A.cx; b.y=A.cy-2; b.rot=0; b.beams=[]; b.bt=3; b.blink=5; b.cool=2; b.regrown=false; orbParts(b,3,150,.9); },
+  update(b,dt,A){
+    const p=S.p, ph=bPhase(b);
+    b.blink-=dt; if(b.blink<=0){ b.blink=ph===1?5:3.5; spawn(b.x,b.y,30,'#c070ff',5,.6,.14,0); b.x=A.cx+(Math.random()-.5)*(A.rx*1.4); b.y=A.cy-2+(Math.random()-.5)*4; spawn(b.x,b.y,30,'#5ff0ff',5,.6,.14,0); AU.blip(900,.4,'sine',.12,-600); }
+    b.y+=Math.sin(b.t*1.5)*.01; b.rot+=dt*(ph===1?1:1.6);
+    b.parts.forEach((s,k)=>{ const a=b.rot+k*Math.PI*2/3; s.x=b.x+Math.cos(a)*3.6; s.y=b.y+Math.sin(a)*3.6; });
+    partContact(b,10,'An einem Prisma zerschnitten','rad'); if(!running) return;
+    if(ph>=2&&!b.regrown){ b.regrown=true; regrowParts(b,2); toast('Die Prismen sammeln neues Licht!',1600); }
+    b.bt-=dt; if(b.bt<=0){ b.bt=ph===1?2.6:ph===2?1.8:1.3; const base=Math.atan2(p.y-b.y,p.x-b.x); const n=ph===3?3:ph===2?2:1; for(let k=0;k<n;k++) b.beams.push({a:base+(k-(n-1)/2)*.5,x:b.x,y:b.y,t:1,st:'warn'}); }
+    for(let i=b.beams.length-1;i>=0;i--){ const q=b.beams[i]; q.t-=dt;
+      if(q.st==='warn'&&q.t<=0){ q.st='hit'; q.t=.35; AU.blip(2200,.25,'sine',.1,-1500);
+        const dx=p.x-q.x, dy=p.y-q.y, along=dx*Math.cos(q.a)+dy*Math.sin(q.a), off=Math.abs(-dx*Math.sin(q.a)+dy*Math.cos(q.a));
+        if(along>0&&off<.8){ damage(15,'Vom Lichtstrahl des Erbauers durchbohrt',{hit:true,type:'rad'}); if(!running) return; } }
+      else if(q.st==='hit'&&q.t<=0) b.beams.splice(i,1); }
+    b.cool-=dt; if(b.cool<=0){ b.cool=ph===1?2.4:1.6; for(let k=0;k<6;k++){ const a=b.t+k*Math.PI/3; projs.push({k:'rad',x:b.x,y:b.y,vx:Math.cos(a)*5,vy:Math.sin(a)*5,life:4}); } }
+  },
+  hits(b){ return partHits(b,[{x:b.x,y:b.y,r:1.6,m:1}]); },
+  armored(b){ return partArmor(b,'Prismen'); },
+  center(b){ return b; },
+};
+function drawXBoss(b,cx,cy,wake){
+  ctx.save(); ctx.globalAlpha=clamp(wake,.2,1);
+  const X=b.x*ts-cx, Y=b.y*ts-cy, fl=b.flash>0, shield=b.parts.some(s=>!s.dead);
+  const bar=(s,dy)=>{ const sx=s.x*ts-cx, sy=s.y*ts-cy; ctx.fillStyle='#1a0d08'; ctx.fillRect(sx-ts*.5,sy+ts*dy,ts,ts*.08); ctx.fillStyle='#86d27c'; ctx.fillRect(sx-ts*.5,sy+ts*dy,ts*s.hp/s.max,ts*.08); };
+  if(b.type==='rechner'){
+    for(const q of b.lines){ const A=b.A; ctx.fillStyle=q.st==='warn'?`rgba(255,60,60,${.15+.12*Math.sin(S.time*30)})`:'rgba(255,90,90,.85)';
+      if(q.h){ const y=q.v*ts-cy, th=q.st==='warn'?ts*.12:ts*.5; ctx.fillRect((A.cx-A.rx)*ts-cx,y-th/2,A.rx*2*ts,th); }
+      else { const x=q.v*ts-cx, th=q.st==='warn'?ts*.12:ts*.5; ctx.fillRect(x-th/2,(A.cy-A.ry)*ts-cy,th,(A.ry*2)*ts); } }
+    ctx.fillStyle=fl?'#fff':'#2a3438'; ctx.fillRect(X-ts*2.4,Y-ts*2,ts*4.8,ts*4);
+    ctx.fillStyle='#1c2428'; for(let k=0;k<6;k++) ctx.fillRect(X-ts*2.1,Y-ts*1.7+k*ts*.6,ts*4.2,ts*.4);
+    for(let k=0;k<12;k++){ ctx.fillStyle=Math.sin(S.time*8+k*1.7)>0?'#86d27c':'#2a6a3a'; ctx.fillRect(X-ts*1.9+(k%6)*ts*.7,Y-ts*1.6+Math.floor(k/6)*ts*2.4,ts*.18,ts*.12); }
+    ctx.fillStyle=shield?'#3b6fc4':`rgba(255,${90+80*Math.sin(S.time*8)},60,1)`; ctx.beginPath(); ctx.arc(X,Y,ts*.8,0,7); ctx.fill();
+    for(const s of b.parts){ if(s.dead) continue; const sx=s.x*ts-cx, sy=s.y*ts-cy; ctx.fillStyle=s.flash>0?'#fff':'#3c454c'; ctx.fillRect(sx-ts*.6,sy-ts*.9,ts*1.2,ts*1.8);
+      for(let k=0;k<4;k++){ ctx.fillStyle=Math.sin(S.time*10+k+s.id)>0?'#73cfc0':'#1c2428'; ctx.fillRect(sx-ts*.4,sy-ts*.7+k*ts*.4,ts*.8,ts*.18); } bar(s,1); }
+  } else if(b.type==='jschlaefer'){
+    const g=ctx.createRadialGradient(X,Y,ts,X,Y,ts*6); g.addColorStop(0,'rgba(255,90,140,.45)'); g.addColorStop(1,'rgba(255,90,140,0)'); ctx.fillStyle=g; ctx.beginPath(); ctx.arc(X,Y,ts*6,0,7); ctx.fill();
+    const pul=1+.06*Math.sin(b.t*5); ctx.fillStyle=fl?'#fff':'#8a1a3a'; ctx.beginPath(); ctx.ellipse(X,Y,ts*2.6*pul,ts*2.2*pul,0,0,7); ctx.fill();
+    ctx.fillStyle='#ffe27a'; ctx.beginPath(); ctx.ellipse(X,Y,ts*1.2,ts*.9*(.6+.4*Math.abs(Math.sin(b.t*.7))),0,0,7); ctx.fill();
+    ctx.fillStyle='#1a0b06'; ctx.beginPath(); ctx.ellipse(X+clamp((S.p.x-b.x)*.05,-.4,.4)*ts,Y,ts*.25,ts*.7,0,0,7); ctx.fill();
+    for(const s of b.parts){ if(s.dead) continue; const sx=s.x*ts-cx, sy=s.y*ts-cy; ctx.fillStyle=s.flash>0?'#fff':'#c9b0e6'; ctx.beginPath(); ctx.moveTo(sx,sy-ts*1.1); ctx.lineTo(sx+ts*.5,sy); ctx.lineTo(sx,sy+ts*1.1); ctx.lineTo(sx-ts*.5,sy); ctx.closePath(); ctx.fill(); ctx.strokeStyle='#ff7ab8'; ctx.lineWidth=Math.max(1,ts*.06); ctx.stroke(); bar(s,1.25); }
+  } else {
+    for(const q of b.beams){ const L_=ts*30, x2=q.x*ts-cx+Math.cos(q.a)*L_, y2=q.y*ts-cy+Math.sin(q.a)*L_;
+      ctx.strokeStyle=q.st==='warn'?`rgba(200,140,255,${.25+.2*Math.sin(S.time*30)})`:'rgba(240,220,255,.95)'; ctx.lineWidth=q.st==='warn'?Math.max(1,ts*.08):ts*.55;
+      ctx.beginPath(); ctx.moveTo(q.x*ts-cx,q.y*ts-cy); ctx.lineTo(x2,y2); ctx.stroke(); }
+    const g=ctx.createRadialGradient(X,Y,0,X,Y,ts*4); g.addColorStop(0,'rgba(200,160,255,.5)'); g.addColorStop(1,'rgba(120,80,255,0)'); ctx.fillStyle=g; ctx.beginPath(); ctx.arc(X,Y,ts*4,0,7); ctx.fill();
+    ctx.fillStyle=fl?'#fff':'#2a1a3a'; ctx.beginPath(); ctx.moveTo(X,Y-ts*2.4); ctx.lineTo(X+ts*1.1,Y+ts*1.6); ctx.lineTo(X-ts*1.1,Y+ts*1.6); ctx.closePath(); ctx.fill();
+    ctx.strokeStyle='#c070ff'; ctx.lineWidth=Math.max(1,ts*.1); ctx.beginPath(); ctx.arc(X,Y-ts*1.6,ts*.9,0,7); ctx.stroke();
+    ctx.fillStyle=shield?'#5ff0ff':'#ffffff'; ctx.beginPath(); ctx.arc(X,Y-ts*.6,ts*.35,0,7); ctx.fill();
+    for(const s of b.parts){ if(s.dead) continue; const sx=s.x*ts-cx, sy=s.y*ts-cy; ctx.fillStyle=s.flash>0?'#fff':'rgba(95,240,255,.85)'; ctx.beginPath(); ctx.moveTo(sx,sy-ts*.9); ctx.lineTo(sx+ts*.7,sy+ts*.6); ctx.lineTo(sx-ts*.7,sy+ts*.6); ctx.closePath(); ctx.fill(); bar(s,.9); }
+  }
+  ctx.restore();
+}
+function drawXM(b,cx,cy,wake){
+  const d=b.def, [c0,c1,c2]=d.col, fl=b.flash>0;
+  if(d.arch==='serpent'){ drawWorm(b,cx,cy,.75,c0,c1,1.05,false); return; }
+  ctx.save(); ctx.globalAlpha=clamp(wake,.2,1); ctx.translate(b.x*ts-cx,b.y*ts-cy); ctx.scale(ts,ts);
+  const dir=S.p.x<b.x?-1:1, t=b.t, body=fl?'#fff':c0;
+  if(d.arch==='orbit') for(const s of b.parts){ if(s.dead) continue; const sx=s.x-b.x, sy=s.y-b.y; ctx.fillStyle=s.flash>0?'#fff':c1; ctx.beginPath(); ctx.moveTo(sx,sy-.7); ctx.lineTo(sx+.5,sy); ctx.lineTo(sx,sy+.7); ctx.lineTo(sx-.5,sy); ctx.closePath(); ctx.fill(); ctx.fillStyle='#1a0d08'; ctx.fillRect(sx-.5,sy+.85,1,.08); ctx.fillStyle='#86d27c'; ctx.fillRect(sx-.5,sy+.85,s.hp/s.max,.08); }
+  ctx.scale(dir,1);
+  const eye=(x,y,r)=>{ ctx.fillStyle=c2; ctx.beginPath(); ctx.arc(x,y,r,0,7); ctx.fill(); ctx.fillStyle='#1a0b06'; ctx.beginPath(); ctx.arc(x+r*.3,y,r*.45,0,7); ctx.fill(); };
+  const sh=d.shape;
+  if(sh==='crab'){ ctx.strokeStyle=c1; ctx.lineWidth=.12; for(const s of [-1,1]) for(let k=0;k<3;k++){ ctx.beginPath(); ctx.moveTo(s*.6,.2); ctx.lineTo(s*(1+k*.2),.7+Math.sin(t*12+k)*.1); ctx.stroke(); }
+    ctx.fillStyle=body; ctx.beginPath(); ctx.ellipse(0,0,1.2,.7,0,0,7); ctx.fill(); ctx.fillStyle=c1; for(const s of [-1,1]){ ctx.beginPath(); ctx.ellipse(s*1.3+.3,-.5,.5,.35,s*.5,0,7); ctx.fill(); }
+    eye(.4,-.5,.16); eye(-.1,-.55,.14); }
+  else if(sh==='squid'){ ctx.strokeStyle=c1; ctx.lineWidth=.14; for(let k=0;k<6;k++){ const x=-.7+k*.28; ctx.beginPath(); ctx.moveTo(x,.4); ctx.quadraticCurveTo(x+Math.sin(t*4+k)*.3,1,x,1.5); ctx.stroke(); }
+    ctx.fillStyle=body; ctx.beginPath(); ctx.ellipse(0,-.2,1,1.2,0,0,7); ctx.fill(); eye(.35,-.1,.2); eye(-.3,-.1,.2); }
+  else if(sh==='spider'){ ctx.strokeStyle=c0; ctx.lineWidth=.1; for(const s of [-1,1]) for(let k=0;k<4;k++){ const a=-.6+k*.4; ctx.beginPath(); ctx.moveTo(0,0); ctx.lineTo(s*Math.cos(a)*1.1,Math.sin(a)*.6-.4); ctx.lineTo(s*Math.cos(a)*1.6,Math.sin(a)*.8+.6+Math.sin(t*10+k)*.1); ctx.stroke(); }
+    ctx.fillStyle=body; ctx.beginPath(); ctx.ellipse(-.3,0,.8,.65,0,0,7); ctx.fill(); ctx.fillStyle=c1; ctx.beginPath(); ctx.ellipse(.45,-.05,.45,.4,0,0,7); ctx.fill(); for(let k=0;k<3;k++) eye(.6,-.25+k*.15,.07); }
+  else if(sh==='golem'){ ctx.fillStyle=body; ctx.fillRect(-.9,-1,1.8,1.8); ctx.fillRect(-1.3,-.7,.4,1.2); ctx.fillRect(.9,-.7,.4,1.2); ctx.fillRect(-.7,.8,.5,.5); ctx.fillRect(.2,.8,.5,.5);
+    ctx.strokeStyle=c1; ctx.lineWidth=.08; ctx.beginPath(); ctx.moveTo(-.6,-.4); ctx.lineTo(0,.1); ctx.lineTo(.5,-.3); ctx.moveTo(-.2,.4); ctx.lineTo(.3,.7); ctx.stroke(); eye(.35,-.6,.15); eye(-.25,-.6,.15); }
+  else if(sh==='bird'){ const f=Math.sin(t*12)*.6; ctx.fillStyle=c1; ctx.beginPath(); ctx.moveTo(-.2,-.1); ctx.lineTo(-1.4,-.6-f); ctx.lineTo(-.6,.2); ctx.closePath(); ctx.fill(); ctx.beginPath(); ctx.moveTo(.1,-.1); ctx.lineTo(1.1,-.7-f); ctx.lineTo(.5,.2); ctx.closePath(); ctx.fill();
+    ctx.fillStyle=body; ctx.beginPath(); ctx.ellipse(0,0,.8,.45,0,0,7); ctx.fill(); ctx.beginPath(); ctx.moveTo(.75,-.1); ctx.lineTo(1.2,.05); ctx.lineTo(.75,.1); ctx.fill(); eye(.5,-.15,.12); }
+  else if(sh==='ray'){ ctx.fillStyle=body; ctx.beginPath(); ctx.moveTo(1,0); ctx.lineTo(0,-.4-Math.sin(t*5)*.2); ctx.lineTo(-1.4,0); ctx.lineTo(0,.4+Math.sin(t*5)*.2); ctx.closePath(); ctx.fill();
+    ctx.strokeStyle=c1; ctx.lineWidth=.08; ctx.beginPath(); ctx.moveTo(-1.4,0); ctx.lineTo(-2.2,Math.sin(t*6)*.3); ctx.stroke(); if(Math.random()<.3){ ctx.strokeStyle='#fff'; ctx.beginPath(); ctx.moveTo(-2.2,0); ctx.lineTo(-2.5,.3); ctx.stroke(); } eye(.4,-.1,.1); }
+  else if(sh==='robot'){ ctx.fillStyle='#2c2422'; ctx.fillRect(-1,.5,2,.45); ctx.fillStyle='#5a4d48'; for(let k=0;k<4;k++){ ctx.beginPath(); ctx.arc(-.75+k*.5,.72,.15,0,7); ctx.fill(); }
+    ctx.fillStyle=body; ctx.fillRect(-.9,-.9,1.8,1.4); ctx.fillStyle=c1; ctx.fillRect(-.9,-.2,1.8,.15); ctx.fillRect(.9,-.5,.5,.25); ctx.strokeStyle=c1; ctx.lineWidth=.06; ctx.beginPath(); ctx.moveTo(-.4,-.9); ctx.lineTo(-.5,-1.3); ctx.stroke();
+    ctx.fillStyle=c2; ctx.fillRect(.3,-.7,.4,.25); }
+  else if(sh==='lizard'){ ctx.fillStyle=c1; ctx.beginPath(); ctx.moveTo(-.8,0); ctx.quadraticCurveTo(-1.6,Math.sin(t*5)*.3,-2,.2); ctx.lineTo(-.8,.25); ctx.fill();
+    ctx.strokeStyle=body; ctx.lineWidth=.14; for(const x of [-.5,.4]){ ctx.beginPath(); ctx.moveTo(x,.2); ctx.lineTo(x+Math.sin(t*10+x)*.15,.7); ctx.stroke(); }
+    ctx.fillStyle=body; ctx.beginPath(); ctx.ellipse(0,0,1,.45,0,0,7); ctx.fill(); ctx.beginPath(); ctx.ellipse(1,-.15,.45,.3,0,0,7); ctx.fill();
+    ctx.fillStyle=c1; for(let k=0;k<4;k++) ctx.fillRect(-.6+k*.35,-.5,.18,.15); eye(1.15,-.25,.1); }
+  else { const w_=1+.08*Math.sin(t*4); ctx.fillStyle=body; ctx.beginPath(); ctx.ellipse(0,0,1.1*w_,1/w_,0,0,7); ctx.fill(); ctx.fillStyle=c1; ctx.globalAlpha*=.6; ctx.beginPath(); ctx.ellipse(-.2,-.3,.5,.3,0,0,7); ctx.fill(); ctx.globalAlpha/=.6; eye(.3,-.1,.2); eye(-.25,-.1,.17); }
+  if(b.state==='stun'){ for(let k=0;k<3;k++){ const a=t*5+k*2.1; ctx.fillStyle='#ffe27a'; ctx.beginPath(); ctx.arc(Math.cos(a)*.6,-1.2+Math.sin(a)*.15,.08,0,7); ctx.fill(); } }
+  ctx.restore();
+}
+function drawFlyMob(c,cx,cy){
+  ctx.save(); ctx.translate(c.x*ts-cx,c.y*ts-cy); ctx.scale(ts,ts); const t=c.t;
+  if(c.type==='flugsaurier'){ const f=Math.sin(t*10)*.35, dir=c.vx<0?-1:1; ctx.scale(dir,1);
+    ctx.fillStyle=c.flash?'#fff':'#8a6a4a'; ctx.beginPath(); ctx.moveTo(-.1,0); ctx.lineTo(-.7,-.3-f); ctx.lineTo(.1,.05); ctx.lineTo(.6,-.3-f); ctx.closePath(); ctx.fill();
+    ctx.beginPath(); ctx.ellipse(0,0,.3,.12,0,0,7); ctx.fill(); ctx.beginPath(); ctx.moveTo(.25,-.05); ctx.lineTo(.6,-.15); ctx.lineTo(.3,.05); ctx.fill(); ctx.fillStyle='#ffd27a'; ctx.fillRect(.25,-.07,.05,.05); }
+  else { const g=ctx.createRadialGradient(0,0,0,0,0,.7); g.addColorStop(0,'rgba(95,240,255,.5)'); g.addColorStop(1,'rgba(95,240,255,0)'); ctx.fillStyle=g; ctx.beginPath(); ctx.arc(0,0,.7,0,7); ctx.fill();
+    ctx.fillStyle=c.flash?'#fff':'rgba(192,112,255,.85)'; ctx.beginPath(); ctx.arc(0,0,.28,Math.PI,0); ctx.fill(); ctx.strokeStyle='rgba(95,240,255,.8)'; ctx.lineWidth=.04; for(const k of [-.18,0,.18]){ ctx.beginPath(); ctx.moveTo(k,0); ctx.quadraticCurveTo(k+Math.sin(t*5+k*9)*.1,.25,k,.5); ctx.stroke(); } }
+  ctx.restore();
+}
+
+/* ---------- Himmel der neuen Welten ---------- */
+function drawSkyX(cx,groundY,w,h){
+  const L=S.loc, g=ctx.createLinearGradient(0,0,0,groundY);
+  const cols={er:['#2a302c','#8a907a'],zm:['#1e4a9a','#a8d4ee'],ex:['#12061e','#7a4aa8']}[L]; g.addColorStop(0,cols[0]); g.addColorStop(1,cols[1]);
+  ctx.fillStyle=g; ctx.fillRect(0,0,w,Math.min(h,groundY+2));
+  if(L==='er'){
+    ctx.fillStyle='rgba(230,230,210,.7)'; ctx.beginPath(); ctx.arc(w*.75-cx*.03,groundY-12*ts,ts*1.1,0,7); ctx.fill();
+    for(let l=0;l<2;l++){ const par=l?.55:.3; ctx.fillStyle=l?'#3a3e38':'#5a5e56';
+      for(let i=-2;i<w/(ts*2.2)+3;i++){ const k=i+Math.floor(cx*par/(ts*2.2)), x=i*ts*2.2-((cx*par)%(ts*2.2)), hh=(3+hash(k,l+5)%9)*ts*(l?1:.8), bw=ts*(1.4+(hash(k,l+9)%10)/10);
+        ctx.fillRect(x,groundY-hh,bw,hh); if(hash(k,l+3)%3===0){ ctx.fillStyle=cols[1]; ctx.beginPath(); ctx.moveTo(x+bw*.3,groundY-hh-1); ctx.lineTo(x+bw,groundY-hh-1); ctx.lineTo(x+bw,groundY-hh+ts*1.2); ctx.closePath(); ctx.fill(); ctx.fillStyle=l?'#3a3e38':'#5a5e56'; }
+        if(l){ ctx.fillStyle='rgba(20,24,20,.8)'; for(let wy=groundY-hh+ts*.6;wy<groundY-ts;wy+=ts*.9) for(let wx=x+ts*.25;wx<x+bw-ts*.3;wx+=ts*.5) ctx.fillRect(wx,wy,ts*.2,ts*.3); ctx.fillStyle='rgba(90,140,70,.6)'; ctx.fillRect(x,groundY-hh,bw*.4,ts*.3); ctx.fillStyle='#3a3e38'; } } }
+  } else if(L==='zm'){
+    const sg=ctx.createRadialGradient(w*.25-cx*.02,groundY-13*ts,0,w*.25-cx*.02,groundY-13*ts,ts*3); sg.addColorStop(0,'rgba(255,250,220,1)'); sg.addColorStop(.25,'rgba(255,240,180,.8)'); sg.addColorStop(1,'rgba(255,240,180,0)'); ctx.fillStyle=sg; ctx.fillRect(0,0,w,groundY);
+    ctx.fillStyle='rgba(255,255,255,.6)'; for(let i=0;i<5;i++){ const x=((i*260+S.time*5-cx*.08)%(w+300)+w+300)%(w+300)-150; ctx.beginPath(); ctx.ellipse(x,groundY-(8+i%3*2)*ts,ts*2.6,ts*.6,0,0,7); ctx.fill(); }
+    ctx.fillStyle='#3a6a9a'; ctx.fillRect(0,groundY-2.2*ts,w,2.2*ts); ctx.fillStyle='rgba(255,255,255,.35)'; for(let i=0;i<20;i++) ctx.fillRect(((i*97-cx*.2)%w+w)%w,groundY-2*ts+(i%4)*ts*.45,ts*.6,ts*.06);
+    const vx=w*.72-cx*.25; ctx.fillStyle='#6a3a2a'; ctx.beginPath(); ctx.moveTo(vx-ts*6,groundY-2*ts); ctx.lineTo(vx-ts*1,groundY-9*ts); ctx.lineTo(vx+ts*1,groundY-9*ts); ctx.lineTo(vx+ts*6,groundY-2*ts); ctx.fill();
+    ctx.fillStyle='rgba(90,80,80,.45)'; for(let k=0;k<4;k++){ ctx.beginPath(); ctx.arc(vx+Math.sin(S.time+k)*ts*.5,groundY-(10+k*1.4)*ts,ts*(.8+k*.4),0,7); ctx.fill(); }
+  } else {
+    ctx.fillStyle='rgba(255,250,240,.8)'; for(let i=0;i<80;i++){ const sx=((hash(i,7)%1000)/1000*w*1.3-cx*.02+w)%w, sy=(hash(i,13)%1000)/1000*(groundY-2*ts); if(sy>0) ctx.fillRect(sx,sy,Math.max(1,ts*.05),Math.max(1,ts*.05)); }
+    for(const [sx,sy,c] of [[w*.2,groundY-12*ts,'255,170,90'],[w*.8,groundY-9*ts,'120,170,255']]){ const x=sx-cx*.03, g2=ctx.createRadialGradient(x,sy,0,x,sy,ts*2.4); g2.addColorStop(0,`rgba(${c},1)`); g2.addColorStop(.3,`rgba(${c},.7)`); g2.addColorStop(1,`rgba(${c},0)`); ctx.fillStyle=g2; ctx.beginPath(); ctx.arc(x,sy,ts*2.4,0,7); ctx.fill(); }
+    ctx.strokeStyle='rgba(200,170,255,.35)'; ctx.lineWidth=ts*.2; ctx.beginPath(); ctx.ellipse(w*.5-cx*.02,groundY+ts*6,w*.7,ts*14,0,Math.PI*1.08,Math.PI*1.92); ctx.stroke();
+    for(let k=0;k<7;k++){ const x=((k*173-cx*.15)%(w+100)+w+100)%(w+100)-50, y=groundY-(4+k%4*2.2)*ts+Math.sin(S.time+k)*ts*.3; ctx.fillStyle=k%2?'rgba(95,240,255,.7)':'rgba(192,112,255,.7)'; ctx.beginPath(); ctx.moveTo(x,y-ts*.8); ctx.lineTo(x+ts*.35,y); ctx.lineTo(x,y+ts*.8); ctx.lineTo(x-ts*.35,y); ctx.closePath(); ctx.fill(); }
+    for(let i=0;i<12;i++){ const x=((i*131-cx*.5)%(w+80)+w+80)%(w+80)-40, hh=(2+hash(i,4)%4)*ts; ctx.fillStyle=i%2?'#5a4086':'#7a5aa8'; ctx.beginPath(); ctx.moveTo(x-ts*.5,groundY); ctx.lineTo(x,groundY-hh); ctx.lineTo(x+ts*.5,groundY); ctx.fill(); }
+  }
+}
+
+/* ---------- Werkstatt: Teile und Veredeln ---------- */
+function partsRows(){
+  let h=`<p class="note">Teile kaufst du einmal und wechselst sie danach kostenlos. Du siehst sie an deiner Kapsel.</p>`;
+  for(const [k,P] of Object.entries(PARTS)){ h+=`<p class="sec">${P.n}</p><div class="choice">`;
+    for(const o of P.opts){ const own=!o.p||(S.partsOwn&&S.partsOwn[k+':'+o.id]), on=part(k)===o.id;
+      h+=`<button class="card${on?' on':''}" data-act="part:${k}:${o.id}" ${on||(!own&&S.money<o.p)?'disabled':''}><span class="tagline"><b>${o.n}</b><em>${on?'AKTIV':own?'EINBAUEN':fmt(o.p)}</em></span><span>${o.d}</span></button>`; }
+    h+='</div>'; }
+  return h;
+}
+function starRows(){
+  let h=`<p class="note">Ist ein Upgrade auf höchster Stufe, kannst du es mit Mond-Erz bis ★5 veredeln. Jeder Stern: +8 %. Das Erz nimmt die Werkstatt zuerst aus dem Lagerhaus.</p><div>`;
+  for(const k of STAR_KEYS){ const u=UPG[k], s=starOf(k), max=S.up[k]>=u.val.length-1, i=STAR_ORE[k], n=15*(s+1), pr=100e6*(s+1), have=haveOre(i), can=max&&s<5&&have>=n&&S.money>=pr;
+    const act=s>=5?'<span class="tag ok">★5</span>':!max?'<span class="tag">ERST HÖCHSTE STUFE</span>':`<button class="btn sm${can?' primary':''}" data-act="star:${k}" ${can?'':'disabled'}>★${s+1} · ${fmt(pr)}</button>`;
+    h+=`<div class="uprow"><div class="nm">${u.n} <span class="st">${'★'.repeat(s)}${'☆'.repeat(5-s)}</span></div><div class="act">${act}</div><div class="st">${s<5?`Nächster Stern: ${n}× ${MIN[i].n} (du hast ${have}) und ${fmt(pr)}`:'Voll veredelt: +40 %'}</div></div>`; }
+  return h+'</div>';
+}
+function shopExtra3(a,x,y){
+  if(a==='part'){ const P=PARTS[x], o=P&&P.opts.find(q=>q.id===y); if(!o) return false; S.partsOwn=S.partsOwn||{}; const key=x+':'+y;
+    if(o.p&&!S.partsOwn[key]){ if(S.money<o.p) return false; S.money-=o.p; S.partsOwn[key]=1; AU.coin(); }
+    const hr=S.hull/ST('hull'); S.parts=S.parts||{}; S.parts[x]=y; S.hull=Math.max(1,hr*ST('hull')); S.fuel=Math.min(S.fuel,ST('fuel'));
+    if(Object.entries(PARTS).every(([k,P_])=>P_.opts.every(q=>!q.p||S.partsOwn[k+':'+q.id]))) unlock('teile');
+    toast(`Eingebaut: ${o.n}`,1200); AU.blip(500,.2,'triangle',.12,300); renderShop(); updateHud(); return false; }
+  if(a==='star'){ const k=x, s=starOf(k), i=STAR_ORE[k], n=15*(s+1), pr=100e6*(s+1); if(s>=5||S.up[k]<UPG[k].val.length-1||haveOre(i)<n||S.money<pr) return false;
+    const hr=S.hull/ST('hull'); takeOre(i,n); S.money-=pr; S.star=S.star||{}; S.star[k]=s+1; if(k==='hull') S.hull=Math.max(1,hr*ST('hull'));
+    if(S.star[k]>=5) unlock('stern5'); AU.chime(); toast(`${UPG[k].n} veredelt: ★${s+1}`,1600); renderShop(); updateHud(); return false; }
+  return undefined;
+}
+
 function makeBoss(kind,i,o={}){
-  const def=kind==='main'?BOSSES[i]:kind==='kern'?URKEIM:kind==='eu'?KRAKE:kind==='w'?WBOSS[i]:MINIS[i], A=kind==='main'?ARENAS[i]:kind==='kern'?KARENA:kind==='eu'||kind==='w'?EUARENA:S.minis[i];
+  const def=kind==='main'?BOSSES[i]:kind==='kern'?URKEIM:kind==='eu'?KRAKE:kind==='w'?WBOSS[i]:kind==='xm'?xmDef(S.minis[i]):MINIS[i], A=kind==='main'?ARENAS[i]:kind==='kern'?KARENA:kind==='eu'||kind==='w'?EUARENA:S.minis[i];
   const hp=Math.round(def.hp*(hasMod('starkw')?2:1)*(hasMod('ngp')?1.5:1)*(o.echo?1.7:1));
-  const b={kind,i,A,type:def.id,hp,max:hp,t:0,flash:0,wake:1.5,alive:true,hitTaken:false,echo:!!o.echo,rush:!!o.rush,tmp:[]};
+  const b={kind,i,A,type:kind==='xm'?'xm':def.id,def:kind==='xm'?def:null,hp,max:hp,t:0,flash:0,wake:1.5,alive:true,hitTaken:false,echo:!!o.echo,rush:!!o.rush,tmp:[]};
   if(o.echo){ for(let x=Math.floor(A.cx-A.rx-1);x<=Math.ceil(A.cx+A.rx+1);x++){ const dx=(x+.5-A.cx)/A.rx; if(Math.abs(dx)>=1.1||x<1||x>W-2) continue; const k=A.ar*W+x; if(isFluid(S.world[k])||S.world[k]===LAVA){ S.world[k]=ARMOR; b.tmp.push(k); } } }
   const fn=BOSSFN[b.type]; fn.init(b,A);
   props.length=0; if(fn.props) props.push(...fn.props(b,A));
@@ -3996,15 +4626,15 @@ function makeBoss(kind,i,o={}){
 }
 function restoreTmp(b){ if(b&&b.tmp) for(const k of b.tmp) if(S.world[k]===ARMOR) S.world[k]=AIR; }
 function startBoss(kind,i,o={}){
-  const key=o.echo?'ei'+i:(kind==='main'?'bi':kind==='kern'?'ki':kind==='eu'?'eui':kind==='w'?'wbi':'mi')+i, name=o.echo?'Echo · '+BOSSES[i].n:kind==='main'?BOSSES[i].n:kind==='kern'?URKEIM.n:kind==='eu'?KRAKE.n:kind==='w'?WBOSS[i].n:MINIS[i].n;
+  const key=o.echo?'ei'+i:(kind==='main'?'bi':kind==='kern'?'ki':kind==='eu'?'eui':kind==='w'?'wbi':kind==='xm'?'xmi'+S.loc+'_':'mi')+i, name=o.echo?'Echo · '+BOSSES[i].n:kind==='main'?BOSSES[i].n:kind==='kern'?URKEIM.n:kind==='eu'?KRAKE.n:kind==='w'?WBOSS[i].n:kind==='xm'?xmDef(S.minis[i]).n:MINIS[i].n;
   const go=()=>{ boss=makeBoss(kind,i,o); quake(1.5); AU.roar(); };
-  if(!S.flags[key]&&!o.rush){ S.flags[key]=1; if(o.echo) tx(SYS,EINTRO[i],go); else if(kind==='main') tx(BINTRO[i][0],BINTRO[i][1],go); else if(kind==='kern') tx(T,URK_INTRO,go); else if(kind==='eu') tx(T,KRAKE_INTRO,go); else if(kind==='w') tx(i===2?K:T,WBOSS[i].intro,go); else tx(SYS,`Bedrohung erkannt: ${name}.\n${MINI_INTRO[i]}`,go); }
+  if(!S.flags[key]&&!o.rush){ S.flags[key]=1; if(o.echo) tx(SYS,EINTRO[i],go); else if(kind==='main') tx(BINTRO[i][0],BINTRO[i][1],go); else if(kind==='kern') tx(T,URK_INTRO,go); else if(kind==='eu') tx(T,KRAKE_INTRO,go); else if(kind==='w') tx(i===2?K:T,WBOSS[i].intro,go); else if(kind==='xm') tx(SYS,`Bedrohung erkannt: ${name}.\n${xmDef(S.minis[i]).d}`,go); else tx(SYS,`Bedrohung erkannt: ${name}.\n${MINI_INTRO[i]}`,go); }
   else { S.flags[key]=1; toast(name,1400); go(); }
 }
 function endBossQuiet(){ restoreTmp(boss); boss=null; props.length=0; projs.length=0; for(const k of mobs) if(k.boss) k.dead=true; if(S.rush&&!(ui.rushT>0)){ S.rush=null; toast('Bossrush abgebrochen',2000); } }
 function hurtBoss(ex,ey,reach,dmg){
   const b=boss; if(!b||!b.alive||b.wake>0) return false;
-  const fn=BOSSFN[b.type]; dmg*=(POD().boom||1)*(RK()>=11?1.15:1);
+  const fn=BOSSFN[b.type]; dmg*=(POD().boom||1)*(RK()>=11?1.15:1)*(modOn('torstein')?1.5:1);
   let any=false, best=0, bestC=null;
   for(const c of fn.hits(b)){
     const d=Math.hypot(c.x-ex,c.y-ey)-c.r; if(d>=reach) continue; any=true;
@@ -4080,11 +4710,13 @@ function bossDown(){
     setTimeout(()=>tx(SYS,`Echo verklungen: ${BOSSES[b.i].n}. +${fmt(cash)}${first?'':' (Wiederholung)'}\n[Echos besiegt: ${S.echoDone.reduce((a,c)=>a+c,0)} von 4]`),1400);
     return;
   }
+  if(b.kind==='xm'){ xmDown(b); return; }
   if(b.kind==='w'){
     const B=WBOSS[b.i]; S.wBoss=S.wBoss||{}; S.wBoss[B.loc]=1; S.modOwn[B.mod]=1; discover('boss:w'+b.i); discover('mod:'+B.mod); unlock(B.ach); gainXP(2500+b.i*1000);
     const cash=B.pay, M_=MODULES.find(q=>q.id===B.mod); S.money+=cash; S.score+=cash*2;
     const nx=WBOSS[b.i+1];
-    setTimeout(()=>{ if(b.i<2) tx(T,`${B.n} ist besiegt, Kapsel 13!\nTharsis zahlt ${fmt(cash)}. Beute: Modul «${M_.n}». ${M_.d}.\nDie Raketenwerft hat neue Kursdaten: ${WORLDS[nx.loc].n}. Kaufen kannst du sie in jeder Landefähre und im Baubüro.`);
+    setTimeout(()=>{ if(b.i>=3){ tx(b.i===5?V:T,b.i===3?`Der Superrechner fährt herunter, Kapsel 13. In seinem Speicher: Koordinaten. Und eine Zeitmaschine.\nTharsis zahlt ${fmt(cash)}. Beute: Modul «${M_.n}». ${M_.d}.\nNeue Kursdaten: der Urmars.`:b.i===4?`Der junge Schläfer schläft ein, Kapsel 13. Vier Milliarden Jahre lang.\nVielleicht hast du gerade dafür gesorgt, dass es den Mars gibt, wie du ihn kennst.\n+${fmt(cash)}. Beute: Modul «${M_.n}». ${M_.d}.\nIn seinem Herz öffnet sich ein Wurmloch: Neue Kursdaten zum Exoplaneten.`:`Der Erbauer verneigt sich vor dir, Pilot. Dann zerfällt er zu Licht.\nDu hast alles gesehen: den Mars, die Monde, die Erde, die Vergangenheit und die Heimat der Erbauer.\n+${fmt(cash)}. Beute: Modul «${M_.n}». ${M_.d}.\nDanke, Kapsel 13. Die Welten bleiben offen.`); return; }
+      if(b.i<2) tx(T,`${B.n} ist besiegt, Kapsel 13!\nTharsis zahlt ${fmt(cash)}. Beute: Modul «${M_.n}». ${M_.d}.\nDie Raketenwerft hat neue Kursdaten: ${WORLDS[nx.loc].n}. Kaufen kannst du sie in jeder Landefähre und im Baubüro.`);
       else { tx(K,'Nein … meine Station … Das war alles meins. Der Mars, die Monde, die Herzen …\n[Verbindung getrennt]'); tx(RIV,`Kronstedt ist erledigt, Kapsel 13. Die Firma gehört jetzt niemandem mehr.\nTharsis überweist ${fmt(cash)}. Und aus dem Reaktor der Station hast du den Sternenkern geborgen.\nDanke, Partner. Ich fliege mit dir, wohin du willst.`); tx(T,'Glückwunsch, Pilot. Du hast das ganze Sonnensystem umgegraben.\nDie Welten bleiben offen: Bohr weiter, verbessere deine Rekorde im Endlosschacht oder schau bei den Echos vorbei.'); } },1800);
     return;
   }
@@ -4237,9 +4869,9 @@ function render(dtR){
     let k=night&&ft<=100?.68:clamp((fd-100)/12000,0,1)*.88;
     if(dark) k=.97;
     if(boss) k*=dark?.7:.45; if(inStationRoom(p.x,p.y)) k*=.3;
-    const px_=p.x*ts-cx, py_=p.y*ts-cy, inner=ts*((2.2+[0,1,1.6,2,2.4][lv])*(dark?.55:1)+(ui.dr?1.3:0));
+    const px_=p.x*ts-cx, py_=p.y*ts-cy, inner=ts*((2.2+[0,1,1.6,2,2.4][lv]+(part('licht')==='doppel'?1.2:0))*(dark?.55:1)+(ui.dr?1.3:0));
     const gr=ctx.createRadialGradient(px_,py_,inner,px_,py_,Math.max(w,h)*.62);
-    const tint=boss?(boss.type==='krake'?'2,10,30':boss.type==='station'?'6,6,20':'30,6,4'):'8,4,4';
+    const tint=boss?(boss.type==='krake'?'2,10,30':boss.type==='station'||boss.type==='rechner'?'6,6,20':boss.type==='erbauer'?'14,6,24':'30,6,4'):'8,4,4';
     gr.addColorStop(0,`rgba(${tint},0)`); gr.addColorStop(1,`rgba(${tint},${k})`);
     ctx.fillStyle=gr; ctx.fillRect(0,0,w,h);
   }
@@ -4296,10 +4928,13 @@ function drawPod(p,cx,cy,o){
   if(!o&&p.mode==='dash'){ ctx.fillStyle='rgba(255,210,120,.35)'; ctx.beginPath(); ctx.arc(0,0,.7,0,7); ctx.fill(); }
   if(dir!=='up'){ const bw=p.thr?.4*Math.abs(Math.cos(p.spin*12)):.4;
     ctx.fillStyle='#4a403c'; ctx.fillRect(-.03,-.44,.06,.16); ctx.fillStyle='#2c2422'; ctx.fillRect(-bw,-.47,bw*2,.05); }
-  drawDrill(dir,p.spin);
+  const PB=!o?part('bohr'):'std', PF=!o?part('fahr'):'kette', PA=!o?part('aufbau'):'none', PL=!o?part('licht'):'std', vert=dir==='down'||dir==='up';
+  if(PB==='doppel'){ for(const s of [-1,1]){ ctx.save(); ctx.translate(vert?s*.15:0,vert?0:s*.11); drawDrill(dir,p.spin+s*.3); ctx.restore(); } } else drawDrill(dir,p.spin,PB==='diamant');
   ctx.save(); ctx.scale(p.face,1);
-  ctx.fillStyle='#2c2422'; rr(-.42,.15,.84,.25,.11); ctx.fill();
-  ctx.fillStyle='#5a4d48'; for(const x of [-.28,-.09,.1,.29]){ ctx.beginPath(); ctx.arc(x,.275,.065,0,7); ctx.fill(); }
+  if(PF==='rad'){ ctx.fillStyle='#2c2422'; for(const x of [-.28,.28]){ ctx.beginPath(); ctx.arc(x,.28,.15,0,7); ctx.fill(); } ctx.fillStyle='#8f979e'; for(const x of [-.28,.28]){ ctx.beginPath(); ctx.arc(x,.28,.06,0,7); ctx.fill(); ctx.fillStyle='#2c2422'; ctx.fillRect(x-.01+Math.cos(p.x*6)*.08,.27+Math.sin(p.x*6)*.08,.03,.03); ctx.fillStyle='#8f979e'; } }
+  else if(PF==='schwebe'){ ctx.fillStyle='#3c454c'; for(const x of [-.25,.2]){ rr(x-.09,.14,.18,.12,.04); ctx.fill(); } const fl=.08+(p.thr?.12:.04)*Math.abs(Math.sin(S.time*30)); ctx.fillStyle='rgba(115,207,192,.8)'; for(const x of [-.25,.2]){ ctx.beginPath(); ctx.moveTo(x-.07,.26); ctx.lineTo(x,.26+fl+.06); ctx.lineTo(x+.07,.26); ctx.fill(); } }
+  else { ctx.fillStyle='#2c2422'; rr(-.42,.15,.84,.25,.11); ctx.fill();
+  ctx.fillStyle='#5a4d48'; for(const x of [-.28,-.09,.1,.29]){ ctx.beginPath(); ctx.arc(x,.275,.065,0,7); ctx.fill(); } }
   let body={std:'#e6dece',scout:'#d8e6e2',cargo:'#d8cfb8',spreng:'#e6d2c6'}[pt], stripe={std:'#9a52dc',scout:'#3fa58f',cargo:'#c08a2a',spreng:'#d65f2e'}[pt];
   if(o){ body=o.body; stripe=o.stripe; } else if(paint&&paint.body){ body=paint.body; stripe=paint.stripe; }
   ctx.fillStyle=body; rr(-.38,-.31,.76,.49,.13); ctx.fill();
@@ -4311,6 +4946,10 @@ function drawPod(p,cx,cy,o){
   ctx.fillStyle='#ffe27a'; ctx.fillRect(.33,-.02,.05,.06);
   if(!o&&S.veh==='uboot'){ ctx.fillStyle=stripe; ctx.beginPath(); ctx.moveTo(-.1,-.31); ctx.lineTo(.02,-.47); ctx.lineTo(.12,-.31); ctx.fill(); ctx.fillStyle='#545a61'; ctx.fillRect(-.47,-.14,.09,.16); const pa=Math.sin(S.time*(p.thr?30:8)); ctx.fillStyle='#c9ced3'; ctx.fillRect(-.53,-.06-.1*pa,.05,.2*Math.abs(pa)+.04); }
   if(!o&&S.veh==='mech'){ ctx.fillStyle='#55616b'; rr(-.42,-.37,.42,.13,.04); ctx.fill(); ctx.fillStyle='#8f979e'; for(const x of [-.36,-.24,-.12]) ctx.fillRect(x,-.34,.04,.04); ctx.fillStyle='#3c454c'; rr(-.46,.13,.92,.29,.12); ctx.fill(); ctx.fillStyle='#eaaa4a'; for(const x of [-.3,0,.3]) ctx.fillRect(x-.04,.24,.08,.06); }
+  if(PA==='greif'){ ctx.strokeStyle='#8f979e'; ctx.lineWidth=.05; ctx.beginPath(); ctx.moveTo(-.15,-.31); ctx.lineTo(-.05,-.5); ctx.lineTo(.2,-.45+Math.sin(S.time*3)*.03); ctx.stroke(); ctx.fillStyle='#eaaa4a'; ctx.fillRect(.18,-.5,.06,.1); }
+  else if(PA==='tank'){ ctx.fillStyle='#d65f2e'; rr(-.5,-.28,.14,.36,.06); ctx.fill(); ctx.fillStyle='#ffd27a'; ctx.fillRect(-.47,-.2,.08,.04); }
+  else if(PA==='panzer'){ ctx.fillStyle='rgba(85,97,107,.95)'; rr(-.4,-.36,.5,.1,.03); ctx.fill(); rr(-.42,-.1,.12,.25,.03); ctx.fill(); ctx.fillStyle='#8f979e'; for(const x of [-.34,-.2,-.06]) ctx.fillRect(x,-.33,.03,.03); }
+  if(PL==='doppel'){ ctx.fillStyle='#ffe27a'; ctx.fillRect(.33,-.12,.06,.06); ctx.fillStyle='rgba(255,240,180,.3)'; ctx.beginPath(); ctx.moveTo(.38,-.12); ctx.lineTo(.9,-.3); ctx.lineTo(.9,.1); ctx.closePath(); ctx.fill(); }
   if(pt==='scout'){ ctx.fillStyle=stripe; ctx.beginPath(); ctx.moveTo(-.38,-.2); ctx.lineTo(-.56,-.05); ctx.lineTo(-.38,-.02); ctx.fill(); }
   const bd=o?'nr':(S.look&&S.look.badge)||'nr';
   if(bd==='nr'){ ctx.fillStyle='#2c2422'; ctx.font='bold .12px Silkscreen, monospace'; ctx.textAlign='center'; ctx.textBaseline='middle'; ctx.fillText(o?o.label:pt==='std'?'13':pt==='scout'?'F':pt==='cargo'?'M':'X',-.18,-.15); }
@@ -4318,13 +4957,14 @@ function drawPod(p,cx,cy,o){
   ctx.restore();
   ctx.restore();
 }
-function drawDrill(dir,spin){
+function drawDrill(dir,spin,dia){
   ctx.save();
   if(dir==='down'){ ctx.translate(0,.3); ctx.rotate(Math.PI/2); }
   else if(dir==='up'){ ctx.translate(0,-.3); ctx.rotate(-Math.PI/2); }
   else if(dir==='left'){ ctx.translate(-.35,.02); ctx.rotate(Math.PI); }
   else ctx.translate(.35,.02);
-  ctx.fillStyle='#9aa1a8'; ctx.beginPath(); ctx.moveTo(0,-.15); ctx.lineTo(.32,0); ctx.lineTo(0,.15); ctx.closePath(); ctx.fill();
+  ctx.fillStyle=dia?'#7fd8e8':'#9aa1a8'; ctx.beginPath(); ctx.moveTo(0,-.15); ctx.lineTo(.32,0); ctx.lineTo(0,.15); ctx.closePath(); ctx.fill();
+  if(dia){ ctx.fillStyle='#e0fbff'; ctx.beginPath(); ctx.moveTo(.22,-.04); ctx.lineTo(.34,0); ctx.lineTo(.22,.04); ctx.fill(); }
   ctx.fillStyle='#c9ced3'; ctx.beginPath(); ctx.moveTo(0,-.15); ctx.lineTo(.32,0); ctx.lineTo(0,-.02); ctx.closePath(); ctx.fill();
   ctx.strokeStyle='#545a61'; ctx.lineWidth=.035; const off=(spin%1)*.1;
   for(let k=0;k<3;k++){ const xx=.03+k*.09+off; if(xx>.27) continue; const hh=.15*(1-xx/.32); ctx.beginPath(); ctx.moveTo(xx,-hh); ctx.lineTo(xx+.035,hh); ctx.stroke(); }
@@ -4333,6 +4973,7 @@ function drawDrill(dir,spin){
 function drawMob(c,cx,cy){
   if(SEAMOB.has(c.type)){ drawSeaMob(c,cx,cy); return; }
   if(c.type==='kdrohne'){ drawKdrone(c,cx,cy); return; }
+  if(c.type==='flugsaurier'||c.type==='schwebequalle'){ drawFlyMob(c,cx,cy); return; }
   if(c.type==='wurm'){
     for(let k=c.tr.length-1;k>=0;k-=2){ const s=c.tr[k]; ctx.fillStyle=k===0?'#6b4a40':'#4a3a36'; ctx.beginPath(); ctx.arc(s.x*ts-cx,s.y*ts-cy,ts*(.36-k*.012),0,7); ctx.fill(); }
     ctx.fillStyle=c.flash?'#fff':'#6b4a40'; ctx.beginPath(); ctx.arc(c.x*ts-cx,c.y*ts-cy,ts*.4,0,7); ctx.fill();
@@ -4350,7 +4991,7 @@ function drawMob(c,cx,cy){
     ctx.strokeStyle='rgba(155,227,106,.7)'; ctx.lineWidth=.05; for(const k of [-.2,-.07,.07,.2]){ ctx.beginPath(); ctx.moveTo(k,0); ctx.quadraticCurveTo(k+Math.sin(c.t*6+k*9)*.1,.2,k,.42); ctx.stroke(); }
     ctx.fillStyle='#1d3a12'; ctx.fillRect(-.12,-.14,.06,.06); ctx.fillRect(.06,-.14,.06,.06);
   } else {
-    const pal=c.type==='mimik'?[MIN[ZONE_ORE[bandRow[Math.floor(c.y)]>>1]||3].c,'#3a2a26','#ff3a2a']:c.type==='kaefer'?['#5a1f12','#ff7a2a','#ffd27a']:['#4a2647','#6c3866','#ff6a3a'];
+    const pal=c.type==='mimik'?[MIN[ZONE_ORE[bandRow[Math.floor(c.y)]>>1]||3].c,'#3a2a26','#ff3a2a']:c.type==='kaefer'?['#5a1f12','#ff7a2a','#ffd27a']:c.type==='robohund'?['#7a8892','#3c454c','#ff3a2a']:c.type==='kristallkaefer'?['#9474c4','#5ff0ff','#ffffff']:['#4a2647','#6c3866','#ff6a3a'];
     ctx.strokeStyle='#1d0b1b'; ctx.lineWidth=.05;
     for(const k of [-.18,0,.18]){ ctx.beginPath(); ctx.moveTo(k,.05); ctx.lineTo(k-.08+step*(k?1:-1),.28); ctx.stroke(); }
     ctx.fillStyle=c.flash?'#fff':pal[0]; ctx.beginPath(); ctx.ellipse(0,0,c.type==='mimik'?.34:.3,c.type==='mimik'?.26:.2,0,0,7); ctx.fill();
@@ -4399,6 +5040,8 @@ function drawBoss(b,cx,cy){
   if(b.echo){ const c=BOSSFN[b.type].center(b), sx=c.x*ts-cx, sy=c.y*ts-cy, R_=ts*(b.type==='brut'||b.type==='schlaefer'?5:3.5); const g=ctx.createRadialGradient(sx,sy,0,sx,sy,R_); g.addColorStop(0,'rgba(150,100,255,.35)'); g.addColorStop(1,'rgba(150,100,255,0)'); ctx.fillStyle=g; ctx.beginPath(); ctx.arc(sx,sy,R_,0,7); ctx.fill(); }
   if(b.type==='urkeim'){ drawUrkeim(b,cx,cy,wake); return; }
   if(b.type==='krake'){ drawKrake(b,cx,cy,wake); return; }
+  if(b.type==='xm'){ drawXM(b,cx,cy,wake); return; }
+  if(b.type==='rechner'||b.type==='jschlaefer'||b.type==='erbauer'){ drawXBoss(b,cx,cy,wake); return; }
   if(WB_U[b.type]!=null){ drawWBoss(b,cx,cy,wake); return; }
   ctx.save(); ctx.globalAlpha=clamp(wake,.2,1)*(b.echo?.88:1);
   if(b.type==='wurm') drawWorm(b,cx,cy,.82,'#4a3a36','#6b5650',1.15,b.state==='stun');
@@ -4575,6 +5218,7 @@ function mapCell(c,y){
   if(c===LADDER||c===PILLAR) return M.build;
   if(isMin(c)) return M.ore[OI(c)];
   if(c===METHANE) return [150,108,50]; if(c===GEYSER) return [255,226,90];
+  if(c===HDOOR) return [95,240,255]; if(c===BETON) return [138,134,128]; if(c===STAHL) return [70,80,88]; if(c===TRESOR) return [255,226,122]; if(c===KRISTALL) return [192,112,255];
   if(isTre(c)||c===CHEST||c===RUINCHEST) return M.gold;
   if(c===SEA) return [36,72,122];
   if(c===LAVA) return M.lava; if(c===WATER) return M.water; if(c===ACID) return M.acid; if(c===GAS) return M.gas;
@@ -4652,6 +5296,8 @@ const BOOK=[
   ...BOSSES.map((b,i)=>({key:'boss:'+i,cat:'Wächter',n:b.n,d:b.d,sw:'#e4543f'})),
   {key:'boss:k',cat:'Wächter',n:URKEIM.n,d:URKEIM.d,sw:'#ff5a1a'},
   {key:'boss:kr',cat:'Wächter',n:KRAKE.n,d:KRAKE.d,hint:'Europa, ganz unten',sw:'#9a52dc'},
+  ...XMINI_ALL.map(m=>({key:'xmini:'+m.id,cat:'Mini-Bosse',n:m.n,d:m.d,hint:PLN[Object.keys(XMINI).find(k=>XMINI[k].includes(m))],sw:'#d65f2e'})),
+  {key:'xmini:hueter',cat:'Mini-Bosse',n:'Hüter der Geheimhöhle',d:'Bewacht die Schätze der Geheimhöhlen.',hint:'Hinter einer Felswand',sw:'#5ff0ff'},
   ...WBOSS.map((B,i)=>({key:'boss:w'+i,cat:'Wächter',n:B.n,d:B.d,hint:PLN[B.loc]+', ganz unten',sw:'#ff8a3a'})),
   ...MODULES.map(m=>({key:'mod:'+m.id,cat:'Module',n:m.n,d:m.d,sw:'#73cfc0'})),
   ...Object.entries(RUIN_INFO).map(([k,r])=>({key:'ort:'+k,cat:'Orte der Ersten',n:r.n,d:r.d,sw:'#5ff0ff'})),
@@ -4691,7 +5337,7 @@ function updateHud(){
   $('#fuelBar').style.width=(clamp(S.fuel/fm,0,1)*100)+'%'; $('#fuelTxt').textContent=`${S.fuel.toFixed(1)} L`;
   $('#mFuel').classList.toggle('warn',S.fuel/fm<.2); $('#mHull').classList.toggle('warn',S.hull/hm<.25);
   $('#money').textContent=fmt(S.money);
-  const ft=curFt(), ab=S.loc==='ab', pre=S.loc!=='mars'&&S.loc!=='ab'?({eu:'Europa',io:'Io',ti:'Titan',as:'Gürtel'}[S.loc]||'')+' · ':'';
+  const ft=curFt(), ab=S.loc==='ab', pre=S.loc!=='mars'&&S.loc!=='ab'&&!isSec(S.loc)?({eu:'Europa',io:'Io',ti:'Titan',as:'Gürtel',er:'Erde',zm:'Urmars',ex:'Exo'}[S.loc]||'')+' · ':'';
   $('#depth').textContent=ab?`${fmtN(abFt())} ft`:ft<-1?`+${fmtN(-ft)} ft`:`${fmtN(Math.max(0,ft))} ft`;
   $('#depthLbl').textContent=ab?'Endlosschacht':ft<1?pre+'Oberfläche':inStationRoom(S.p.x,S.p.y)?'Tiefenstation':pre+ZONES[zoneIdx(ft)].n;
   const cc=cargoCount(), cm=ST('cargo'); $('#cargo').textContent=`${cc}/${cm}`; $('#cargo').style.color=cc>=cm?'var(--bad)':'';
@@ -4761,10 +5407,12 @@ function renderShop(){
     h+=`<div class="btns"><button class="btn sm ghost" data-act="newc" ${S.money<500?'disabled':''}>Anderen Auftrag · $500</button></div>`;
     h+=`<p class="note">${st?'Stationen zahlen 10 % weniger als die Oberfläche. ':''}${S.base.raff&&!st?'Raffinerie: +15 %. ':''}${modOn('veredler')?'Erzveredler: +20 %. ':''}Kurse ändern sich an jedem Markttag.</p>`;
   } else if(kind==='upg'){
-    h+=`<div class="tabs" role="tablist">${[...UPG_ORDER,'mod','pod','veh','look'].map(k=>`<button class="tab${ui.tab===k?' on':''}" data-act="tab:${k}">${k==='mod'?'Module':k==='pod'?'Kapsel':k==='veh'?'Fahrzeug':k==='look'?'Lack':UPG[k].n}</button>`).join('')}</div>`;
+    h+=`<div class="tabs" role="tablist">${[...UPG_ORDER,'mod','pod','veh','parts','star','look'].map(k=>`<button class="tab${ui.tab===k?' on':''}" data-act="tab:${k}">${k==='mod'?'Module':k==='pod'?'Kapsel':k==='veh'?'Fahrzeug':k==='parts'?'Teile':k==='star'?'Veredeln':k==='look'?'Lack':UPG[k].n}</button>`).join('')}</div>`;
     if(ui.tab==='mod') h+=modRows(true);
     else if(ui.tab==='pod') h+=podRows();
     else if(ui.tab==='veh') h+=vehRows();
+    else if(ui.tab==='parts') h+=partsRows();
+    else if(ui.tab==='star') h+=starRows();
     else if(ui.tab==='look') h+=lookRows();
     else { h+='<div>'; const k=ui.tab, u=UPG[k], cur=S.up[k];
       for(let lv=0;lv<u.val.length;lv++){
@@ -4942,7 +5590,7 @@ function shopExtra(a,x,y,st,mult){
 function serialize(){
   const p=S.p;
   const pos=p.mode==='drill'&&p.dr?{x:p.dr.x0,y:p.dr.y0}:{x:p.x,y:p.y};
-  const o={}; for(const k of ['v','run','seed','cfg','vaults','minis','money','score','up','items','cargo','hull','fuel','flags','maxFt','time','bossDone','minisDone','logs','contract','base','modOwn','modEq','siegel','market','evT','beacons','quakeT','notUsed','ending','st','xp','tools','myBeacons','forge','colony','echoDone','urkeim','mission','misT','rivalT','look','dayT','traders','wx','store','ruins','dark','droneOff','loc','euMax','abOff','abSt','veh','vehOwn','outposts','crew','marks','rocket','krake','duel','crewLog','quick','wMax','wBoss','course']) o[k]=S[k];
+  const o={}; for(const k of ['v','run','seed','cfg','vaults','minis','money','score','up','items','cargo','hull','fuel','flags','maxFt','time','bossDone','minisDone','logs','contract','base','modOwn','modEq','siegel','market','evT','beacons','quakeT','notUsed','ending','st','xp','tools','myBeacons','forge','colony','echoDone','urkeim','mission','misT','rivalT','look','dayT','traders','wx','store','ruins','dark','droneOff','loc','euMax','abOff','abSt','veh','vehOwn','outposts','crew','marks','rocket','krake','duel','crewLog','quick','wMax','wBoss','course','sec','star','parts','partsOwn']) o[k]=S[k];
   o.away={}; for(const k in (S.away||{})){ const a=S.away[k]; o.away[k]={...a,world:encWorld(a.world),seen:a.seen?encSeen(a.seen):null}; }
   o.world=encWorld(S.world); o.p={x:pos.x,y:pos.y,face:p.face}; if(S.seen) o.seen=encSeen(S.seen);
   return JSON.stringify(o);
@@ -5017,13 +5665,15 @@ function repairPads(){
   for(let i=0;i<3;i++){ const r=ARENAS[i].sf; for(let x=MIDX-11;x<=MIDX+10;x++) if(get(x,r)!==CONC) set(x,r,CONC); }
 }
 function startGame(st,intro){
-  S=st; applyPlanet(S.loc||'mars'); repairPads(); resetRuntime(); if(!S.market) newMarket(true); ui.lastPad=padAt()?padAt().id:null;
+  S=st; applyPlanet(S.loc||'mars'); retrofit(S.loc||'mars'); repairPads(); resetRuntime(); if(!S.market) newMarket(true); ui.lastPad=padAt()?padAt().id:null;
   running=true; paused=false;
   for(const id of ['title','over','menu','setup']) $('#'+id).hidden=true; $('#hud').hidden=false;
   const hint=$('#hint'); hint.hidden=false; hint.style.opacity=1; setTimeout(()=>hint.style.opacity=0,14000);
   cam.x=S.p.x-viewW/2; cam.y=S.p.y-viewH*.55;
   renderItems(); updateHud();
   if(intro){ S.flags.v5=1; S.flags.v6=1; }
+  if(intro) S.flags.v7=1;
+  if(!S.flags.v7&&S.flags.v6){ S.flags.v7=1; tx(SYS,`Grosses Update installiert.\nNeu: Mini-Bosse und Orte der Ersten auf allen Monden, eine Geheimhöhle in jeder Welt, drei neue Welten nach Kronstedts Station (die Erde im Jahr 5000, der Urmars und ein Exoplanet), drei weitere Upgrade-Stufen, Veredeln bis ★5 und neue Teile in der Werkstatt.${S.minisDone.every(Boolean)?' Auf dem Mars verrät dir Varga gleich ein Geheimnis.':''}`); }
   if(S.flags.v5&&!S.flags.v6){ S.flags.v6=1; tx(SYS,`Update «Neue Welten» installiert.\nDrei neue Ziele für deine Rakete: der Vulkanmond Io, der Saturnmond Titan und der Asteroidengürtel mit Kronstedts Raumstation.${S.krake?' Die Riesenkrake ist besiegt: Die Kursdaten für Io kannst du in jeder Landefähre und im Baubüro kaufen.':' Io schaltet sich frei, sobald die Riesenkrake auf Europa besiegt ist.'}`); }
   if(!S.flags.v5){ S.flags.v5=1; tx(SYS,`Update «Raumfahrt» installiert. Dein Spielstand wurde übernommen.\nNeu: Raketenwerft im Baubüro${S.urkeim?' (der Urkeim ist besiegt, die Werft ist offen)':' nach dem Sieg über den Urkeim'}, der Eismond Europa mit der Riesenkrake, der Endlosschacht unter dem Kern, Bohrcrews, Aussenposten im Service, U-Boot-Kapsel und Mech-Bohrer in der Werkstatt, eigene Kartenmarkierungen und ein letztes Duell gegen Krähe.`); }
   if(S.loc==='mars'&&(S.ending||S.bossDone[3])&&!S.flags.kernOpen){ openKern(); tx(T,'Kapsel 13, unsere Seismik meldet einen Riss unter der Arena des Schläfers.\nDarunter liegt eine Zone, die auf keiner Karte steht. Wir nennen sie den Kern. Ein Pfeil zeigt dir den Weg.'); }
@@ -5043,7 +5693,7 @@ function fuelOut(){
   $('#oRescue').onclick=()=>{
     $('#over').hidden=true; if(boss) endBossQuiet();
     S.money-=cost; S.cargo=S.cargo.map(()=>0); S.fuel=Math.max(10,ST('fuel')*.3);
-    if(S.loc==='ab') goMars(); else teleportTo(MIDX+.5,SKY-HH-.001); ui.lastPad=null; ui.fuelOut=false; paused=false;
+    if(S.loc==='ab') goMars(); else if(isSec(S.loc)) leaveSecret(); else teleportTo(MIDX+.5,SKY-HH-.001); ui.lastPad=null; ui.fuelOut=false; paused=false;
     toast(`Bergungsdienst: zurück an der Basis · −${fmt(cost)}`,3200); saveGame(true);
   };
   $('#oGive').onclick=()=>{ $('#over').hidden=true; ui.fuelOut=false; paused=false; gameOver('Treibstoff leer'); };
@@ -5111,6 +5761,7 @@ const HELP=`<div class="help">
   <h3>Neu im grossen Update</h3><ul><li><b>Pilotenränge</b>: Bohren, Kämpfe, Funde und Missionen bringen Erfahrung. Jeder Rang schaltet einen kleinen Vorteil frei.</li><li><b>Bohrsprint</b> (Shift, Aktionsknopf am Handy): Mit dem Rammsporn aus der Werkstatt rammst du dich durch zwei bis vier Felder und stösst Gegner weg. Halte ▼ oder ▲ für senkrecht.</li><li><b>Bauwerkzeuge</b> aus dem Service oder der Schmiede: Stützpfeiler (V) halten Geröll auf, Leitern (L) sparen Treibstoff, Funkbaken (K) sind eigene Sprungziele.</li><li><b>Drohne</b> (Werkstatt, N parkt sie): leuchtet, sammelt Erz und schiesst auf Gegner.</li><li><b>Schmiede</b> rechts und <b>Lagerhaus</b> links an der Oberfläche: Erz zu Bauteilen und Modulen, Erz einlagern, Prognosen und Händler.</li><li><b>Kolonie-Projekte</b> im Baubüro verändern die Oberfläche und geben dauerhafte Boni.</li><li><b>Ruinen der Ersten</b> mit Rätseln und <b>Sonderhöhlen</b>: Pilzhöhle, Riesengeode, unterirdischer See.</li><li><b>Fliessende Lava und Säure</b>: Bohrst du einen See seitlich an, läuft er aus.</li><li><b>Wetter</b>: Nacht (Kälte kostet Treibstoff), Sandsturm, Staubteufel, Magnetsturm, Dunkelzonen, Einsturzdecken, Gas-Kettenreaktionen.</li><li><b>Nebenmissionen</b> über Funk und die <b>Rivalin</b> Krähe: Rennen und Plünderungen. Raketen und Sprints vertreiben sie.</li><li><b>Nach dem Ende</b>: der Kern als siebte Zone, ein geheimer Wächter, Wächter-Echos und der Bossrush im Baubüro.</li><li><b>Werkstatt</b>: Kapsel umbauen und Lackierungen. Die Sicherungsdatei enthält jetzt auch Erfolge und Sammelbuch.</li></ul>
   <h3>Neu: Raumfahrt</h3><ul><li><b>Raketenwerft</b> im Baubüro, Reiter «Raumfahrt»: nach dem Sieg über den Urkeim in vier Stufen bauen, dann zum Eismond <b>Europa</b> fliegen. Die Landefähre bringt dich zurück.</li><li><b>Europa</b>: Eis, Gletscherspalten, Wassertaschen und ein Ozean. Kälte kostet Treibstoff (Thermomantel hilft), unter 12'000 ft drückt das Wasser auf den Rumpf (U-Boot-Kapsel hilft). Ganz unten wartet die <b>Riesenkrake</b>.</li><li><b>Endlosschacht</b> im Baubüro unter «Echos & Schacht»: Er hat keinen Boden. Alle 10'000 ft Rekord gibt es eine Prämie.</li><li><b>Aussenposten</b> (Service, Taste O): eigene kleine Stationen unter Tage, auch auf Europa.</li><li><b>Bohrcrews</b> im Baubüro liefern Erz ins Lagerhaus. <b>Fahrzeuge</b> in der Werkstatt: U-Boot-Kapsel und Mech-Bohrer.</li><li><b>Karte</b>: Eigene Markierungen mit Notiz, Farbe und Zielpfeil.</li><li>Und Krähe hat noch eine Rechnung offen.</li></ul>
   <h3>Neu: Io, Titan, Asteroidengürtel</h3><ul><li>Nach der Riesenkrake schaltet die Raketenwerft weitere Ziele frei. Die <b>Kursdaten</b> kaufst du einmal im Baubüro oder in einer Landefähre.</li><li><b>Io</b>: Schwefelgeysire (wenn der Boden gelb leuchtet, gleich Abstand halten), Lavaröhren, Vulkanausbrüche und ab dem Glutsee Hitze am Rumpf. Ganz unten das <b>Magmaherz</b>.</li><li><b>Titan</b>: dichte Luft, die dich trägt, eisige Kälte, Methanseen, die bei Explosionen brennen, und Sturmböen. Ganz unten das <b>Sturmwesen</b>.</li><li><b>Asteroidengürtel</b>: kaum Schwerkraft, kosmische Strahlung zwischen den Brocken, Kronstedts Sicherheitsdrohnen. Ganz unten <b>Kronstedts Raumstation</b>.</li><li>Jeder Wächter lässt ein besonderes Modul fallen: Vulkankern, Sturmkern und Sternenkern.</li></ul>
+  <h3>Neu: Grosses Update</h3><ul><li><b>Mini-Bosse</b>: drei auf jedem Mond und jeder neuen Welt, auf der Karte rot markiert. Auf den neuen Welten öffnet sich die Arena des Wächters erst, wenn alle drei besiegt sind.</li><li><b>Orte der Ersten</b> auf allen Monden: Schalter, Druckplatten, Lichtstrahlen und Schatzkammern. Auf der Karte türkis markiert.</li><li><b>Geheimhöhlen</b>: Hinter einer Felswand jeder Welt liegt eine grosse Höhle voller seltener Erze. Varga verrät dir die Tür, sobald alle Mini-Bosse einer Welt besiegt sind. Bohr die Tür an, um hinein- und wieder hinauszukommen.</li><li><b>Neue Welten</b> nach Kronstedts Station: die Erde im Jahr 5000 (Beton, Stahl, Tresore), der Urmars (Meere, Urwald, der junge Schläfer) und ein Exoplanet, auf dem die Erze wandern.</li><li><b>Werkstatt</b>: drei weitere Stufen für Bohrer, Rumpf, Motor, Tank, Kühler und Laderaum, «Veredeln» bis ★5 mit Mond-Erz und «Teile»: Doppelbohrer, Diamantspitze, Räder, Schwebedüsen, Greifarm, Zusatztank, Panzerplatten und Doppelscheinwerfer.</li></ul>
   <h3>Gefahren</h3><ul><li>Fels und Geröll lassen sich nur sprengen (ausser mit dem Felsbrecher). Geröll stürzt ab, wenn darunter Platz entsteht.</li><li>Gas, Lava, Säure, Strahlung, Krabbler, Steinmimiks, Glutkäfer, Säurequallen und Tunnelwürmchen.</li></ul></div>`;
 function achList(){ return `<div class="achl">${ACH.map(a=>`<div class="${META.ach[a[0]]?'got':''}"><i></i><b>${a[1]}</b><span>${a[2]}</span></div>`).join('')}</div>`; }
 function bestTable(){ if(!META.best.length) return '<p class="note">Noch keine abgeschlossene Expedition. Gewinne eine, um hier zu erscheinen.</p>';
@@ -5146,7 +5797,7 @@ function openMenu(sub){
       <h3>Expedition</h3><div class="stats-list">${row('Kapsel',`${POD_TYPES[S.cfg.pod].n} · ${POD_TYPES[S.cfg.pod].label}`)}${row('Modifikatoren',S.cfg.mods.map(id=>MODS.find(m=>m.id===id).n).join(', ')||'keine')}${row('Wertung',`×${multOf(S.cfg).toFixed(2)}`)}</div>
       <h3>Zonen</h3><div class="stats-list">${ZONES.map(z=>row(`${z.n} · ab ${fmtN(z.a)} ft`,S.maxFt>=z.a?'erreicht':'unbekannt',S.maxFt>=z.a?'ok':'no')).join('')}</div>
       <h3>Wächter</h3><div class="stats-list">${BOSSES.map((b,i)=>row(`${S.flags['bi'+i]||S.bossDone[i]?b.n:'???'} · ${fmtN((ARENAS[i].cy-SKY)*FT)} ft`,S.bossDone[i]?'besiegt':S.flags['bi'+i]?'wartet':'unbekannt',S.bossDone[i]?'ok':S.flags['bi'+i]?'warnc':'no')).join('')}</div>
-      <h3>Mini-Bosse</h3><div class="stats-list">${MINIS.map((m,i)=>{ const known=S.flags['mi'+i]||S.minisDone[i]||funk; return row(`${known?m.n:'???'} · ${known&&S.minis[i]?fmtN((S.minis[i].cy-SKY)*FT)+' ft':MZ[m.z].n}`,S.minisDone[i]?'besiegt':S.flags['mi'+i]?'wartet':'unbekannt',S.minisDone[i]?'ok':S.flags['mi'+i]?'warnc':'no'); }).join('')}</div>
+      <h3>Mini-Bosse</h3><div class="stats-list">${MINIS.map((m,i)=>{ const known=S.flags['mi'+i]||S.minisDone[i]||funk; return row(`${known?m.n:'???'} · ${known&&S.loc==='mars'&&S.minis[i]?fmtN((S.minis[i].cy-SKY)*FT)+' ft':MZ[m.z].n}`,S.minisDone[i]?'besiegt':S.flags['mi'+i]?'wartet':'unbekannt',S.minisDone[i]?'ok':S.flags['mi'+i]?'warnc':'no'); }).join('')}</div>
       <h3>Kammern der Ersten · ${S.siegel} von ${S.vaults.length} Siegeln</h3><div class="stats-list">${S.vaults.map(v=>{ const known=S.flags['vh'+v.z]||v.open||funk; return row(`${ZONES[v.z].n}${known?` · ${fmtN((v.cy-SKY)*FT)} ft`:''}`,v.looted?'Siegel geborgen':v.open?'offen':known?`${v.act} von 3 Runen`:'unbekannt',v.looted?'ok':v.open?'warnc':'no'); }).join('')}</div>
       <h3>Ruinen und Sonderhöhlen</h3><div class="stats-list">${(S.ruins||[]).map(q=>row(`${q.found?RUIN_INFO[q.k].n:'???'} · ${ZONES[q.z].n}`,q.looted?'geplündert':q.solved?'gelöst':q.found?'entdeckt':'unbekannt',q.looted||q.solved?'ok':q.found?'warnc':'no')).join('')}</div>
       ${S.ending?`<h3>Nach dem Ende</h3><div class="stats-list">${row('Der Kern',S.maxFt>=ZONES[6].a?'erreicht':S.flags.kernOpen?'offen':'verschlossen',S.maxFt>=ZONES[6].a?'ok':'warnc')}${row(S.flags.ki0||S.urkeim?URKEIM.n:'???',S.urkeim?'besiegt':S.flags.ki0?'wartet':'unbekannt',S.urkeim?'ok':'no')}${row('Wächter-Echos',`${S.echoDone.reduce((a,b)=>a+b,0)} von 4`)}${row('Bossrush-Bestzeit',fmtTime(META.rush))}</div>`:''}
@@ -5258,7 +5909,7 @@ function boot(data){
   if(data&&data.save){ try{ startGame(deserialize(data.save),false); }catch(e){} }
   requestAnimationFrame(frame);
 }
-window.__mb3={WORLDS,WBOSS,OC,OI,geyOn:()=>geyOn,travel,applyPlanet,genEuropa,launchTo,startDuel,duelWin,duelInvite,buildPost,crewTick,abyssShift,enterAbyss,goMars,pads,abFt,mapTap,openMenu,EUARENA,get spr(){return sprCache.size;},get S(){return S;},get boss(){return boss;},get ui(){return ui;},openKern,startEcho,startRush,startMission,spawnRival,placeStructures,doAction,ruinAt,liq,fluidTick,gainXP,RK,KARENA,serialize,deserialize,systemsTick,isNight,beamTrace,hitSwitch,genKern,startDash,placeTool,missionText,newMarket,renderShop,closeShop,saveGame,loadSlot,exportSave,mergeMeta,teleportTo,startBoss,bossDown,explodeAt,useItem,ARENAS,STATIONS,mobs,projs,fallers,props,clouds,arenaIn,update,runEvent,newState,startGame,openShop,PADS,hurtBoss,unlock,META,setRunning:v=>{running=v;},set paused(v){paused=v;}};
+window.__mb3={XMINI,xmDef,enterSecret,leaveSecret,retrofit,secretHint,starRows,partsRows,WORLDS,WBOSS,OC,OI,geyOn:()=>geyOn,travel,applyPlanet,genEuropa,launchTo,startDuel,duelWin,duelInvite,buildPost,crewTick,abyssShift,enterAbyss,goMars,pads,abFt,mapTap,openMenu,EUARENA,get spr(){return sprCache.size;},get S(){return S;},get boss(){return boss;},get ui(){return ui;},openKern,startEcho,startRush,startMission,spawnRival,placeStructures,doAction,ruinAt,liq,fluidTick,gainXP,RK,KARENA,serialize,deserialize,systemsTick,isNight,beamTrace,hitSwitch,genKern,startDash,placeTool,missionText,newMarket,renderShop,closeShop,saveGame,loadSlot,exportSave,mergeMeta,teleportTo,startBoss,bossDown,explodeAt,useItem,ARENAS,STATIONS,mobs,projs,fallers,props,clouds,arenaIn,update,runEvent,newState,startGame,openShop,PADS,hurtBoss,unlock,META,setRunning:v=>{running=v;},set paused(v){paused=v;}};
 window.claude?.hot?.snapshot?.(()=>({save:S&&running?serialize():null}));
 window.claude?.hot?.ready ? window.claude.hot.ready(boot) : boot(window.claude?.hot?.data ?? {});
 })();
