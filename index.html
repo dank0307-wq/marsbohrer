@@ -170,7 +170,8 @@ td.r,th.r{text-align:right}
 .itemrow .ic svg{width:22px;height:22px}
 .itemrow .nm{font:600 14px/1.2 var(--font-ui)}
 .itemrow .st{font:500 12px/1.3 var(--font-ui);color:var(--dim)}
-.itemrow .act{display:flex;gap:5px;align-items:center}
+.itemrow .act{display:grid;grid-template-columns:auto auto;gap:5px;align-items:center}
+.itemrow .act .btn.sm{min-width:52px;padding-left:8px;padding-right:8px}
 .menu-sheet{padding:18px;display:grid;gap:10px}
 .menu-sheet .btn{width:100%;text-align:left}
 .help{display:grid;gap:10px;font:500 14px/1.5 var(--font-ui)}
@@ -5433,7 +5434,7 @@ function renderShop(){
     h+=`<div class="btns"><button class="btn sm primary" data-act="rep" ${miss<.05||S.money<1?'disabled':''}>${miss<.05?'Rumpf intakt':`Reparieren · ${fmt(Math.min(cost,S.money))}`}</button></div>`;
     h+=`<p class="note">${fmt(rp)} pro Rumpfpunkt${st?', Ausrüstung 25 % teurer als an der Oberfläche':''}.</p><div>`;
     for(const it of ITEMS){ const p=itemPrice(it,mult);
-      h+=`<div class="itemrow"><div class="ic">${ICON[it.id]}</div><div><div class="nm">${it.n} <span class="st">· an Bord: ${S.items[it.id]}</span></div><div class="st">${it.d} · <b>${fmt(p)}</b></div></div><div class="act"><button class="btn sm" data-act="buy:${it.id}:1" ${S.money<p?'disabled':''}>+1</button><button class="btn sm" data-act="buy:${it.id}:5" ${S.money<p*5?'disabled':''}>+5</button></div></div>`;
+      h+=`<div class="itemrow"><div class="ic">${ICON[it.id]}</div><div><div class="nm">${it.n} <span class="st">· an Bord: ${S.items[it.id]}</span></div><div class="st">${it.d} · <b>${fmt(p)}</b></div></div><div class="act"><button class="btn sm" data-act="buy:${it.id}:1" ${S.money<p?'disabled':''}>+1</button><button class="btn sm" data-act="buy:${it.id}:5" ${S.money<p*5?'disabled':''}>+5</button><button class="btn sm" data-act="buy:${it.id}:100" ${S.money<p*100?'disabled':''}>+100</button><button class="btn sm" data-act="buy:${it.id}:1000" ${S.money<p*1000?'disabled':''}>+1000</button></div></div>`;
     }
     h+='</div>'+toolRows(mult);
   } else if(kind==='bau'){
@@ -5512,7 +5513,7 @@ function lookRows(){
 function toolRows(mult){
   let h=`<p class="sec">Bauwerkzeuge</p><div>`;
   for(const t of TOOLS){ const p=Math.round(t.p*mult*(col('hafen')?.6:1));
-    h+=`<div class="itemrow"><div class="ic" style="font:700 18px/1 var(--font-ui)">${ACT_ICON[t.id]}</div><div><div class="nm">${t.n} <span class="st">· an Bord: ${S.tools[t.id]} · Taste ${t.key}</span></div><div class="st">${t.d} · <b>${fmt(p)}</b></div></div><div class="act"><button class="btn sm" data-act="tool:${t.id}:1" ${S.money<p?'disabled':''}>+1</button><button class="btn sm" data-act="tool:${t.id}:5" ${S.money<p*5?'disabled':''}>+5</button></div></div>`; }
+    h+=`<div class="itemrow"><div class="ic" style="font:700 18px/1 var(--font-ui)">${ACT_ICON[t.id]}</div><div><div class="nm">${t.n} <span class="st">· an Bord: ${S.tools[t.id]} · Taste ${t.key}</span></div><div class="st">${t.d} · <b>${fmt(p)}</b></div></div><div class="act"><button class="btn sm" data-act="tool:${t.id}:1" ${S.money<p?'disabled':''}>+1</button><button class="btn sm" data-act="tool:${t.id}:5" ${S.money<p*5?'disabled':''}>+5</button><button class="btn sm" data-act="tool:${t.id}:100" ${S.money<p*100?'disabled':''}>+100</button><button class="btn sm" data-act="tool:${t.id}:1000" ${S.money<p*1000?'disabled':''}>+1000</button></div></div>`; }
   h+='</div>';
   if(S.myBeacons.length){ h+=`<p class="sec">Funkbaken</p><div class="choice">${S.myBeacons.map((b,i)=>`<button class="card" data-act="jump:${i}" ${S.money<2000?'disabled':''}><span class="tagline"><b>Bake ${i+1}</b><em>${fmt(2000)}</em></span><span>${fmtN(Math.round((b.y-SKY+1)*FT))} ft · ${ZONES[zoneIdx((b.y-SKY)*FT)].n}</span></button>`).join('')}</div>`; }
   return h+postDelRow()+postJumpRows();
