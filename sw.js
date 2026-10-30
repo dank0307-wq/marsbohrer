@@ -1,5 +1,5 @@
 // Marsbohrer III – Offline-Speicher. Bei jeder neuen Version CACHE hochzählen.
-const CACHE='marsbohrer3-v14';
+const CACHE='marsbohrer3-v15';
 const CORE=['./','./index.html','./manifest.json','./icon-192.png','./icon-512.png'];
 self.addEventListener('install',e=>{ e.waitUntil(caches.open(CACHE).then(c=>c.addAll(CORE)).then(()=>self.skipWaiting())); });
 self.addEventListener('activate',e=>{ e.waitUntil(caches.keys().then(ks=>Promise.all(ks.filter(k=>k!==CACHE).map(k=>caches.delete(k)))).then(()=>self.clients.claim())); });

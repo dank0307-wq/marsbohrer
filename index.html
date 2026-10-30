@@ -4081,7 +4081,11 @@ function drawGoalMarks(cx,cy,w,h){
 /* ---------- Sammel-Tick der Erweiterung ---------- */
 function extTick(dt){
   ui.gateT=Math.max(0,(ui.gateT||0)-dt);
-  if(ui.secGo){ ui.secGo=0; if(isSec(S.loc)) leaveSecret(); else enterSecret(); return; }
+  ui.secCd=Math.max(0,(ui.secCd||0)-dt);
+  if(ui.secGo){ ui.secGo=0; ui.secCd=1.5; if(isSec(S.loc)) leaveSecret(); else enterSecret(); return; }
+  { const d=isSec(S.loc)?{x:0,y:SEC_ENTRY}:(S.sec||{})[S.loc], p=S.p;
+    if(d&&ui.secCd<=0&&p.mode==='free'&&get(d.x,d.y)===HDOOR){ const dx=(d.x+.5)-p.x, dy=(d.y+.5)-p.y;
+      if(Math.abs(dx)<1.2&&Math.abs(dy)<.9){ const I=inp(); if((dx>0&&I.r)||(dx<0&&I.l)){ ui.secGo=1; AU.blip(300,.8,'sine',.15,800); } } } }
   ui.hintT=(ui.hintT||0)-dt; if(ui.hintT<=0){ ui.hintT=2; secretHint(); }
   if(S.loc==='ex') wanderTick(dt);
   ui.inkT=Math.max(0,(ui.inkT||0)-dt);
